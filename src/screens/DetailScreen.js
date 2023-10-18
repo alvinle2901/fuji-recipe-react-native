@@ -10,15 +10,22 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { ChevronLeftIcon, HeartIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 
+import DetailItem from '../components/DetailItem'
+
 function DetailScreen(props) {
   const [isFavourite, toggleFavourite] = useState(false)
-
   const item = props.route.params
   const navigation = useNavigation()
 
+  const renderedDetailItems = []
+
+  for (const [key, value] of Object.entries(item.specs)) {
+    renderedDetailItems.push(<DetailItem title={key} detail={value} />)
+  }
+
   return (
     <View className="bg-white flex-1">
-      <Image source={item.image} style={{ width: wp(100), height: hp(45) }} />
+      <Image source={item.image} style={{ width: wp(100), height: hp(50) }} />
       <StatusBar style={'light'} />
 
       <SafeAreaView className="flex-row justify-between items-center w-full absolute mt-5">
@@ -43,14 +50,13 @@ function DetailScreen(props) {
         className="px-5 flex flex-1 justify-between bg-white pt-8 -mt-14"
       >
         <ScrollView showsVerticalScrollIndicator={false} className="space-y-5">
-          <View className="flex-row justify-between items-start">
-            <Text
-              style={{ fontSize: wp(7) }}
-              className="font-bold flex-1 text-neutral-700"
-            >
-              {item.title}
-            </Text>
-          </View>
+          <Text
+            style={{ fontSize: wp(7) }}
+            className="font-bold flex-1 text-neutral-700 mb-4"
+          >
+            {item.title}
+          </Text>
+          {renderedDetailItems}
         </ScrollView>
       </View>
     </View>

@@ -15,12 +15,12 @@ const RecipeCard = ({ item }) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('Detail', { ...item })}
-      style={{ width: wp(44), height: wp(65) }}
+      style={{ width: wp(44), height: wp(55) }}
       className="flex justify-end relative p-4 py-6 space-y-2 mb-5"
     >
       <Image
         source={item.image}
-        style={{ width: wp(44), height: wp(65), borderRadius: 35 }}
+        style={{ width: wp(44), height: wp(55), borderRadius: 35 }}
         className="absolute"
       />
 
@@ -47,9 +47,6 @@ const RecipeCard = ({ item }) => {
 
       <Text style={{ fontSize: wp(4) }} className="text-white font-semibold">
         {item.title}
-      </Text>
-      <Text style={{ fontSize: wp(2.2) }} className="text-white">
-        {item.shortDescription}
       </Text>
     </TouchableOpacity>
   )
