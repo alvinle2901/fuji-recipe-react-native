@@ -1,17 +1,20 @@
 import { Image, Text, TouchableOpacity } from 'react-native'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { HeartIcon } from 'react-native-heroicons/solid'
 
 const RecipeCard = ({ item }) => {
-  const [isFavourite, toggleFavourite] = useState(false);
+  const [isFavourite, toggleFavourite] = useState(false)
+  const navigation = useNavigation()
 
   return (
     <TouchableOpacity
+      onPress={() => navigation.navigate('Detail', { ...item })}
       style={{ width: wp(44), height: wp(65) }}
       className="flex justify-end relative p-4 py-6 space-y-2 mb-5"
     >

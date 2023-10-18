@@ -1,7 +1,6 @@
 import { View } from 'react-native'
 import React from 'react'
 
-
 import { destinationData } from '../constants/index'
 import RecipeCard from './RecipeCard'
 

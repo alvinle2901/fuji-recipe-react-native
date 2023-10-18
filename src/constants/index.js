@@ -17,7 +17,7 @@ export const destinationData = [
       price: 3000,
       shortDescription: "The Itsukushima shrine is one of Japan's most popular tourist attractions.",
       longDescription: "Itsukushima Shrine is a Shinto shrine on the island of Itsukushima, best known for its 'floating' torii gate. It is in the city of Hatsukaichi in Hiroshima Prefecture in Japan, accessible from the mainland by ferry at Miyajimaguchi Station.",
-      image: require('../../assets/avatar.png')
+      image: require('../../assets/hotel.png')
   },
   
   {
@@ -28,7 +28,7 @@ export const destinationData = [
       price: 1000,
       shortDescription: "Babusar Top is a mountain pass in Pakistan at the north of the 150 km long in beautiful Kaghan Valley",
       longDescription: "Babusar Pass or Babusar Top is a mountain pass in Pakistan at the north of the 150 km long Kaghan Valley, connecting it via the Thak Nala with Chilas on the Karakoram Highway. It is the highest point in Kaghan Valley that can be easily accessed by cars.",
-      image: require('../../assets/avatar.png')
+      image: require('../../assets/hotel.png')
   },
   {
       title: 'Todaiji Temple',
