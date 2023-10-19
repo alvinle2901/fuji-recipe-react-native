@@ -1,6 +1,5 @@
 import {
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -9,15 +8,18 @@ import {
 } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { MagnifyingGlassIcon } from 'react-native-heroicons/outline'
+import { useNavigation } from '@react-navigation/native'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import { MagnifyingGlassIcon } from 'react-native-heroicons/outline'
 
 import Recipes from '../components/Recipes'
 
 const HomeScreen = () => {
+  const navigation = useNavigation()
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
@@ -29,10 +31,10 @@ const HomeScreen = () => {
           >
             Let's Discover
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Add')}>
             <Image
-              source={require('../../assets/avatar.png')}
-              style={{ height: wp(12), width: wp(12) }}
+              source={require('../../assets/plus.png')}
+              style={{ height: wp(10), width: wp(10) }}
             ></Image>
           </TouchableOpacity>
         </View>
