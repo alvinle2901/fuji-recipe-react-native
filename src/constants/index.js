@@ -1,3 +1,23 @@
+export const filmElements = [
+  'title',
+  'film simulation',
+  'dynamic range',
+  'grain effect',
+  'color chrome effect',
+  'color chrome fx blue',
+  'white balance',
+  'red',
+  'blue',
+  'highlight',
+  'shadow',
+  'color',
+  'sharpness',
+  'noise reduction',
+  'clarity',
+  'iso',
+  'exposure compensation'
+]
+
 export const destinationData = [
   {
     title: 'Kodak Portra 160',
@@ -49,5 +69,5 @@ export const destinationData = [
       require('../../assets/films/ektar100/3.webp'),
       require('../../assets/films/ektar100/4.webp')
     ]
-  },
+  }
 ]

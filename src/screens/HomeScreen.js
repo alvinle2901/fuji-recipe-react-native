@@ -42,8 +42,8 @@ const HomeScreen = () => {
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Add')}>
             <Image
-              source={require('../../assets/plus.png')}
-              style={{ height: wp(10), width: wp(10) }}
+              source={require('../../assets/focus.png')}
+              style={{ height: wp(8), width: wp(8) }}
             ></Image>
           </TouchableOpacity>
         </View>
