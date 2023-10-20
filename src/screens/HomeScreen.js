@@ -47,7 +47,7 @@ const HomeScreen = () => {
             ></Image>
           </TouchableOpacity>
         </View>
-
+        {/* Search Bar */}
         <View className="flex-row items-center justify-between px-4 py-2 w-full space-x-6">
           <View className="px-4 py-2 bg-[#f0eff2] rounded-xl flex-1 flex-row items-center justify-center space-x-2">
             <MaterialIcons name="search" size={24} color="#7f7f7f" />
