@@ -20,7 +20,7 @@ const RecipeCard = ({ item }) => {
     >
       <Image
         source={item.image}
-        style={{ width: wp(44), height: wp(55), borderRadius: 35 }}
+        style={{ width: wp(44), height: wp(55), borderRadius: 20 }}
         className="absolute"
       />
 
@@ -29,8 +29,8 @@ const RecipeCard = ({ item }) => {
         style={{
           width: wp(44),
           height: hp(15),
-          borderBottomLeftRadius: 35,
-          borderBottomRightRadius: 35
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20
         }}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
