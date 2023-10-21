@@ -1,251 +1,207 @@
 import {
-  StyleSheet,
   Text,
   View,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Button,
-  Image
+  TouchableOpacity
 } from 'react-native'
 import React, { useState } from 'react'
 import { Formik } from 'formik'
+
+import DropDownItem from '../components/DropDownItem'
+import InputItem from '../components/InputItem'
+import SliderItem from '../components/SliderItem'
+import WhiteBalance from '../components/WhiteBalance'
+import ImageSlider from '../components/ImageSlider'
+import {
+  ccData,
+  dynamicRangeData,
+  filmSimulationData,
+  grainEffectData
+} from '../constants'
 
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import { filmElements } from '../constants'
-import { Slider } from '@miblanchard/react-native-slider'
-import { Dropdown } from 'react-native-element-dropdown';
 
 const AddScreen = () => {
-  const [sharpness, setSharpness] = useState('')
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
-
-  const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-  ];
+  const [images, setImages] = useState([])
+  const [cc, setCC] = useState('')
+  const [wb, setWB] = useState('')
+  const [film, setFilm] = useState('')
+  const [grain, setGrain] = useState('')
+  const [dRange, setDRange] = useState('')
+  const [color, setColor] = useState(0)
+  const [shadow, setShadow] = useState(0)
+  const [exposure, setExposure] = useState(0)
+  const [sharpness, setSharpness] = useState(0)
+  const [highlight, setHighlight] = useState(0)
+  const [noiseReduction, setNoiseReduction] = useState(0)
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
-        {/* avatar */}
-        <View className="items-center mb-3 mt-12">
-          <Text
-            style={{ fontSize: wp(6) }}
-            className="font-semibold text-neutral-700"
+    <Formik
+      initialValues={{
+        title: '',
+        film: '',
+        sharpness: '',
+        iso: '',
+        dynamicRange: '',
+        color: '',
+        highlight: '',
+        noiseReduction: '',
+        shadow: '',
+        sharpness: '',
+        exposure: '',
+        grainEffect: '',
+        ccfx: ''
+      }}
+      onSubmit={(values) => {
+        console.log(dRange)
+        values.sharpness = sharpness
+        console.log(values)
+      }}
+    >
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
+        <SafeAreaView className="flex-1 bg-white">
+          {/* Header */}
+          <View className="items-center mb-3 mt-12">
+            <Text
+              style={{ fontSize: wp(5.5) }}
+              className="font-semibold text-neutral-700"
+            >
+              Add New Recipe
+            </Text>
+          </View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            className="space-y-6"
           >
-            Add New Recipe
-          </Text>
-        </View>
-        {/* items */}
-
-        <Formik
-          initialValues={{ title: '', film: '', sharpness: '' }}
-          onSubmit={(values) => console.log(values)}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {/* items */}
             <View className="mx-5">
               {/* Title */}
-              <View
-                className="flex-row py-3 items-center"
-                style={{
-                  borderRadius: 1,
-                  borderBottomWidth: 1,
-                  borderColor: '#f0eff2'
-                }}
-              >
-                <Image
-                  source={require('../../assets/recipe_icon/film.png')}
-                  style={{ height: wp(7), width: wp(7) }}
-                ></Image>
-                <TextInput
-                  className="ml-3 w-full"
-                  style={{ fontSize: wp(4) }}
-                  onChangeText={handleChange('title')}
-                  onBlur={handleBlur('title')}
-                  value={values.title}
-                  placeholder={'Title'}
-                />
-              </View>
-              {/* Film simulation */}
-              <View
-                className="flex-row py-3 items-center"
-                style={{
-                  borderRadius: 1,
-                  borderBottomWidth: 1,
-                  borderColor: '#f0eff2'
-                }}
-              >
-                <Image
-                  source={require('../../assets/recipe_icon/film.png')}
-                  style={{ height: wp(7), width: wp(7) }}
-                ></Image>
-                <TextInput
-                  className="ml-3 w-full"
-                  style={{ fontSize: wp(4) }}
-                  onChangeText={handleChange('film')}
-                  onBlur={handleBlur('film')}
-                  value={values.film}
-                  placeholder={'Film Simulation'}
-                />
-              </View>
-              {/* ISO */}
-              <View
-                className="flex-row py-3 items-center"
-                style={{
-                  borderRadius: 1,
-                  borderBottomWidth: 1,
-                  borderColor: '#f0eff2'
-                }}
-              >
-                <Image
-                  source={require('../../assets/recipe_icon/iso.png')}
-                  style={{ height: wp(7), width: wp(7) }}
-                ></Image>
-                <TextInput
-                  className="ml-3 w-full"
-                  style={{ fontSize: wp(4) }}
-                  onChangeText={handleChange('film')}
-                  onBlur={handleBlur('film')}
-                  value={values.film}
-                  placeholder={'ISO'}
-                />
-              </View>
+              <InputItem
+                title={'Title'}
+                icon={require('../../assets/recipe_icon/film1.png')}
+                handleBlur={handleBlur('title')}
+                handleChange={handleChange('title')}
+                value={values.title}
+              />
+              {/* Film Simulation */}
+              <DropDownItem
+                data={filmSimulationData}
+                icon={require('../../assets/recipe_icon/film.png')}
+                field={'Film Simulation'}
+                value={film}
+                setValue={setFilm}
+              />
+              {/* Image Slider */}
+              <ImageSlider images={images} setImages={setImages} />
+              {/* White Balance */}
+              <WhiteBalance
+                icon={require('../../assets/recipe_icon/white-balance.png')}
+                value={wb}
+                setValue={setWB}
+              />
+              {/* Dynamic Range */}
+              <DropDownItem
+                data={dynamicRangeData}
+                icon={require('../../assets/recipe_icon/hdr.png')}
+                field={'Dynamic Range'}
+                value={dRange}
+                setValue={setDRange}
+              />
+              {/* Color */}
+              <SliderItem
+                title={'Color'}
+                icon={require('../../assets/recipe_icon/colour.png')}
+                value={color}
+                setValue={setColor}
+                minimumSliderValue={-4}
+                maximumSliderValue={4}
+              />
               {/* Highlight */}
-              <View
-                className="flex-row py-3 items-center"
-                style={{
-                  borderRadius: 1,
-                  borderBottomWidth: 1,
-                  borderColor: '#f0eff2'
-                }}
-              >
-                <Image
-                  source={require('../../assets/recipe_icon/triangle.png')}
-                  style={{ height: wp(7), width: wp(7) }}
-                ></Image>
-                <TextInput
-                  className="ml-3 w-full"
-                  style={{ fontSize: wp(4) }}
-                  onChangeText={handleChange('sharpness')}
-                  onBlur={handleBlur('sharpness')}
-                  value={sharpness.toString()}
-                  placeholder={'Sharpness'}
-                />
-              </View>
-              <Slider
-                style={{ width: 200, height: 40 }}
-                animateTransitions={true}
-                animationType={'spring'}
-                minimumValue={-2}
-                maximumValue={4}
-                step={1}
-                minimumTrackTintColor="#000000"
-                maximumTrackTintColor="#000000"
+              <SliderItem
+                title={'Highlight'}
+                icon={require('../../assets/recipe_icon/highlight.png')}
+                value={highlight}
+                setValue={setHighlight}
+                minimumSliderValue={-2}
+                maximumSliderValue={4}
+              />
+              {/* Shadow */}
+              <SliderItem
+                title={'Shadow'}
+                icon={require('../../assets/recipe_icon/shadow.png')}
+                value={shadow}
+                setValue={setShadow}
+                minimumSliderValue={-2}
+                maximumSliderValue={4}
+              />
+              {/* Noise Reduction */}
+              <SliderItem
+                title={'Noise Reduction'}
+                icon={require('../../assets/recipe_icon/nr.png')}
+                value={noiseReduction}
+                setValue={setNoiseReduction}
+                minimumSliderValue={-4}
+                maximumSliderValue={4}
+              />
+              {/* Sharpness */}
+              <SliderItem
+                title={'Sharpness'}
+                icon={require('../../assets/recipe_icon/triangle.png')}
                 value={sharpness}
-                onValueChange={(e) => {
-                  setSharpness(e[0])
-                }}
+                setValue={setSharpness}
+                minimumSliderValue={-4}
+                maximumSliderValue={4}
               />
-              <View className="flex-row w-full justify-between">
-                <Text>-2</Text>
-                <Text>+4</Text>
-              </View>
-
-              {/* Dropdown */}
-              <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? 'Select item' : '...'}
-                searchPlaceholder="Search..."
-                value={value}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={(item) => {
-                  setValue(item.value)
-                  setIsFocus(false)
-                }}
-                renderLeftIcon={() => (
-                  <AntDesign
-                    style={styles.icon}
-                    color={isFocus ? 'blue' : 'black'}
-                    name="Safety"
-                    size={20}
-                  />
-                )}
+              {/* Grain Effect */}
+              <DropDownItem
+                data={grainEffectData}
+                icon={require('../../assets/recipe_icon/grain.png')}
+                field={'Grain Effect'}
+                value={grain}
+                setValue={setGrain}
               />
-
-              <TouchableOpacity
-                onPress={handleSubmit}
-                className="items-center mt-4"
-              >
-                <Text>Save</Text>
-              </TouchableOpacity>
+              {/* Color Chrome Effect */}
+              <DropDownItem
+                data={ccData}
+                icon={require('../../assets/recipe_icon/cc.png')}
+                field={'Color Chrome Effect'}
+                value={cc}
+                setValue={setCC}
+              />
+              {/* ISO */}
+              <InputItem
+                title={'ISO'}
+                icon={require('../../assets/recipe_icon/iso.png')}
+                handleBlur={handleBlur('iso')}
+                handleChange={handleChange('iso')}
+                value={values.iso}
+              />
+              {/* Exposure Compensation */}
+              <SliderItem
+                title={'Exposure Compensation'}
+                icon={require('../../assets/recipe_icon/exposure.png')}
+                value={exposure}
+                setValue={setExposure}
+                minimumSliderValue={-3}
+                maximumSliderValue={3}
+              />
             </View>
-          )}
-        </Formik>
-      </ScrollView>
-    </SafeAreaView>
+          </ScrollView>
+          {/* Submit */}
+          <TouchableOpacity
+            className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
+            onPress={handleSubmit}
+          >
+            <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      )}
+    </Formik>
   )
 }
 
 export default AddScreen
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    padding: 16,
-  },
-  dropdown: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-});
