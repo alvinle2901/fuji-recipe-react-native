@@ -10,31 +10,57 @@ import { Formik } from 'formik'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
+import SliderItem from '../components/SliderItem'
+import WhiteBalance from '../components/WhiteBalance'
+import ImageSlider from '../components/ImageSlider'
+import {
+  ccData,
+  dynamicRangeData,
+  filmSimulationData,
+  grainEffectData
+} from '../constants'
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import SliderItem from '../components/SliderItem'
 
-const EditScreen = () => {
-  const [sharpness, setSharpness] = useState(0)
-  const [highlight, setHighlight] = useState(0)
-  const [noiseReduction, setNoiseReduction] = useState(0)
-  const [shadow, setShadow] = useState(0)
-  const [color, setColor] = useState(0)
-  const [exposure, setExposure] = useState(0)
-
-  const dynamicRangedata = [
-    { label: 'Auto', value: 'auto' },
-    { label: 'DR100', value: 'DR100' },
-    { label: 'DR200', value: 'DR200' },
-    { label: 'DR400', value: 'DR400' }
-  ]
+const EditScreen = (props) => {
+  const item = props.route.params
+  const [images, setImages] = useState(item.images)
+  const [cc, setCC] = useState(item.specs['color chrome effect'])
+  const [wb, setWB] = useState(item.specs['white balance'])
+  const [film, setFilm] = useState(item.specs['film simulation'])
+  const [grain, setGrain] = useState(item.specs['grain effect'])
+  const [dRange, setDRange] = useState(item.specs['dynamic range'])
+  const [color, setColor] = useState(item.specs['color'])
+  const [shadow, setShadow] = useState(item.specs['shadow'])
+  const [exposure, setExposure] = useState(item.specs['exposure compensation'])
+  const [sharpness, setSharpness] = useState(item.specs['sharpness'])
+  const [highlight, setHighlight] = useState(item.specs['highlight'])
+  const [noiseReduction, setNoiseReduction] = useState(item.specs['nr'])
 
   return (
     <Formik
-      initialValues={{ title: '', film: '', sharpness: '', iso: '' }}
-      onSubmit={(values) => console.log(values)}
+      initialValues={{
+        title: item.title,
+        film: '',
+        sharpness: '',
+        iso: item.specs['iso'],
+        dynamicRange: '',
+        color: '',
+        highlight: '',
+        noiseReduction: '',
+        shadow: '',
+        sharpness: '',
+        exposure: '',
+        grainEffect: '',
+        ccfx: ''
+      }}
+      onSubmit={(values) => {
+        values.sharpness = sharpness
+        console.log(values)
+      }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <SafeAreaView className="flex-1 bg-white">
@@ -44,7 +70,7 @@ const EditScreen = () => {
               style={{ fontSize: wp(5.5) }}
               className="font-semibold text-neutral-700"
             >
-              Edit Recipe
+              Edit
             </Text>
           </View>
           <ScrollView
@@ -52,7 +78,6 @@ const EditScreen = () => {
             className="space-y-6"
           >
             {/* items */}
-
             <View className="mx-5">
               {/* Title */}
               <InputItem
@@ -62,17 +87,29 @@ const EditScreen = () => {
                 handleChange={handleChange('title')}
                 value={values.title}
               />
-              {/* Film simulation */}
+              {/* Film Simulation */}
               <DropDownItem
-                data={dynamicRangedata}
+                data={filmSimulationData}
                 icon={require('../../assets/recipe_icon/film.png')}
                 field={'Film Simulation'}
+                value={film}
+                setValue={setFilm}
+              />
+              {/* Image Slider */}
+              <ImageSlider images={images} setImages={setImages} />
+              {/* White Balance */}
+              <WhiteBalance
+                icon={require('../../assets/recipe_icon/white-balance.png')}
+                value={wb}
+                setValue={setWB}
               />
               {/* Dynamic Range */}
               <DropDownItem
-                data={dynamicRangedata}
+                data={dynamicRangeData}
                 icon={require('../../assets/recipe_icon/hdr.png')}
                 field={'Dynamic Range'}
+                value={dRange}
+                setValue={setDRange}
               />
               {/* Color */}
               <SliderItem
@@ -86,7 +123,7 @@ const EditScreen = () => {
               {/* Highlight */}
               <SliderItem
                 title={'Highlight'}
-                icon={require('../../assets/recipe_icon/shadow.png')}
+                icon={require('../../assets/recipe_icon/highlight.png')}
                 value={highlight}
                 setValue={setHighlight}
                 minimumSliderValue={-2}
@@ -104,7 +141,7 @@ const EditScreen = () => {
               {/* Noise Reduction */}
               <SliderItem
                 title={'Noise Reduction'}
-                icon={require('../../assets/recipe_icon/triangle.png')}
+                icon={require('../../assets/recipe_icon/nr.png')}
                 value={noiseReduction}
                 setValue={setNoiseReduction}
                 minimumSliderValue={-4}
@@ -121,15 +158,19 @@ const EditScreen = () => {
               />
               {/* Grain Effect */}
               <DropDownItem
-                data={dynamicRangedata}
+                data={grainEffectData}
                 icon={require('../../assets/recipe_icon/grain.png')}
                 field={'Grain Effect'}
+                value={grain}
+                setValue={setGrain}
               />
               {/* Color Chrome Effect */}
               <DropDownItem
-                data={dynamicRangedata}
+                data={ccData}
                 icon={require('../../assets/recipe_icon/cc.png')}
                 field={'Color Chrome Effect'}
+                value={cc}
+                setValue={setCC}
               />
               {/* ISO */}
               <InputItem

@@ -7,33 +7,32 @@ import {
   StyleSheet
 } from 'react-native'
 import React, { useState, useRef } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { StatusBar } from 'expo-status-bar'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { ChevronLeftIcon, HeartIcon, PencilSquareIcon } from 'react-native-heroicons/solid'
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
 
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import { StatusBar } from 'expo-status-bar'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { ChevronLeftIcon, HeartIcon } from 'react-native-heroicons/solid'
-import { useNavigation } from '@react-navigation/native'
 
 import DetailItem from '../components/DetailItem'
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
 
 function DetailScreen(props) {
+  const navigation = useNavigation()
   const item = props.route.params
 
   const [isFavourite, toggleFavourite] = useState(false)
-  const navigation = useNavigation()
   const scrollY = useRef(new Animated.Value(0)).current
 
   const renderedDetailItems = []
+  const ITEM_HEIGHT = wp(130)
 
   for (const [key, value] of Object.entries(item.specs)) {
     renderedDetailItems.push(<DetailItem title={key} detail={value} />)
   }
-
-  const ITEM_HEIGHT = wp(130)
 
   return (
     <View className="bg-white flex-1">
@@ -83,24 +82,31 @@ function DetailScreen(props) {
           />
         </View>
       </View>
-
-      <SafeAreaView className="flex-row justify-between items-center w-full absolute mt-5">
+      {/* Header Button */}
+      <SafeAreaView className="flex-row justify-between items-center w-full absolute mt-4">
         <TouchableOpacity
           className="p-2 rounded-full ml-4"
           style={{ backgroundColor: 'rgba(255,255,255,0.4)' }}
           onPress={() => navigation.goBack()}
         >
-          <ChevronLeftIcon size={wp(7)} strokeWidth={4} color="white" />
+          <ChevronLeftIcon size={wp(6)} strokeWidth={4} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
           className="p-2 rounded-full mr-4"
           style={{ backgroundColor: 'rgba(255,255,255,0.4)' }}
           onPress={() => toggleFavourite(!isFavourite)}
         >
-          <HeartIcon size={wp(7)} strokeWidth={4} color="white" />
+          <HeartIcon size={wp(6)} strokeWidth={4} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="p-2 rounded-full mr-4"
+          style={{ backgroundColor: 'rgba(255,255,255,0.4)' }}
+          onPress={() => navigation.navigate('Edit', { ...item })}
+        >
+          <PencilSquareIcon size={wp(6)} strokeWidth={4} color="white" />
         </TouchableOpacity>
       </SafeAreaView>
-
+      {/* Bottom Sheet */}
       <BottomSheet
         style={styles.bottomSheet}
         snapPoints={[hp(100) - wp(123), hp(75)]}

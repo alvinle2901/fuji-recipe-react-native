@@ -10,13 +10,13 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import { StatusBar } from 'expo-status-bar'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
 import Recipes from '../components/Recipes'
-import { StatusBar } from 'expo-status-bar'
 
 const HomeScreen = () => {
   const navigation = useNavigation()

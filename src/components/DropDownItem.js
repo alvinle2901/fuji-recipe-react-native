@@ -1,15 +1,13 @@
 import { StyleSheet, View, Image } from 'react-native'
-import React, { useState } from 'react'
-import { Dropdown } from 'react-native-element-dropdown'
+import React from 'react'
+import { Dropdown } from 'react-native-element-dropdown'  
 
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-const DropDownItem = ({ data, field, icon }) => {
-  const [value, setValue] = useState(null)
-
+const DropDownItem = ({ data, field, icon, value, setValue }) => {
   return (
     <View
       className="flex-row py-3 items-center w-full justify-between"
@@ -19,10 +17,7 @@ const DropDownItem = ({ data, field, icon }) => {
         borderColor: '#f0eff2'
       }}
     >
-      <Image
-        source={icon}
-        style={{ height: wp(7), width: wp(7) }}
-      ></Image>
+      <Image source={icon} style={{ height: wp(7), width: wp(7) }}></Image>
       <Dropdown
         className="ml-3 flex-1"
         style={styles.dropdown}
@@ -51,15 +46,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8
-  },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: wp(4)
   },
   placeholderStyle: {
     fontSize: wp(4),
