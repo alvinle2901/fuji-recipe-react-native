@@ -1,3 +1,46 @@
+export const dynamicRangeData = [
+  { label: 'Auto', value: 'auto' },
+  { label: 'DR100', value: 'DR100' },
+  { label: 'DR200', value: 'DR200' },
+  { label: 'DR400', value: 'DR400' }
+]
+
+export const ccData = [
+  { label: 'Off', value: 'Off' },
+  { label: 'Weak', value: 'Weak' },
+  { label: 'Strong', value: 'Strong' }
+]
+
+export const grainEffectData = [
+  { label: 'Off', value: 'Off' },
+  { label: 'Weak', value: 'Weak' },
+  { label: 'Weak, Small', value: 'Weak, Small' },
+  { label: 'Weak, Large', value: 'Weak, Large' },
+  { label: 'Strong', value: 'Strong' },
+  { label: 'Strong, Small', value: 'Strong, Small' },
+  { label: 'Strong, Large', value: 'Strong, Large' }
+]
+
+export const filmSimulationData = [
+  { label: 'PROVIA/Standard', value: 'PROVIA/Standard' },
+  { label: 'ASTIA/Soft', value: 'ASTIA/Soft' },
+  { label: 'Velvia/Vivid', value: 'Velvia/Vivid' },
+  { label: 'CLASSIC CHROME', value: 'CLASSIC CHROME' },
+  { label: 'PRO Neg. Std', value: 'PRO Neg. Std' },
+  { label: 'PRO Neg. Hi', value: 'PRO Neg. Hi' },
+  { label: 'CLASSIC Neg.', value: 'CLASSIC Neg.' },
+  { label: 'ETERNA', value: 'ETERNA' },
+  { label: 'MONOCHROME', value: 'MONOCHROME' },
+  { label: 'ACROS', value: 'ACROS' },
+  { label: 'SEPIA', value: 'SEPIA' },
+  { label: 'ACROS + Ye Filter', value: 'ACROS + Ye Filter' },
+  { label: 'ACROS + G Filter', value: 'ACROS + G Filter' },
+  { label: 'ACROS + R Filter', value: 'ACROS + R Filter' },
+  { label: 'MONOCHROME + Y', value: 'MONOCHROME +Y' },
+  { label: 'MONOCHROME + G', value: 'MONOCHROME + G' },
+  { label: 'MONOCHROME + R', value: 'MONOCHROME + R' },
+]
+
 export const filmElements = [
   'title',
   'film simulation',
@@ -23,7 +66,7 @@ export const destinationData = [
     title: 'Kodak Portra 160',
     image: require('../../assets/films/portra160/1.webp'),
     specs: {
-      'film simulation': 'Classic Chrome',
+      'film simulation': 'CLASSIC CHROME',
       'dynamic range': 'DR400',
       'grain effect': 'Weak, Small',
       'color chrome effect': 'Strong',
@@ -48,7 +91,7 @@ export const destinationData = [
     title: 'Kodak Ektar 100',
     image: require('../../assets/films/ektar100/1.webp'),
     specs: {
-      'film simulation': 'Classic Chrome',
+      'film simulation': 'CLASSIC CHROME',
       'dynamic range': 'DR400',
       'grain effect': 'Weak, Small',
       'color chrome effect': 'Strong',
