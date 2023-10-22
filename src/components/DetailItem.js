@@ -7,6 +7,8 @@ import {
 } from 'react-native-responsive-screen'
 
 const DetailItem = ({ title, detail }) => {
+  const newTitle = title.replaceAll('_', ' ')
+
   return (
     <View
       className="flex-row justify-end items-start pb-4 pt-4"
@@ -16,7 +18,7 @@ const DetailItem = ({ title, detail }) => {
         className="flex-1 uppercase font-light mr-5"
         style={{ fontSize: wp(4) }}
       >
-        {title}
+        {newTitle}
       </Text>
       <Text className="flex-1 font-bold" style={{ fontSize: wp(4) }}>
         {detail}

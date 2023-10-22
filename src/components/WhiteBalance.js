@@ -41,20 +41,17 @@ const wbData = [
   { label: 'Underwater', value: 'Underwater' }
 ]
 
-const WhiteBalance = ({ icon, value, setValue }) => {
-  const [wb, setWB] = useState('')
-  const [temp, setTemp] = useState('')
-  const [red, setRed] = useState('0')
-  const [blue, setBlue] = useState('0')
-
-  const updateValue = (wb, blue, red, temp) => {
-    if (wb == 'Color Temperature') {
-      setValue(temp + 'K, ' + red + ' Red & ' + blue + ' Blue')
-    } else {
-      setValue(wb + ', ' + red + ' Red & ' + blue + ' Blue')
-    }
-  }
-
+const WhiteBalance = ({
+  icon,
+  wb,
+  setWB,
+  temp,
+  setTemp,
+  red,
+  setRed,
+  blue,
+  setBlue
+}) => {
   return (
     <View
       style={{
@@ -79,7 +76,6 @@ const WhiteBalance = ({ icon, value, setValue }) => {
           value={wb}
           onChange={(item) => {
             setWB(item.value)
-            updateValue(item.value, red, blue, temp)
           }}
         />
       </View>
@@ -118,7 +114,6 @@ const WhiteBalance = ({ icon, value, setValue }) => {
             value={red}
             onChange={(item) => {
               setRed(item.value)
-              updateValue(wb, item.value, blue, temp)
             }}
           />
         </View>
@@ -138,7 +133,6 @@ const WhiteBalance = ({ icon, value, setValue }) => {
             value={blue}
             onChange={(item) => {
               setBlue(item.value)
-              updateValue(wb, red, item.value, temp)
             }}
           />
         </View>
@@ -180,6 +174,5 @@ const styles = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: wp(4)
-  },
-  
+  }
 })
