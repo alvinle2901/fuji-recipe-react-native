@@ -7,6 +7,9 @@ import {
 } from 'react-native'
 import React, { useState } from 'react'
 import { Formik } from 'formik'
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '../../firebase.config'
+import { useNavigation } from '@react-navigation/native'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -26,12 +29,17 @@ import {
 } from 'react-native-responsive-screen'
 
 const AddScreen = () => {
+  const navigation = useNavigation()
+
   const [images, setImages] = useState([])
   const [cc, setCC] = useState('')
   const [wb, setWB] = useState('')
+  const [temp, setTemp] = useState('')
   const [film, setFilm] = useState('')
   const [grain, setGrain] = useState('')
   const [dRange, setDRange] = useState('')
+  const [red, setRed] = useState(0)
+  const [blue, setBlue] = useState(0)
   const [color, setColor] = useState(0)
   const [shadow, setShadow] = useState(0)
   const [exposure, setExposure] = useState(0)
@@ -56,10 +64,33 @@ const AddScreen = () => {
         grainEffect: '',
         ccfx: ''
       }}
-      onSubmit={(values) => {
-        console.log(dRange)
-        values.sharpness = sharpness
-        console.log(values)
+      onSubmit={async (values) => {
+        try {
+          const docRef = await addDoc(collection(db, 'FujiRecipe'), {
+            film_simulation: film,
+            white_balance: wb,
+            dynamic_range: dRange,
+            color: color,
+            highlight: highlight,
+            shadow: shadow,
+            sharpness: sharpness,
+            noise_reduction: noiseReduction,
+            grain_effect: grain,
+            color_chrome_fx: cc,
+            iso: values.iso,
+            exposure: exposure,
+            red: red,
+            blue: blue,
+            images: images,
+            title: values.title,
+            temp: temp,
+            favorite: false
+          })
+          console.log('Document written with ID: ', docRef.id)
+        } catch (e) {
+          console.error('Error adding document: ', e)
+        }
+        navigation.navigate('Home')
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -100,8 +131,14 @@ const AddScreen = () => {
               {/* White Balance */}
               <WhiteBalance
                 icon={require('../../assets/recipe_icon/white-balance.png')}
-                value={wb}
-                setValue={setWB}
+                wb={wb}
+                setWB={setWB}
+                temp={temp}
+                setTemp={setTemp}
+                red={red}
+                setRed={setRed}
+                blue={blue}
+                setBlue={setBlue}
               />
               {/* Dynamic Range */}
               <DropDownItem
