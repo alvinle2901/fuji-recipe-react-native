@@ -7,6 +7,8 @@ import {
 } from 'react-native'
 import React, { useState } from 'react'
 import { Formik } from 'formik'
+import { db } from '../../firebase.config'
+import { doc, updateDoc } from 'firebase/firestore'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -27,18 +29,22 @@ import {
 
 const EditScreen = (props) => {
   const item = props.route.params
+
   const [images, setImages] = useState(item.images)
-  const [cc, setCC] = useState(item.specs['color chrome effect'])
-  const [wb, setWB] = useState(item.specs['white balance'])
-  const [film, setFilm] = useState(item.specs['film simulation'])
-  const [grain, setGrain] = useState(item.specs['grain effect'])
-  const [dRange, setDRange] = useState(item.specs['dynamic range'])
-  const [color, setColor] = useState(item.specs['color'])
-  const [shadow, setShadow] = useState(item.specs['shadow'])
-  const [exposure, setExposure] = useState(item.specs['exposure compensation'])
-  const [sharpness, setSharpness] = useState(item.specs['sharpness'])
-  const [highlight, setHighlight] = useState(item.specs['highlight'])
-  const [noiseReduction, setNoiseReduction] = useState(item.specs['nr'])
+  const [cc, setCC] = useState(item.color_chrome_fx)
+  const [wb, setWB] = useState(item.white_balance)
+  const [temp, setTemp] = useState(item.temp)
+  const [film, setFilm] = useState(item.film_simulation)
+  const [grain, setGrain] = useState(item.grain_effect)
+  const [dRange, setDRange] = useState(item.dynamic_range)
+  const [red, setRed] = useState(item.red)
+  const [blue, setBlue] = useState(item.blue)
+  const [color, setColor] = useState(item.color)
+  const [shadow, setShadow] = useState(item.shadow)
+  const [exposure, setExposure] = useState(item.exposure_compensation)
+  const [sharpness, setSharpness] = useState(item.sharpness)
+  const [highlight, setHighlight] = useState(item.highlight)
+  const [noiseReduction, setNoiseReduction] = useState(item.noise_reduction)
 
   return (
     <Formik
@@ -46,7 +52,7 @@ const EditScreen = (props) => {
         title: item.title,
         film: '',
         sharpness: '',
-        iso: item.specs['iso'],
+        iso: item.iso,
         dynamicRange: '',
         color: '',
         highlight: '',
@@ -57,9 +63,29 @@ const EditScreen = (props) => {
         grainEffect: '',
         ccfx: ''
       }}
-      onSubmit={(values) => {
-        values.sharpness = sharpness
+      onSubmit={async (values) => {
         console.log(values)
+        const ref = doc(db, 'FujiRecipe', item.id)
+
+        await updateDoc(ref, {
+          film_simulation: film,
+          white_balance: wb,
+          dynamic_range: dRange,
+          color: color,
+          highlight: highlight,
+          shadow: shadow,
+          sharpness: sharpness,
+          noise_reduction: noiseReduction,
+          grain_effect: grain,
+          color_chrome_fx: cc,
+          iso: values.iso,
+          exposure: exposure,
+          red: red,
+          blue: blue,
+          images: images,
+          title: values.title,
+          temp: temp
+        })
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -100,8 +126,14 @@ const EditScreen = (props) => {
               {/* White Balance */}
               <WhiteBalance
                 icon={require('../../assets/recipe_icon/white-balance.png')}
-                value={wb}
-                setValue={setWB}
+                wb={wb}
+                setWB={setWB}
+                temp={temp}
+                setTemp={setTemp}
+                red={red}
+                setRed={setRed}
+                blue={blue}
+                setBlue={setBlue}
               />
               {/* Dynamic Range */}
               <DropDownItem
