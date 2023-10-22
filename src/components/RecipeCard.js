@@ -1,16 +1,26 @@
 import { Image, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
+
+import { useNavigation } from '@react-navigation/native'
+import { LinearGradient } from 'expo-linear-gradient'
+import { HeartIcon } from 'react-native-heroicons/outline'
+import { db } from '../../firebase.config'
+import { doc, updateDoc } from 'firebase/firestore'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { HeartIcon } from 'react-native-heroicons/solid'
 
 const RecipeCard = ({ item }) => {
-  const [isFavourite, toggleFavourite] = useState(false)
   const navigation = useNavigation()
+  const [isFavourite, toggleFavourite] = useState(item.favorite)
+  // update favorite to firebase
+  const updateFavorite = async () => {
+    const itemRef = doc(db, 'FujiRecipe', item.id)
+    await updateDoc(itemRef, {
+      favorite: isFavourite
+    })
+  }
 
   return (
     <TouchableOpacity
@@ -23,7 +33,6 @@ const RecipeCard = ({ item }) => {
         style={{ width: wp(44), height: wp(55), borderRadius: 20 }}
         className="absolute"
       />
-
       <LinearGradient
         colors={['transparent', 'rgba(0,0,0,0.8)']}
         style={{
@@ -36,13 +45,15 @@ const RecipeCard = ({ item }) => {
         end={{ x: 0.5, y: 1 }}
         className="absolute bottom-0"
       />
-
       <TouchableOpacity
-        onPress={() => toggleFavourite(!isFavourite)}
-        style={{ backgroundColor: 'rgba(255,255,255,0.4)' }}
-        className="absolute top-1 right-3 rounded-full p-3"
+        style={{ backgroundColor: 'white' }}
+        className="absolute top-1 right-3 rounded-full p-2"
+        onPress={() => {
+          toggleFavourite(!isFavourite)
+          updateFavorite()
+        }}
       >
-        <HeartIcon size={wp(5)} color={isFavourite ? 'red' : 'white'} />
+        <HeartIcon size={wp(5)} color={isFavourite ? 'red' : 'black'} />
       </TouchableOpacity>
 
       <Text style={{ fontSize: wp(4) }} className="text-white font-semibold">
