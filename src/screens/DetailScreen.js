@@ -41,9 +41,23 @@ function DetailScreen(props) {
   const renderedDetailItems = []
   const ITEM_HEIGHT = wp(130)
 
-  const handleDelete = async () => {
-    await deleteDoc(doc(db, 'FujiRecipe', item))
-    navigation.navigate('Home')
+  // delete item
+  const handleDelete = async (item) => {
+    try {
+      await deleteDoc(doc(db, 'FujiRecipe', item))
+      Toast.show('Delete successfully!', {
+        duration: Toast.durations.SHORT,
+        backgroundColor: 'white',
+        textColor: 'black'
+      })
+      navigation.navigate('Home')
+    } catch (e) {
+      Toast.show('There was an error while delete the recipe', {
+        duration: Toast.durations.SHORT,
+        backgroundColor: 'white',
+        textColor: 'black'
+      })
+    }
     setDialog(false)
   }
 
@@ -84,9 +98,6 @@ function DetailScreen(props) {
       renderedDetailItems.push(<DetailItem title={key} detail={value} />)
     }
   }
-
-  // delete item
-  const deleteItem = async (item) => {}
 
   return (
     <View className="bg-white flex-1">
@@ -185,7 +196,7 @@ function DetailScreen(props) {
                 <DeleteDialog
                   visible={dialog}
                   setVisible={setDialog}
-                  handleDelete={handleDelete}
+                  handleDelete={handleDelete(item.id)}
                 />
               </TouchableOpacity>
             </>
