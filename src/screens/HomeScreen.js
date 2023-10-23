@@ -7,12 +7,12 @@ import {
   TextInput
 } from 'react-native'
 import React, { useState } from 'react'
-import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline'
 import { StatusBar } from 'expo-status-bar'
-import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase.config'
+import { collection, getDocs } from 'firebase/firestore'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -82,13 +82,14 @@ const HomeScreen = () => {
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar />
       <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
-        {/* avatar */}
         <View className="mx-4 flex-row justify-between items-center mt-4 -mb-1">
+          {/* Title */}
           <Text
             style={{ fontSize: wp(12.5), fontFamily: 'fin_thin', color: 'black' }}
           >
             fujifilm recipes
           </Text>
+          {/* Add */}
           <TouchableOpacity
             className="p-3 rounded-full"
             style={{ backgroundColor: '#f0eff2' }}

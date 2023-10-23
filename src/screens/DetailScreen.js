@@ -27,6 +27,7 @@ import {
 } from 'react-native-responsive-screen'
 
 import DetailItem from '../components/DetailItem'
+import DeleteDialog from '../components/DeleteDialog'
 
 function DetailScreen(props) {
   const item = props.route.params
@@ -35,9 +36,16 @@ function DetailScreen(props) {
 
   const [isFavourite, toggleFavourite] = useState(item.favorite)
   const [func, setFunc] = useState(false)
+  const [dialog, setDialog] = useState(false)
 
   const renderedDetailItems = []
   const ITEM_HEIGHT = wp(130)
+
+  const handleDelete = async () => {
+    await deleteDoc(doc(db, 'FujiRecipe', item))
+    navigation.navigate('Home')
+    setDialog(false)
+  }
 
   // update WB string
   let whiteBalance = ''
@@ -78,10 +86,7 @@ function DetailScreen(props) {
   }
 
   // delete item
-  const deleteItem = async (item) => {
-    await deleteDoc(doc(db, 'FujiRecipe', item))
-    navigation.navigate('Home')
-  }
+  const deleteItem = async (item) => {}
 
   return (
     <View className="bg-white flex-1">
@@ -174,11 +179,14 @@ function DetailScreen(props) {
               <TouchableOpacity
                 className="p-2 rounded-full mr-4 mt-1"
                 style={{ backgroundColor: 'white' }}
-                onPress={() => {
-                  deleteItem(item.id)
-                }}
+                onPress={() => setDialog(true)}
               >
                 <TrashIcon size={wp(6)} color="black" />
+                <DeleteDialog
+                  visible={dialog}
+                  setVisible={setDialog}
+                  handleDelete={handleDelete}
+                />
               </TouchableOpacity>
             </>
           ) : (
