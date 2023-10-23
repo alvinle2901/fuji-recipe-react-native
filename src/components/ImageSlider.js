@@ -1,8 +1,8 @@
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as ImagePicker from 'expo-image-picker'
 import { ScrollView } from 'react-native-gesture-handler'
-import { PlusCircleIcon } from 'react-native-heroicons/outline'
+import { PlusCircleIcon, XCircleIcon } from 'react-native-heroicons/outline'
 import { storage } from '../../firebase.config'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import {
@@ -10,11 +10,14 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-const imageData = []
-
 const ImageSlider = ({ data, images, setImages }) => {
-  const [imgUrl, setImgUrl] = useState(null)
+  const [pickedImages, setPickedImages] = useState(images)
 
+  useEffect(() => {
+    setImages(pickedImages)
+  })
+
+  //upload images to storage
   const uploadImage = async (uri) => {
     const fetchResponse = await fetch(uri)
     const theBlob = await fetchResponse.blob()
@@ -34,15 +37,14 @@ const ImageSlider = ({ data, images, setImages }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          imageData.push(downloadURL)
-          console.log(imageData)
+          setPickedImages([...pickedImages, { uri: downloadURL }])
         })
       }
     )
   }
 
+  // pick image from local
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -51,8 +53,14 @@ const ImageSlider = ({ data, images, setImages }) => {
 
     if (!result.canceled) {
       await uploadImage(result.assets[0].uri)
-      setImages(imageData)
     }
+  }
+
+  // remove images
+  const removeImage = (index) => {
+    const updatedImages = [...pickedImages]
+    updatedImages.splice(index, 1)
+    setPickedImages(updatedImages)
   }
 
   return (
@@ -69,17 +77,23 @@ const ImageSlider = ({ data, images, setImages }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {imageData.map((item, index) => {
+        {pickedImages.map((item, index) => {
           return (
-            <Image
-              source={{ uri: item }}
-              style={styles.imageContainer}
-              key={index}
-            />
+            <View className="flex-row">
+              <Image
+                className="items-center justify-center -mr-3 mt-2"
+                source={item}
+                style={styles.imageContainer}
+                key={index}
+              />
+              <TouchableOpacity onPress={() => removeImage(index)}>
+                <XCircleIcon size={wp(6)} color="gray" strokeWidth={1} />
+              </TouchableOpacity>
+            </View>
           )
         })}
         <View
-          className="items-center justify-center"
+          className="items-center justify-center mt-2"
           style={[
             styles.imageContainer,
             {

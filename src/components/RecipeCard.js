@@ -29,7 +29,7 @@ const RecipeCard = ({ item }) => {
       className="flex justify-end relative p-4 py-6 space-y-2 mb-5"
     >
       <Image
-        source={{ uri: item.images[0] }}
+        source={ item.images[0] }
         style={{ width: wp(44), height: wp(55), borderRadius: 20 }}
         className="absolute"
       />
