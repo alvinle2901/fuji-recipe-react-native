@@ -1,9 +1,10 @@
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
 import * as ImagePicker from 'expo-image-picker'
+import { ScrollView } from 'react-native-gesture-handler'
 import { PlusCircleIcon } from 'react-native-heroicons/outline'
-
+import { storage } from '../../firebase.config'
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -11,7 +12,34 @@ import {
 
 const imageData = []
 
-const ImageSlider = ({data, images, setImages}) => {
+const ImageSlider = ({ data, images, setImages }) => {
+  const [imgUrl, setImgUrl] = useState(null)
+
+  const uploadImage = async (uri) => {
+    const fetchResponse = await fetch(uri)
+    const theBlob = await fetchResponse.blob()
+
+    const storageRef = ref(storage, `files/${Date.now()}`)
+    const uploadTask = uploadBytesResumable(storageRef, theBlob)
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        )
+      },
+      (error) => {
+        alert(error)
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          imageData.push(downloadURL)
+          console.log(imageData)
+        })
+      }
+    )
+  }
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -21,10 +49,8 @@ const ImageSlider = ({data, images, setImages}) => {
       quality: 1
     })
 
-    console.log(result)
-
     if (!result.canceled) {
-      imageData.push(result.assets[0].uri)
+      await uploadImage(result.assets[0].uri)
       setImages(imageData)
     }
   }
@@ -44,7 +70,13 @@ const ImageSlider = ({data, images, setImages}) => {
         showsHorizontalScrollIndicator={false}
       >
         {imageData.map((item, index) => {
-          return <Image source={{ uri: item }} style={styles.imageContainer} key={index} />
+          return (
+            <Image
+              source={{ uri: item }}
+              style={styles.imageContainer}
+              key={index}
+            />
+          )
         })}
         <View
           className="items-center justify-center"
