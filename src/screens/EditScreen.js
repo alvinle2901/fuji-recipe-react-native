@@ -27,6 +27,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+import Toast from 'react-native-root-toast'
 
 const EditScreen = (props) => {
   const item = props.route.params
@@ -67,29 +68,41 @@ const EditScreen = (props) => {
       }}
       onSubmit={async (values) => {
         console.log(values)
-        const ref = doc(db, 'FujiRecipe', item.id)
+        try {
+          const ref = doc(db, 'FujiRecipe', item.id)
 
-        await updateDoc(ref, {
-          film_simulation: film,
-          white_balance: wb,
-          dynamic_range: dRange,
-          color: color,
-          highlight: highlight,
-          shadow: shadow,
-          sharpness: sharpness,
-          noise_reduction: noiseReduction,
-          grain_effect: grain,
-          color_chrome_fx: cc,
-          iso: values.iso,
-          exposure: exposure,
-          red: red,
-          blue: blue,
-          images: images,
-          title: values.title,
-          temp: temp
-        })
-
-        navigation.navigate('Home')
+          await updateDoc(ref, {
+            film_simulation: film,
+            white_balance: wb,
+            dynamic_range: dRange,
+            color: color,
+            highlight: highlight,
+            shadow: shadow,
+            sharpness: sharpness,
+            noise_reduction: noiseReduction,
+            grain_effect: grain,
+            color_chrome_fx: cc,
+            iso: values.iso,
+            exposure: exposure,
+            red: red,
+            blue: blue,
+            images: images,
+            title: values.title,
+            temp: temp
+          })
+          Toast.show('Update successfully!', {
+            duration: Toast.durations.SHORT,
+            backgroundColor: 'white',
+            textColor: 'black'
+          })
+          navigation.navigate('Home')
+        } catch (e) {
+          Toast.show('There was an error while updating', {
+            duration: Toast.durations.SHORT,
+            backgroundColor: 'white',
+            textColor: 'black'
+          })
+        }
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (

@@ -7,9 +7,9 @@ import {
 } from 'react-native'
 import React, { useState } from 'react'
 import { Formik } from 'formik'
-import { collection, addDoc } from 'firebase/firestore'
 import { db } from '../../firebase.config'
-import { useNavigation } from '@react-navigation/native'
+import { collection, addDoc } from 'firebase/firestore'
+import Toast from 'react-native-root-toast'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -85,10 +85,20 @@ const AddScreen = ({ navigation }) => {
             favorite: false
           })
           console.log('Document written with ID: ', docRef.id)
+          Toast.show('New item added successfully!', {
+            duration: Toast.durations.SHORT,
+            backgroundColor: 'white',
+            textColor: 'black'
+          })
+          navigation.navigate('Home')
         } catch (e) {
           console.error('Error adding document: ', e)
+          Toast.show('There was an error while uploading', {
+            duration: Toast.durations.SHORT,
+            backgroundColor: 'white',
+            textColor: 'black'
+          })
         }
-        navigation.navigate('Home')
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
