@@ -10,10 +10,11 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-const ImageSlider = ({ data, images, setImages }) => {
+const ImageSlider = ({ images, setImages }) => {
   const [pickedImages, setPickedImages] = useState(images)
 
   useEffect(() => {
+    // set images to upload
     setImages(pickedImages)
   })
 
@@ -37,6 +38,7 @@ const ImageSlider = ({ data, images, setImages }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          //set images with url from database
           setPickedImages([...pickedImages, { uri: downloadURL }])
         })
       }

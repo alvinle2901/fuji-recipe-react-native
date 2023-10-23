@@ -28,9 +28,7 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-const AddScreen = () => {
-  const navigation = useNavigation()
-
+const AddScreen = ({ navigation }) => {
   const [images, setImages] = useState([])
   const [cc, setCC] = useState('')
   const [wb, setWB] = useState('')

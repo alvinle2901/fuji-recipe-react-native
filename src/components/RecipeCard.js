@@ -26,7 +26,7 @@ const RecipeCard = ({ item }) => {
     <TouchableOpacity
       onPress={() => navigation.navigate('Detail', { ...item })}
       style={{ width: wp(44), height: wp(55) }}
-      className="flex justify-end relative p-4 py-6 space-y-2 mb-5"
+      className="flex justify-end relative p-4 py-6 space-y-2 mb-4"
     >
       <Image
         source={ item.images[0] }

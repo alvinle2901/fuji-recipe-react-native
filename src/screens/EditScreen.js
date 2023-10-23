@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import { Formik } from 'formik'
 import { db } from '../../firebase.config'
 import { doc, updateDoc } from 'firebase/firestore'
+import { useNavigation } from '@react-navigation/native'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -29,6 +30,7 @@ import {
 
 const EditScreen = (props) => {
   const item = props.route.params
+  const navigation = useNavigation()
 
   const [images, setImages] = useState(item.images)
   const [cc, setCC] = useState(item.color_chrome_fx)
@@ -86,6 +88,8 @@ const EditScreen = (props) => {
           title: values.title,
           temp: temp
         })
+
+        navigation.navigate('Home')
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
