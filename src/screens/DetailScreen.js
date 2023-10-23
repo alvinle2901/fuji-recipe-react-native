@@ -10,9 +10,17 @@ import React, { useState, useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ChevronLeftIcon, HeartIcon, PencilSquareIcon } from 'react-native-heroicons/solid'
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
-
+// Firebase
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase.config'
+import {
+  ChevronLeftIcon,
+  HeartIcon,
+  PencilSquareIcon,
+  EllipsisVerticalIcon,
+  TrashIcon
+} from 'react-native-heroicons/outline'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -21,23 +29,63 @@ import {
 import DetailItem from '../components/DetailItem'
 
 function DetailScreen(props) {
-  const navigation = useNavigation()
   const item = props.route.params
-
-  const [isFavourite, toggleFavourite] = useState(false)
+  const navigation = useNavigation()
   const scrollY = useRef(new Animated.Value(0)).current
+
+  const [isFavourite, toggleFavourite] = useState(item.favorite)
+  const [func, setFunc] = useState(false)
 
   const renderedDetailItems = []
   const ITEM_HEIGHT = wp(130)
 
-  for (const [key, value] of Object.entries(item.specs)) {
-    renderedDetailItems.push(<DetailItem title={key} detail={value} />)
+  // update WB string
+  let whiteBalance = ''
+  const updateWB = (wb, blue, red, temp) => {
+    if (wb == 'Color Temperature') {
+      whiteBalance = temp + 'K, ' + red + ' Red & ' + blue + ' Blue'
+    } else {
+      whiteBalance = wb + ', ' + red + ' Red & ' + blue + ' Blue'
+    }
+  }
+
+  // update favorite to firebase
+  const updateFavorite = async () => {
+    const itemRef = doc(db, 'FujiRecipe', item.id)
+    await updateDoc(itemRef, {
+      favorite: isFavourite
+    })
+  }
+
+  // render item details
+  for (const [key, value] of Object.entries(item)) {
+    if (key == 'white_balance') {
+      updateWB(item.white_balance, item.blue, item.red, item.temp)
+      renderedDetailItems.push(<DetailItem title={key} detail={whiteBalance} />)
+    } else if (
+      key == 'red' ||
+      key == 'blue' ||
+      key == 'images' ||
+      key == 'title' ||
+      key == 'temp' ||
+      key == 'id' ||
+      key == 'favorite'
+    ) {
+      continue
+    } else {
+      renderedDetailItems.push(<DetailItem title={key} detail={value} />)
+    }
+  }
+
+  // delete item
+  const deleteItem = async (item) => {
+    await deleteDoc(doc(db, 'FujiRecipe', item))
+    navigation.navigate('Home')
   }
 
   return (
     <View className="bg-white flex-1">
       <StatusBar style={'light'} />
-
       <View style={{ height: ITEM_HEIGHT, overflow: 'hidden' }}>
         <Animated.FlatList
           data={item.images}
@@ -83,28 +131,60 @@ function DetailScreen(props) {
         </View>
       </View>
       {/* Header Button */}
-      <SafeAreaView className="flex-row justify-between items-center w-full absolute mt-4">
+      <SafeAreaView className="flex-row justify-between w-full absolute mt-4">
+        {/* Back button */}
         <TouchableOpacity
-          className="p-2 rounded-full ml-4"
-          style={{ backgroundColor: 'rgba(255,255,255,0.4)' }}
+          className="p-2 h-9 rounded-full ml-4"
+          style={{ backgroundColor: 'white' }}
           onPress={() => navigation.goBack()}
         >
-          <ChevronLeftIcon size={wp(6)} strokeWidth={4} color="white" />
+          <ChevronLeftIcon size={wp(6)} color="black" />
         </TouchableOpacity>
+        {/* Favorite */}
         <TouchableOpacity
-          className="p-2 rounded-full mr-4"
-          style={{ backgroundColor: 'rgba(255,255,255,0.4)' }}
-          onPress={() => toggleFavourite(!isFavourite)}
+          className="p-2 h-9 rounded-full mr-4"
+          style={{ backgroundColor: 'white' }}
+          onPress={() => {
+            toggleFavourite(!isFavourite)
+            updateFavorite()
+          }}
         >
-          <HeartIcon size={wp(6)} strokeWidth={4} color="white" />
+          <HeartIcon size={wp(6)} color={isFavourite ? 'red' : 'black'} />
         </TouchableOpacity>
-        <TouchableOpacity
-          className="p-2 rounded-full mr-4"
-          style={{ backgroundColor: 'rgba(255,255,255,0.4)' }}
-          onPress={() => navigation.navigate('Edit', { ...item })}
-        >
-          <PencilSquareIcon size={wp(6)} strokeWidth={4} color="white" />
-        </TouchableOpacity>
+        {/* Options */}
+        <View>
+          <TouchableOpacity
+            className="p-2 rounded-full mr-4"
+            style={{ backgroundColor: 'white' }}
+            onPress={() => setFunc(!func)}
+          >
+            <EllipsisVerticalIcon size={wp(6)} color="black" />
+          </TouchableOpacity>
+          {func ? (
+            <>
+              {/* Edit */}
+              <TouchableOpacity
+                className="p-2 rounded-full mr-4 mt-1"
+                style={{ backgroundColor: 'white' }}
+                onPress={() => navigation.navigate('Edit', { ...item })}
+              >
+                <PencilSquareIcon size={wp(6)} color="black" />
+              </TouchableOpacity>
+              {/* Delete */}
+              <TouchableOpacity
+                className="p-2 rounded-full mr-4 mt-1"
+                style={{ backgroundColor: 'white' }}
+                onPress={() => {
+                  deleteItem(item.id)
+                }}
+              >
+                <TrashIcon size={wp(6)} color="black" />
+              </TouchableOpacity>
+            </>
+          ) : (
+            <></>
+          )}
+        </View>
       </SafeAreaView>
       {/* Bottom Sheet */}
       <BottomSheet
