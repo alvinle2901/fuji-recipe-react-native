@@ -7,21 +7,23 @@ import {
   TextInput,
   StyleSheet
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline'
 import { StatusBar } from 'expo-status-bar'
 import { db } from '../../firebase.config'
 import { collection, getDocs } from 'firebase/firestore'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView
+} from '@gorhom/bottom-sheet'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
 import Recipes from '../components/Recipes'
-import Overlay from '../components/Overlay'
 import DropDownItem from '../components/DropDownItem'
 import Checkbox from '../components/Checkbox'
 import { filmSimulationData } from '../constants'
@@ -50,6 +52,23 @@ const HomeScreen = () => {
 
     // setFiltered(feeds?.feeds.filter((item) => item.title.includes(text)));
   }
+
+  // handle backdrop for bottom sheet
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.5}
+        pressBehavior="close"
+      />
+    ),
+    []
+  )
+
+  // handle filter function
+
   // fetch data from firebase
   const fetchData = async () => {
     const querySnapshot = await getDocs(collection(db, 'FujiRecipe'))
@@ -126,7 +145,7 @@ const HomeScreen = () => {
           </View>
           <TouchableOpacity
             className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#f0eff2]"
-            onPress={() => setFilterBar(!filterBar)}
+            onPress={() => setFilterBar(true)}
           >
             <FunnelIcon name="filter" size={20} color="#7f7f7f" />
           </TouchableOpacity>
@@ -140,8 +159,13 @@ const HomeScreen = () => {
           style={styles.bottomSheet}
           snapPoints={[hp(60)]}
           enableOverDrag={false}
-          // enablePanDownToClose={true}
-          backdropComponent={Overlay}
+          enablePanDownToClose={true}
+          backdropComponent={renderBackdrop}
+          onChange={(index) => {
+            if (index == -1) {
+              setFilterBar(false)
+            }
+          }}
         >
           <BottomSheetView>
             <View>
@@ -184,7 +208,14 @@ const HomeScreen = () => {
                   setChecked={setChecked}
                 />
               </View>
-              <View className="flex-row w-full">
+              <View
+                className="flex-row w-full pb-3"
+                style={{
+                  borderRadius: 1,
+                  borderBottomWidth: 1,
+                  borderColor: '#f0eff2'
+                }}
+              >
                 <Checkbox
                   text={'Color'}
                   checked={checked}
