@@ -9,6 +9,7 @@ import {
 import React, { useState, useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
+import Toast from 'react-native-root-toast'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
 // Firebase
@@ -102,6 +103,7 @@ function DetailScreen(props) {
   return (
     <View className="bg-white flex-1">
       <StatusBar style={'light'} />
+      {/* Images Carousel */}
       <View style={{ height: ITEM_HEIGHT, overflow: 'hidden' }}>
         <Animated.FlatList
           data={item.images}
@@ -146,7 +148,7 @@ function DetailScreen(props) {
           />
         </View>
       </View>
-      {/* Header Button */}
+      {/* Header Buttons */}
       <SafeAreaView className="flex-row justify-between w-full absolute mt-4">
         {/* Back button */}
         <TouchableOpacity
@@ -158,7 +160,7 @@ function DetailScreen(props) {
         </TouchableOpacity>
         {/* Favorite */}
         <TouchableOpacity
-          className="p-2 h-9 rounded-full mr-4"
+          className="p-2 h-9 rounded-full"
           style={{ backgroundColor: 'white' }}
           onPress={() => {
             toggleFavourite(!isFavourite)
@@ -196,7 +198,7 @@ function DetailScreen(props) {
                 <DeleteDialog
                   visible={dialog}
                   setVisible={setDialog}
-                  handleDelete={handleDelete(item.id)}
+                  handleDelete={() => handleDelete(item.id)}
                 />
               </TouchableOpacity>
             </>

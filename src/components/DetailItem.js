@@ -11,7 +11,7 @@ const DetailItem = ({ title, detail }) => {
 
   return (
     <View
-      className="flex-row justify-end items-start pb-4 pt-4"
+      className="flex-row justify-end items-start py-4"
       style={{ borderRadius: 1, borderBottomWidth: 1, borderColor: 'grey' }}
     >
       <Text
