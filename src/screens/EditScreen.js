@@ -20,7 +20,8 @@ import {
   ccData,
   dynamicRangeData,
   filmSimulationData,
-  grainEffectData
+  grainEffectData,
+  sensorData
 } from '../constants'
 
 import {
@@ -39,6 +40,7 @@ const EditScreen = (props) => {
   const [temp, setTemp] = useState(item.temp)
   const [film, setFilm] = useState(item.film_simulation)
   const [grain, setGrain] = useState(item.grain_effect)
+  const [sensor, setSensor] = useState(item.sensor)
   const [dRange, setDRange] = useState(item.dynamic_range)
   const [red, setRed] = useState(item.red)
   const [blue, setBlue] = useState(item.blue)
@@ -73,6 +75,7 @@ const EditScreen = (props) => {
 
           await updateDoc(ref, {
             film_simulation: film,
+            sensor: sensor,
             white_balance: wb,
             dynamic_range: dRange,
             color: color,
@@ -137,6 +140,14 @@ const EditScreen = (props) => {
                 field={'Film Simulation'}
                 value={film}
                 setValue={setFilm}
+              />
+              {/* Sensor */}
+              <DropDownItem
+                data={sensorData}
+                icon={require('../../assets/recipe_icon/sensor.png')}
+                field={'Sensor'}
+                value={sensor}
+                setValue={setSensor}
               />
               {/* Image Slider */}
               <ImageSlider images={images} setImages={setImages} />

@@ -26,7 +26,7 @@ import {
 import Recipes from '../components/Recipes'
 import DropDownItem from '../components/DropDownItem'
 import Checkbox from '../components/Checkbox'
-import { filmSimulationData } from '../constants'
+import { filmSimulationData, sensorData } from '../constants'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
@@ -77,6 +77,7 @@ const HomeScreen = () => {
       const recipe = doc.data()
       recipes.push({
         film_simulation: recipe.film_simulation,
+        sensor: recipe.sensor,
         dynamic_range: recipe.dynamic_range,
         white_balance: recipe.white_balance,
         color: recipe.color,
@@ -187,9 +188,9 @@ const HomeScreen = () => {
                 </Text>
               </View>
               <DropDownItem
-                data={filmSimulationData}
-                icon={require('../../assets/recipe_icon/film.png')}
-                field={'Film Simulation'}
+                data={sensorData}
+                icon={require('../../assets/recipe_icon/sensor.png')}
+                field={'Sensor'}
                 value={film}
                 setValue={setFilm}
               />

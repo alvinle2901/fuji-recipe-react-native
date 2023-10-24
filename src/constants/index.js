@@ -21,6 +21,50 @@ export const grainEffectData = [
   { label: 'Strong, Large', value: 'Strong, Large' }
 ]
 
+export const colorData = [
+  { label: '0', value: '0' },
+  { label: '-9', value: '-9' },
+  { label: '-8', value: '-8' },
+  { label: '-7', value: '-7' },
+  { label: '-6', value: '-6' },
+  { label: '-5', value: '-5' },
+  { label: '-4', value: '-4' },
+  { label: '-3', value: '-3' },
+  { label: '-2', value: '-2' },
+  { label: '-1', value: '-1' },
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+  { label: '4', value: '4' },
+  { label: '5', value: '5' },
+  { label: '6', value: '6' },
+  { label: '7', value: '7' },
+  { label: '8', value: '8' },
+  { label: '9', value: '9' }
+]
+
+export const sensorData = [
+  { label: 'Bayer', value: 'Bayer' },
+  { label: 'X-Trans I', value: 'X-Trans I' },
+  { label: 'X-Trans II', value: 'X-Trans II' },
+  { label: 'X-Trans III', value: 'X-Trans III' },
+  { label: 'X-Trans IV', value: 'X-Trans IV' },
+  { label: 'X-Trans IV(2)', value: 'X-Trans IV(2)' },
+  { label: 'X-Trans V', value: 'X-Trans V' },
+]
+
+export const wbData = [
+  { label: 'Auto', value: 'Auto' },
+  { label: 'Color Temperature', value: 'Color Temperature' },
+  { label: 'Daylight', value: 'Daylight' },
+  { label: 'Shade', value: 'Shade' },
+  { label: 'Fluorescent Light-1', value: 'Fluorescent Light-1' },
+  { label: 'Fluorescent Light-2', value: 'Fluorescent Light-2' },
+  { label: 'Fluorescent Light-3', value: 'Fluorescent Light-3' },
+  { label: 'Incadescent', value: 'Incadescent' },
+  { label: 'Underwater', value: 'Underwater' }
+]
+
 export const filmSimulationData = [
   { label: 'PROVIA/Standard', value: 'PROVIA/Standard' },
   { label: 'ASTIA/Soft', value: 'ASTIA/Soft' },

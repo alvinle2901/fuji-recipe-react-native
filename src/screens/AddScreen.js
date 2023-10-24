@@ -20,7 +20,8 @@ import {
   ccData,
   dynamicRangeData,
   filmSimulationData,
-  grainEffectData
+  grainEffectData,
+  sensorData
 } from '../constants'
 
 import {
@@ -35,6 +36,7 @@ const AddScreen = ({ navigation }) => {
   const [temp, setTemp] = useState('')
   const [film, setFilm] = useState('')
   const [grain, setGrain] = useState('')
+  const [sensor, setSensor] = useState('')
   const [dRange, setDRange] = useState('')
   const [red, setRed] = useState(0)
   const [blue, setBlue] = useState(0)
@@ -66,6 +68,7 @@ const AddScreen = ({ navigation }) => {
         try {
           const docRef = await addDoc(collection(db, 'FujiRecipe'), {
             film_simulation: film,
+            sensor: sensor,
             white_balance: wb,
             dynamic_range: dRange,
             color: color,
@@ -133,6 +136,14 @@ const AddScreen = ({ navigation }) => {
                 field={'Film Simulation'}
                 value={film}
                 setValue={setFilm}
+              />
+              {/* Sensor */}
+              <DropDownItem
+                data={sensorData}
+                icon={require('../../assets/recipe_icon/sensor.png')}
+                field={'Sensor'}
+                value={sensor}
+                setValue={setSensor}
               />
               {/* Image Slider */}
               <ImageSlider images={images} setImages={setImages} />
