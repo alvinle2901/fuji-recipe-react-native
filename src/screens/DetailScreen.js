@@ -73,10 +73,11 @@ function DetailScreen(props) {
   }
 
   // update favorite to firebase
-  const updateFavorite = async () => {
+  const updateFavorite = async (state) => {
     const itemRef = doc(db, 'FujiRecipe', item.id)
+    console.log(state)
     await updateDoc(itemRef, {
-      favorite: isFavourite
+      favorite: state
     })
   }
 
@@ -165,7 +166,7 @@ function DetailScreen(props) {
           style={{ backgroundColor: 'white' }}
           onPress={() => {
             toggleFavourite(!isFavourite)
-            updateFavorite()
+            updateFavorite(!isFavourite)
           }}
         >
           <HeartIcon size={wp(6)} color={isFavourite ? 'red' : 'black'} />

@@ -15,10 +15,10 @@ const RecipeCard = ({ item }) => {
   const navigation = useNavigation()
   const [isFavourite, toggleFavourite] = useState(item.favorite)
   // update favorite to firebase
-  const updateFavorite = async () => {
+  const updateFavorite = async (state) => {
     const itemRef = doc(db, 'FujiRecipe', item.id)
     await updateDoc(itemRef, {
-      favorite: isFavourite
+      favorite: state
     })
   }
 
@@ -50,10 +50,10 @@ const RecipeCard = ({ item }) => {
         className="absolute top-1 right-3 rounded-full p-2"
         onPress={() => {
           toggleFavourite(!isFavourite)
-          updateFavorite()
+          updateFavorite(!isFavourite)
         }}
       >
-        <HeartIcon size={wp(5)} color={isFavourite ? 'red' : 'black'} />
+        <HeartIcon size={wp(5)} color={item.favorite ? 'red' : 'black'} />
       </TouchableOpacity>
 
       <Text style={{ fontSize: wp(4) }} className="text-white font-semibold">

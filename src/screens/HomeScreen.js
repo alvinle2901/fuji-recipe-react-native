@@ -5,7 +5,8 @@ import {
   View,
   Image,
   TextInput,
-  StyleSheet
+  StyleSheet,
+  RefreshControl
 } from 'react-native'
 import React, { useState, useCallback, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -132,10 +133,26 @@ const HomeScreen = () => {
     }
   }
 
+  const [refreshing, setRefreshing] = React.useState(false)
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    fetchData()
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 2000)
+  }, [])
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar />
-      <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className="space-y-6"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View className="mx-4 flex-row justify-between items-center mt-4 -mb-1">
           {/* Title */}
           <Text
