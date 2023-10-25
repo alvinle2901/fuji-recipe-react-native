@@ -29,6 +29,7 @@ import {
 
 import DetailItem from '../components/DetailItem'
 import DeleteDialog from '../components/DeleteDialog'
+import { updateWB } from '../utils/string'
 
 function DetailScreen(props) {
   const item = props.route.params
@@ -62,16 +63,6 @@ function DetailScreen(props) {
     setDialog(false)
   }
 
-  // update WB string
-  let whiteBalance = ''
-  const updateWB = (wb, blue, red, temp) => {
-    if (wb == 'Color Temperature') {
-      whiteBalance = temp + 'K, ' + red + ' Red & ' + blue + ' Blue'
-    } else {
-      whiteBalance = wb + ', ' + red + ' Red & ' + blue + ' Blue'
-    }
-  }
-
   // update favorite to firebase
   const updateFavorite = async (state) => {
     const itemRef = doc(db, 'FujiRecipe', item.id)
@@ -83,7 +74,7 @@ function DetailScreen(props) {
   // render item details
   for (const [key, value] of Object.entries(item)) {
     if (key == 'white_balance') {
-      updateWB(item.white_balance, item.blue, item.red, item.temp)
+      const whiteBalance = updateWB(item.white_balance, item.blue, item.red, item.temp)
       renderedDetailItems.push(<DetailItem title={key} detail={whiteBalance} key={key} />)
     } else if (
       key == 'red' ||

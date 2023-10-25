@@ -1,6 +1,5 @@
 import { Image, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-
 import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { HeartIcon } from 'react-native-heroicons/outline'

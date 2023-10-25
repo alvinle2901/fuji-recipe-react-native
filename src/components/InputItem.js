@@ -1,6 +1,5 @@
 import { Image, View, TextInput } from 'react-native'
 import React from 'react'
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp

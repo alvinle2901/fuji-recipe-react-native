@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
 import React from 'react'
 import { SelectList } from 'react-native-dropdown-select-list'
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+
 import { colorData, wbData } from '../constants'
 import ErrorText from './ErrorText'
 
@@ -76,7 +76,6 @@ const WhiteBalance = ({
               setSelected={(val) => setRed(val)}
               data={colorData}
               search={false}
-              placeholder={'0'}
               boxStyles={styles.colorDropdown}
               inputStyles={{ fontSize: wp(4) }}
               dropdownTextStyles={{ fontSize: wp(4.4) }}
@@ -93,7 +92,6 @@ const WhiteBalance = ({
               setSelected={(val) => setBlue(val)}
               data={colorData}
               search={false}
-              placeholder={'0'}
               boxStyles={styles.colorDropdown}
               inputStyles={{ fontSize: wp(4) }}
               dropdownTextStyles={{ fontSize: wp(4.4) }}

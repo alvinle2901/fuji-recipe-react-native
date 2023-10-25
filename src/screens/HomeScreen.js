@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline'
 import { StatusBar } from 'expo-status-bar'
 import { db } from '../../firebase.config'
-import { collection, getDocs, onSnapshot, query } from 'firebase/firestore'
+import { collection, onSnapshot, query } from 'firebase/firestore'
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView
@@ -23,6 +23,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+
 import { filter } from '../utils/filter'
 import { filmSimulationData, sensorData } from '../constants'
 import Recipes from '../components/Recipes'
@@ -47,7 +48,6 @@ const HomeScreen = () => {
 
   // fetch data from firebase
   const fetchData = async () => {
-    // const querySnapshot = await getDocs(collection(db, 'FujiRecipe'))
     const q = query(collection(db, 'FujiRecipe'))
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const recipes = []

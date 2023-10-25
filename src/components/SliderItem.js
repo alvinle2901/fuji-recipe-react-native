@@ -1,10 +1,7 @@
 import { Text, View, Image, TextInput } from 'react-native'
 import React from 'react'
-
-// import { Slider } from '@miblanchard/react-native-slider'
 import { Slider } from 'react-native-awesome-slider'
 import { useSharedValue } from 'react-native-reanimated'
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp

@@ -12,13 +12,13 @@ import { collection, addDoc } from 'firebase/firestore'
 import Toast from 'react-native-root-toast'
 import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
 
-import { validateSchema } from '../utils/validation'
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
 import SliderItem from '../components/SliderItem'
 import WhiteBalance from '../components/WhiteBalance'
 import ImageSlider from '../components/ImageSlider'
 import ErrorText from '../components/ErrorText'
+import { validateSchema } from '../utils/validation'
 import {
   ccData,
   dynamicRangeData,
@@ -40,7 +40,6 @@ const AddScreen = ({ navigation }) => {
   const [sharpness, setSharpness] = useState(0)
   const [highlight, setHighlight] = useState(0)
   const [noiseReduction, setNoiseReduction] = useState(0)
-  const [value, setvalue] = useState(0)
 
   return (
     <Formik
@@ -257,7 +256,6 @@ const AddScreen = ({ navigation }) => {
                 setValue={setExposure}
                 minimumSliderValue={-3}
                 maximumSliderValue={3}
-
               />
             </View>
           </ScrollView>
