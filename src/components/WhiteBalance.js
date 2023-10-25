@@ -32,7 +32,10 @@ const WhiteBalance = ({
     >
       {/* WB */}
       <View className="flex-row py-3 w-full">
-        <Image source={icon} style={{ height: wp(7), width: wp(7), marginTop: 12 }}></Image>
+        <Image
+          source={icon}
+          style={{ height: wp(7), width: wp(7), marginTop: 12 }}
+        ></Image>
         <View className="ml-3 flex-1">
           <SelectList
             setSelected={(val) => setWB(val)}
@@ -43,6 +46,7 @@ const WhiteBalance = ({
             inputStyles={{ fontSize: wp(4) }}
             dropdownTextStyles={{ fontSize: wp(4.4) }}
             dropdownItemStyles={{ paddingVertical: 10 }}
+            defaultOption={{ key: wb, value: wb }}
           />
         </View>
       </View>
@@ -77,6 +81,7 @@ const WhiteBalance = ({
               inputStyles={{ fontSize: wp(4) }}
               dropdownTextStyles={{ fontSize: wp(4.4) }}
               dropdownItemStyles={{ paddingVertical: 7 }}
+              defaultOption={{ key: red, value: red }}
             />
           </View>
         </View>
@@ -93,6 +98,7 @@ const WhiteBalance = ({
               inputStyles={{ fontSize: wp(4) }}
               dropdownTextStyles={{ fontSize: wp(4.4) }}
               dropdownItemStyles={{ paddingVertical: 7 }}
+              defaultOption={{ key: blue, value: blue }}
             />
           </View>
         </View>
@@ -129,5 +135,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginLeft: wp(11)
-  },
+  }
 })
