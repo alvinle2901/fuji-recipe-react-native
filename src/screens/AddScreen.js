@@ -12,9 +12,6 @@ import { collection, addDoc } from 'firebase/firestore'
 import Toast from 'react-native-root-toast'
 import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
 
-import { Slider } from 'react-native-awesome-slider'
-import { useSharedValue } from 'react-native-reanimated'
-
 import { validateSchema } from '../utils/validation'
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -44,8 +41,6 @@ const AddScreen = ({ navigation }) => {
   const [highlight, setHighlight] = useState(0)
   const [noiseReduction, setNoiseReduction] = useState(0)
   const [value, setvalue] = useState(0)
-  const progress = useSharedValue(30);
-
 
   return (
     <Formik
@@ -118,7 +113,7 @@ const AddScreen = ({ navigation }) => {
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
-          <View className="items-center mb-3 mt-12">
+          <View className="items-center mb-2 mt-11">
             <Text
               style={{ fontSize: wp(5.5) }}
               className="font-semibold text-neutral-700"
@@ -262,17 +257,8 @@ const AddScreen = ({ navigation }) => {
                 setValue={setExposure}
                 minimumSliderValue={-3}
                 maximumSliderValue={3}
+
               />
-              <View>
-                <Slider
-                  // style={styles.container}
-                  progress={progress}
-                  minimumValue={useSharedValue(-4)}
-                  maximumValue={useSharedValue(4)}
-                  step={8} 
-                  onValueChange={(val)=> console.log(val)}
-                />
-              </View>
             </View>
           </ScrollView>
           {/* Submit */}

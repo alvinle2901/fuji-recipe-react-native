@@ -1,7 +1,9 @@
 import { Text, View, Image, TextInput } from 'react-native'
 import React from 'react'
 
-import { Slider } from '@miblanchard/react-native-slider'
+// import { Slider } from '@miblanchard/react-native-slider'
+import { Slider } from 'react-native-awesome-slider'
+import { useSharedValue } from 'react-native-reanimated'
 
 import {
   widthPercentageToDP as wp,
@@ -13,10 +15,11 @@ const SliderItem = ({
   icon,
   value,
   setValue,
-  step,
   minimumSliderValue,
   maximumSliderValue
 }) => {
+  const progress = useSharedValue(2)
+
   return (
     <View
       className="flex-col"
@@ -34,22 +37,30 @@ const SliderItem = ({
             style={{ fontSize: wp(4) }}
             placeholder={title.toString()}
             editable={false}
+            placeholderTextColor={"black"}
           />
         </View>
         <Text style={{ fontSize: wp(5) }}>{value}</Text>
       </View>
-      <Slider
-        style={{ width: 200, height: 40 }}
-        minimumValue={minimumSliderValue}
-        maximumValue={maximumSliderValue}
-        step={step ? step : 1}
-        minimumTrackTintColor="grey"
-        maximumTrackTintColor="grey"
-        value={value}
-        onValueChange={(e) => {
-          setValue(e[0])
-        }}
-      />
+      <View>
+        <Slider
+          className="mt-5 mb-2"
+          progress={progress}
+          minimumValue={useSharedValue(minimumSliderValue)}
+          maximumValue={useSharedValue(maximumSliderValue)}
+          step={maximumSliderValue - minimumSliderValue}
+          onValueChange={(val) => setValue(val)}
+          thumbWidth={12}
+          cache={useSharedValue(value)}
+          theme={{
+            disableMinTrackTintColor: 'fff',
+            maximumTrackTintColor: '#f0eff2',
+            minimumTrackTintColor: '#403f44',
+            cacheTrackTintColor: '#333',
+            bubbleBackgroundColor: 'black'
+          }}
+        />
+      </View>
       <View className="flex-row w-full justify-between mb-3">
         <Text style={{ fontSize: wp(3.5), color: 'grey' }}>
           {minimumSliderValue}

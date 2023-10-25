@@ -8,7 +8,6 @@ import {
 } from 'react-native-responsive-screen'
 
 const DropDownItem = ({ data, field, icon, value, setValue }) => {
-  console.log(value)
   return (
     <View
       className="flex-row py-3 w-full"

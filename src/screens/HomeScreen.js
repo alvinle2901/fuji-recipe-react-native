@@ -140,7 +140,7 @@ const HomeScreen = () => {
     fetchData()
     setTimeout(() => {
       setRefreshing(false)
-    }, 2000)
+    }, 900)
   }, [])
 
   return (
