@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
 import React from 'react'
-import { Dropdown } from 'react-native-element-dropdown'
+import { SelectList } from 'react-native-dropdown-select-list'
 
 import {
   widthPercentageToDP as wp,
@@ -31,23 +31,20 @@ const WhiteBalance = ({
       }}
     >
       {/* WB */}
-      <View className="flex-row py-3 items-center w-full justify-between">
-        <Image source={icon} style={{ height: wp(7), width: wp(7) }}></Image>
-        <Dropdown
-          className="ml-3 flex-1"
-          style={styles.dropdown}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          data={wbData}
-          maxHeight={300}
-          labelField={'label'}
-          valueField={'value'}
-          placeholder={'White Balance'}
-          value={wb}
-          onChange={(item) => {
-            setWB(item.value)
-          }}
-        />
+      <View className="flex-row py-3 w-full">
+        <Image source={icon} style={{ height: wp(7), width: wp(7), marginTop: 12 }}></Image>
+        <View className="ml-3 flex-1">
+          <SelectList
+            setSelected={(val) => setWB(val)}
+            data={wbData}
+            search={false}
+            placeholder={'White Balance'}
+            boxStyles={styles.dropdown}
+            inputStyles={{ fontSize: wp(4) }}
+            dropdownTextStyles={{ fontSize: wp(4.4) }}
+            dropdownItemStyles={{ paddingVertical: 10 }}
+          />
+        </View>
       </View>
       {errorWB && <ErrorText text={errorTemp} />}
       {/* Temp */}
@@ -65,46 +62,39 @@ const WhiteBalance = ({
         </View>
       )}
       {errorTemp && <ErrorText text={errorTemp} />}
-
       {/* Shift */}
-      <View className="flex-row py-3 items-center">
-        <View className="flex-row flex-1 items-center">
+      <View className="flex-row py-3">
+        <View className="flex-row flex-1">
           {/* Red */}
-          <Text className="text-gray-500">Red:</Text>
-          <Dropdown
-            className="ml-3"
-            style={styles.colorDropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            data={colorData}
-            maxHeight={300}
-            labelField={'label'}
-            valueField={'value'}
-            placeholder={'0'}
-            value={red}
-            onChange={(item) => {
-              setRed(item.value)
-            }}
-          />
+          <Text className="text-gray-500 mt-3">Red:</Text>
+          <View className="ml-3">
+            <SelectList
+              setSelected={(val) => setRed(val)}
+              data={colorData}
+              search={false}
+              placeholder={'0'}
+              boxStyles={styles.colorDropdown}
+              inputStyles={{ fontSize: wp(4) }}
+              dropdownTextStyles={{ fontSize: wp(4.4) }}
+              dropdownItemStyles={{ paddingVertical: 7 }}
+            />
+          </View>
         </View>
         {/* Blue */}
-        <View className="flex-row flex-1 items-center">
-          <Text className="text-gray-500">Blue:</Text>
-          <Dropdown
-            className="ml-3"
-            style={styles.colorDropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            data={colorData}
-            maxHeight={300}
-            labelField={'label'}
-            valueField={'value'}
-            placeholder={'0'}
-            value={blue}
-            onChange={(item) => {
-              setBlue(item.value)
-            }}
-          />
+        <View className="flex-row flex-1">
+          <Text className="text-gray-500 mt-3">Blue:</Text>
+          <View className="ml-3">
+            <SelectList
+              setSelected={(val) => setBlue(val)}
+              data={colorData}
+              search={false}
+              placeholder={'0'}
+              boxStyles={styles.colorDropdown}
+              inputStyles={{ fontSize: wp(4) }}
+              dropdownTextStyles={{ fontSize: wp(4.4) }}
+              dropdownItemStyles={{ paddingVertical: 7 }}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -119,15 +109,17 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    alignItems: 'center'
   },
   colorDropdown: {
-    height: 40,
+    height: 45,
     width: wp(18),
     borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    alignItems: 'center'
   },
   tempContainer: {
     height: 40,
@@ -138,11 +130,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginLeft: wp(11)
   },
-  placeholderStyle: {
-    fontSize: wp(4),
-    color: 'grey'
-  },
-  selectedTextStyle: {
-    fontSize: wp(4)
-  }
 })

@@ -1,5 +1,5 @@
 export const dynamicRangeData = [
-  { label: 'Auto', value: 'auto' },
+  { label: 'Auto', value: 'Auto' },
   { label: 'DR100', value: 'DR100' },
   { label: 'DR200', value: 'DR200' },
   { label: 'DR400', value: 'DR400' }

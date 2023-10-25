@@ -12,6 +12,9 @@ import { collection, addDoc } from 'firebase/firestore'
 import Toast from 'react-native-root-toast'
 import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
 
+import { Slider } from 'react-native-awesome-slider'
+import { useSharedValue } from 'react-native-reanimated'
+
 import { validateSchema } from '../utils/validation'
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -40,6 +43,9 @@ const AddScreen = ({ navigation }) => {
   const [sharpness, setSharpness] = useState(0)
   const [highlight, setHighlight] = useState(0)
   const [noiseReduction, setNoiseReduction] = useState(0)
+  const [value, setvalue] = useState(0)
+  const progress = useSharedValue(30);
+
 
   return (
     <Formik
@@ -257,6 +263,16 @@ const AddScreen = ({ navigation }) => {
                 minimumSliderValue={-3}
                 maximumSliderValue={3}
               />
+              <View>
+                <Slider
+                  // style={styles.container}
+                  progress={progress}
+                  minimumValue={useSharedValue(-4)}
+                  maximumValue={useSharedValue(4)}
+                  step={8} 
+                  onValueChange={(val)=> console.log(val)}
+                />
+              </View>
             </View>
           </ScrollView>
           {/* Submit */}
