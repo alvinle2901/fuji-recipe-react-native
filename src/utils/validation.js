@@ -9,5 +9,9 @@ export const validateSchema = Yup.object().shape({
   grainEffect: Yup.string().required('This field is required'),
   ccfx: Yup.string().required('This field is required'),
   wb: Yup.string().required('This field is required'),
-  temp: Yup.string().required('This field is required')
+  temp: Yup.string().when('wb', {
+    is: (wb) => wb == 'Color Temperature',
+    then: (schema) => schema.required('Boundary construction date is required'),
+    otherwise: (schema) => schema,
+  })
 })

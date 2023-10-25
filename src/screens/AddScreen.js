@@ -12,11 +12,13 @@ import { collection, addDoc } from 'firebase/firestore'
 import Toast from 'react-native-root-toast'
 import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
 
+import { validateSchema } from '../utils/validation'
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
 import SliderItem from '../components/SliderItem'
 import WhiteBalance from '../components/WhiteBalance'
 import ImageSlider from '../components/ImageSlider'
+import ErrorText from '../components/ErrorText'
 import {
   ccData,
   dynamicRangeData,
@@ -32,15 +34,6 @@ import {
 
 const AddScreen = ({ navigation }) => {
   const [images, setImages] = useState([])
-  const [cc, setCC] = useState('')
-  const [wb, setWB] = useState('')
-  const [temp, setTemp] = useState('')
-  const [film, setFilm] = useState('')
-  const [grain, setGrain] = useState('')
-  const [sensor, setSensor] = useState('')
-  const [dRange, setDRange] = useState('')
-  const [red, setRed] = useState(0)
-  const [blue, setBlue] = useState(0)
   const [color, setColor] = useState(0)
   const [shadow, setShadow] = useState(0)
   const [exposure, setExposure] = useState(0)
@@ -53,47 +46,47 @@ const AddScreen = ({ navigation }) => {
       initialValues={{
         title: '',
         film: '',
-        sharpness: '',
+        sensor: '',
         iso: '',
         dynamicRange: '',
-        color: '',
-        highlight: '',
-        noiseReduction: '',
-        shadow: '',
-        sharpness: '',
-        exposure: '',
         grainEffect: '',
-        ccfx: ''
+        ccfx: '',
+        wb: '',
+        temp: '',
+        red: '0',
+        blue: '0'
       }}
+      validationSchema={validateSchema}
       onSubmit={async (values) => {
+        console.log(values)
         const bw = false
         if (
           filmSimulationData.findIndex((object) => {
-            return object.label === film
+            return object.label === values.film
           }) > 7
         ) {
           bw = true
         }
         try {
           const docRef = await addDoc(collection(db, 'FujiRecipe'), {
-            film_simulation: film,
-            sensor: sensor,
-            white_balance: wb,
-            dynamic_range: dRange,
+            film_simulation: values.film,
+            sensor: values.sensor,
+            white_balance: values.wb,
+            dynamic_range: values.dynamicRange,
             color: color,
             highlight: highlight,
             shadow: shadow,
             sharpness: sharpness,
             noise_reduction: noiseReduction,
-            grain_effect: grain,
-            color_chrome_fx: cc,
+            grain_effect: values.grainEffect,
+            color_chrome_fx: values.ccfx,
             iso: values.iso,
             exposure: exposure,
-            red: red,
-            blue: blue,
+            red: values.red,
+            blue: values.blue,
             images: images,
             title: values.title,
-            temp: temp,
+            temp: values.temp,
             favorite: false,
             bw: bw
           })
@@ -114,7 +107,7 @@ const AddScreen = ({ navigation }) => {
         }
       }}
     >
-      {({ handleChange, handleBlur, handleSubmit, values }) => (
+      {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
           <View className="items-center mb-3 mt-12">
@@ -135,48 +128,53 @@ const AddScreen = ({ navigation }) => {
               <InputItem
                 title={'Title'}
                 icon={require('../../assets/recipe_icon/film1.png')}
-                handleBlur={handleBlur('title')}
                 handleChange={handleChange('title')}
                 value={values.title}
               />
+              {errors.title && <ErrorText text={errors.title} />}
               {/* Film Simulation */}
               <DropDownItem
                 data={filmSimulationData}
                 icon={require('../../assets/recipe_icon/film.png')}
                 field={'Film Simulation'}
-                value={film}
-                setValue={setFilm}
+                value={values.film}
+                setValue={handleChange('film')}
               />
+              {errors.film && <ErrorText text={errors.film} />}
               {/* Sensor */}
               <DropDownItem
                 data={sensorData}
                 icon={require('../../assets/recipe_icon/sensor.png')}
                 field={'Sensor'}
-                value={sensor}
-                setValue={setSensor}
+                value={values.sensor}
+                setValue={handleChange('sensor')}
               />
+              {errors.sensor && <ErrorText text={errors.sensor} />}
               {/* Image Slider */}
               <ImageSlider images={images} setImages={setImages} />
               {/* White Balance */}
               <WhiteBalance
                 icon={require('../../assets/recipe_icon/white-balance.png')}
-                wb={wb}
-                setWB={setWB}
-                temp={temp}
-                setTemp={setTemp}
-                red={red}
-                setRed={setRed}
-                blue={blue}
-                setBlue={setBlue}
+                wb={values.wb}
+                setWB={handleChange('wb')}
+                temp={values.temp}
+                setTemp={handleChange('temp')}
+                red={values.red}
+                setRed={handleChange('red')}
+                blue={values.blue}
+                setBlue={handleChange('blue')}
+                errorWB={errors.wb}
+                errorTemp={errors.temp}
               />
               {/* Dynamic Range */}
               <DropDownItem
                 data={dynamicRangeData}
                 icon={require('../../assets/recipe_icon/hdr.png')}
                 field={'Dynamic Range'}
-                value={dRange}
-                setValue={setDRange}
+                value={values.dynamicRange}
+                setValue={handleChange('dynamicRange')}
               />
+              {errors.dynamicRange && <ErrorText text={errors.dynamicRange} />}
               {/* Color */}
               <SliderItem
                 title={'Color'}
@@ -227,25 +225,27 @@ const AddScreen = ({ navigation }) => {
                 data={grainEffectData}
                 icon={require('../../assets/recipe_icon/grain.png')}
                 field={'Grain Effect'}
-                value={grain}
-                setValue={setGrain}
+                value={values.grainEffect}
+                setValue={handleChange('grainEffect')}
               />
+              {errors.grainEffect && <ErrorText text={errors.grainEffect} />}
               {/* Color Chrome Effect */}
               <DropDownItem
                 data={ccData}
                 icon={require('../../assets/recipe_icon/cc.png')}
                 field={'Color Chrome Effect'}
-                value={cc}
-                setValue={setCC}
+                value={values.ccfx}
+                setValue={handleChange('ccfx')}
               />
+              {errors.ccfx && <ErrorText text={errors.ccfx} />}
               {/* ISO */}
               <InputItem
                 title={'ISO'}
                 icon={require('../../assets/recipe_icon/iso.png')}
-                handleBlur={handleBlur('iso')}
                 handleChange={handleChange('iso')}
                 value={values.iso}
               />
+              {errors.iso && <ErrorText text={errors.iso} />}
               {/* Exposure Compensation */}
               <SliderItem
                 title={'Exposure Compensation'}

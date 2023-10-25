@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 import { colorData, wbData } from '../constants'
+import ErrorText from './ErrorText'
 
 const WhiteBalance = ({
   icon,
@@ -17,7 +18,9 @@ const WhiteBalance = ({
   red,
   setRed,
   blue,
-  setBlue
+  setBlue,
+  errorWB,
+  errorTemp
 }) => {
   return (
     <View
@@ -46,8 +49,9 @@ const WhiteBalance = ({
           }}
         />
       </View>
+      {errorWB && <ErrorText text={errorTemp} />}
       {/* Temp */}
-      {wb == 'Color Temperature' ? (
+      {wb == 'Color Temperature' && (
         <View className="flex-row items-center">
           <TextInput
             className="ml-3 mr-1"
@@ -59,9 +63,8 @@ const WhiteBalance = ({
           />
           <Text>K</Text>
         </View>
-      ) : (
-        <></>
       )}
+      {errorTemp && <ErrorText text={errorTemp} />}
 
       {/* Shift */}
       <View className="flex-row py-3 items-center">
