@@ -85,7 +85,7 @@ function DetailScreen(props) {
   for (const [key, value] of Object.entries(item)) {
     if (key == 'white_balance') {
       updateWB(item.white_balance, item.blue, item.red, item.temp)
-      renderedDetailItems.push(<DetailItem title={key} detail={whiteBalance} />)
+      renderedDetailItems.push(<DetailItem title={key} detail={whiteBalance} key={key} />)
     } else if (
       key == 'red' ||
       key == 'blue' ||
@@ -98,7 +98,9 @@ function DetailScreen(props) {
     ) {
       continue
     } else {
-      renderedDetailItems.push(<DetailItem title={key} detail={value} />)
+      renderedDetailItems.push(
+        <DetailItem title={key} detail={value} key={key}/>,
+      )
     }
   }
 

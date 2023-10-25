@@ -81,12 +81,11 @@ const ImageSlider = ({ images, setImages }) => {
       >
         {pickedImages.map((item, index) => {
           return (
-            <View className="flex-row">
+            <View className="flex-row" key={index}>
               <Image
                 className="items-center justify-center -mr-3 mt-2"
                 source={item}
                 style={styles.imageContainer}
-                key={index}
               />
               <TouchableOpacity onPress={() => removeImage(index)}>
                 <XCircleIcon size={wp(6)} color="gray" strokeWidth={1} />
