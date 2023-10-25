@@ -75,7 +75,6 @@ function DetailScreen(props) {
   // update favorite to firebase
   const updateFavorite = async (state) => {
     const itemRef = doc(db, 'FujiRecipe', item.id)
-    console.log(state)
     await updateDoc(itemRef, {
       favorite: state
     })
@@ -182,7 +181,7 @@ function DetailScreen(props) {
           >
             <EllipsisVerticalIcon size={wp(6)} color="black" />
           </TouchableOpacity>
-          {func ? (
+          {func && (
             <>
               {/* Edit */}
               <TouchableOpacity
@@ -206,8 +205,6 @@ function DetailScreen(props) {
                 />
               </TouchableOpacity>
             </>
-          ) : (
-            <></>
           )}
         </View>
       </SafeAreaView>

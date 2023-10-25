@@ -1,6 +1,6 @@
 import { StyleSheet, View, Image } from 'react-native'
 import React from 'react'
-import { Dropdown } from 'react-native-element-dropdown'  
+import { Dropdown } from 'react-native-element-dropdown'
 
 import {
   widthPercentageToDP as wp,

@@ -57,9 +57,11 @@ const AddScreen = ({ navigation }) => {
         blue: '0'
       }}
       validationSchema={validateSchema}
+      validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={async (values) => {
         console.log(values)
-        const bw = false
+        let bw = false
         if (
           filmSimulationData.findIndex((object) => {
             return object.label === values.film

@@ -6,7 +6,7 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-const InputItem = ({ title, icon, handleChange, handleBlur, value }) => {
+const InputItem = ({ title, icon, handleChange, value }) => {
   return (
     <View
       className="flex-row py-3 items-center"
@@ -21,7 +21,6 @@ const InputItem = ({ title, icon, handleChange, handleBlur, value }) => {
         className="ml-3 w-full"
         style={{ fontSize: wp(4) }}
         onChangeText={handleChange}
-        onBlur={handleBlur}
         value={value}
         placeholder={title}
       />

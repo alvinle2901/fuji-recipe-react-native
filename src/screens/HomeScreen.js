@@ -116,9 +116,9 @@ const HomeScreen = () => {
     if (
       film == '' &&
       sensor == '' &&
-      favorite == false &&
-      bw == false &&
-      color == false
+      favorite === false &&
+      bw === false &&
+      color === false
     ) {
       setData(fetchedData)
     } else {
@@ -307,7 +307,8 @@ const HomeScreen = () => {
                       filterSensor,
                       filterFilm,
                       checkedFav,
-                      checkedBW
+                      checkedBW,
+                      checkedColor
                     )
                     setFilterBar(!filterBar)
                   }}

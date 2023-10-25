@@ -1,11 +1,7 @@
 import React from 'react'
 import Dialog from 'react-native-dialog'
 
-const DeleteDialog = ({visible, setVisible, handleDelete}) => {
-
-  const handleCancel = () => {
-    setVisible(false)
-  }
+const DeleteDialog = ({ visible, setVisible, handleDelete }) => {
 
   return (
     <Dialog.Container visible={visible}>
@@ -13,7 +9,7 @@ const DeleteDialog = ({visible, setVisible, handleDelete}) => {
       <Dialog.Description>
         Do you want to delete this recipe? You cannot undo this action.
       </Dialog.Description>
-      <Dialog.Button label="Cancel" onPress={handleCancel} />
+      <Dialog.Button label="Cancel" onPress={() => setVisible(false)} />
       <Dialog.Button label="Delete" onPress={handleDelete} />
     </Dialog.Container>
   )
