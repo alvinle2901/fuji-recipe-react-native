@@ -9,11 +9,11 @@ import {
 } from 'react-native'
 import React, { useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline'
 import { StatusBar } from 'expo-status-bar'
 import { db } from '../../firebase.config'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, onSnapshot, query } from 'firebase/firestore'
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView
@@ -27,14 +27,68 @@ import Recipes from '../components/Recipes'
 import DropDownItem from '../components/DropDownItem'
 import Checkbox from '../components/Checkbox'
 import { filmSimulationData, sensorData } from '../constants'
+import { useEffect } from 'react'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
-  const [searchTerm, setSearchTerm] = useState('')
   const [data, setData] = useState([])
+  const [fetchedData, setFetchedData] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterFilm, setFilterFilm] = useState('')
+  const [filterSensor, setFilterSensor] = useState('')
   const [filterBar, setFilterBar] = useState(false)
-  const [checked, setChecked] = useState(false)
-  const [film, setFilm] = useState('')
+  const [checkedFav, setCheckedFav] = useState(false)
+  const [checkedBW, setCheckedBW] = useState(false)
+  const [checkedColor, setCheckedColor] = useState(false)
+
+  useEffect(() => {
+    fetchData()
+    // const q = query(collection(db, 'FujiRecipe'))
+    // const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    //   const cities = []
+    //   querySnapshot.forEach((doc) => {
+    //     cities.push(doc.data().title)
+    //   })
+    //   fetchData()
+    // })
+  }, [])
+
+  // fetch data from firebase
+  const fetchData = async () => {
+    // const querySnapshot = await getDocs(collection(db, 'FujiRecipe'))
+    const q = query(collection(db, 'FujiRecipe'))
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const recipes = []
+      querySnapshot.forEach((doc) => {
+        const recipe = doc.data()
+        recipes.push({
+          film_simulation: recipe.film_simulation,
+          sensor: recipe.sensor,
+          dynamic_range: recipe.dynamic_range,
+          white_balance: recipe.white_balance,
+          color: recipe.color,
+          highlight: recipe.highlight,
+          shadow: recipe.shadow,
+          sharpness: recipe.sharpness,
+          noise_reduction: recipe.noise_reduction,
+          grain_effect: recipe.grain_effect,
+          color_chrome_fx: recipe.color_chrome_fx,
+          iso: recipe.iso,
+          exposure_compensation: recipe.exposure,
+          red: recipe.red,
+          blue: recipe.blue,
+          images: recipe.images,
+          title: recipe.title,
+          temp: recipe.temp,
+          favorite: recipe.favorite,
+          bw: recipe.bw,
+          id: doc.id
+        })
+      })
+      setData(recipes)
+      setFetchedData(recipes)
+    })
+  }
 
   // handle search function
   const handleSearchTerm = (text) => {
@@ -42,15 +96,13 @@ const HomeScreen = () => {
 
     if (text != '') {
       setData([
-        ...data.filter((item) =>
+        ...fetchedData.filter((item) =>
           item.title.toLowerCase().includes(text.toLowerCase())
         )
       ])
     } else {
-      setData(searchData)
+      setData(fetchedData)
     }
-
-    // setFiltered(feeds?.feeds.filter((item) => item.title.includes(text)));
   }
 
   // handle backdrop for bottom sheet
@@ -68,44 +120,36 @@ const HomeScreen = () => {
   )
 
   // handle filter function
+  const handleFilter = (sensor, film, favorite, bw, color) => {
+    const filter = (array, data, field) => {
+      if (data == '') {
+        return array
+      } else {
+        return array.filter(
+          (item) => item[field].toLowerCase() === data.toLowerCase()
+        )
+      }
+    }
 
-  // fetch data from firebase
-  const fetchData = async () => {
-    const querySnapshot = await getDocs(collection(db, 'FujiRecipe'))
-    const recipes = []
-    querySnapshot.forEach((doc) => {
-      const recipe = doc.data()
-      recipes.push({
-        film_simulation: recipe.film_simulation,
-        sensor: recipe.sensor,
-        dynamic_range: recipe.dynamic_range,
-        white_balance: recipe.white_balance,
-        color: recipe.color,
-        highlight: recipe.highlight,
-        shadow: recipe.shadow,
-        sharpness: recipe.sharpness,
-        noise_reduction: recipe.noise_reduction,
-        grain_effect: recipe.grain_effect,
-        color_chrome_fx: recipe.color_chrome_fx,
-        iso: recipe.iso,
-        exposure_compensation: recipe.exposure,
-        red: recipe.red,
-        blue: recipe.blue,
-        images: recipe.images,
-        title: recipe.title,
-        temp: recipe.temp,
-        favorite: recipe.favorite,
-        id: doc.id
-      })
-    })
-    setData(recipes)
+    if (
+      film == '' &&
+      sensor == '' &&
+      favorite == false &&
+      bw == false &&
+      color == false
+    ) {
+      setData(fetchedData)
+    } else {
+      let result = fetchedData
+      result = filter(result, film, 'film_simulation')
+      result = filter(result, sensor, 'sensor')
+      setData([
+        ...result
+          .filter((item) => item.favorite === favorite)
+          .filter((item) => item.bw === bw)
+      ])
+    }
   }
-
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchData() // Fetch or update data every time the screen is focused
-    }, [])
-  )
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -191,22 +235,24 @@ const HomeScreen = () => {
                 data={sensorData}
                 icon={require('../../assets/recipe_icon/sensor.png')}
                 field={'Sensor'}
-                value={film}
-                setValue={setFilm}
+                value={filterSensor}
+                setValue={setFilterSensor}
               />
               <DropDownItem
                 data={filmSimulationData}
                 icon={require('../../assets/recipe_icon/film.png')}
                 field={'Film Simulation'}
-                value={film}
-                setValue={setFilm}
+                value={filterFilm}
+                setValue={setFilterFilm}
               />
               {/* Checkbox-es */}
               <View className="flex-row py-4 w-full">
                 <Checkbox
                   text={'Favorite'}
-                  checked={checked}
-                  setChecked={setChecked}
+                  checked={checkedFav}
+                  onPress={() => {
+                    setCheckedFav(!checkedFav)
+                  }}
                 />
               </View>
               <View
@@ -219,20 +265,32 @@ const HomeScreen = () => {
               >
                 <Checkbox
                   text={'Color'}
-                  checked={checked}
-                  setChecked={setChecked}
+                  checked={checkedColor}
+                  onPress={() => {
+                    setCheckedColor(!checkedColor)
+                    setCheckedBW(checkedColor)
+                  }}
                 />
                 <Checkbox
                   text={'B&W'}
-                  checked={checked}
-                  setChecked={setChecked}
+                  checked={checkedBW}
+                  onPress={() => {
+                    setCheckedBW(!checkedBW)
+                    setCheckedColor(checkedBW)
+                  }}
                 />
               </View>
               {/* Filter buttons */}
               <View className="flex-row items-center justify-center my-4 mt-4">
                 <TouchableOpacity
                   className="flex-1 items-center my-2 rounded-xl bg-[#9e9ca3] py-2 mx-3"
-                  onPress={() => setFilterBar(!filterBar)}
+                  onPress={() => {
+                    setCheckedBW(false)
+                    setCheckedColor(false)
+                    setCheckedFav(false)
+                    setFilterFilm('')
+                    setFilterSensor('')
+                  }}
                 >
                   <Text
                     style={{
@@ -246,7 +304,15 @@ const HomeScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   className="flex-1 items-center my-2 rounded-xl bg-black py-2 mx-3"
-                  onPress={() => setFilterBar(!filterBar)}
+                  onPress={() => {
+                    handleFilter(
+                      filterSensor,
+                      filterFilm,
+                      checkedFav,
+                      checkedBW
+                    )
+                    setFilterBar(!filterBar)
+                  }}
                 >
                   <Text
                     style={{

@@ -6,13 +6,7 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-const Checkbox = ({ text, checked, setChecked }) => {
-  const handleCheckboxPress = () => {
-    setChecked((prev) => {
-      return !prev
-    })
-  }
-
+const Checkbox = ({ text, checked, onPress }) => {
   return (
     <View className="flex-1">
       <BouncyCheckbox
@@ -25,7 +19,9 @@ const Checkbox = ({ text, checked, setChecked }) => {
           textDecorationLine: 'none',
           fontSize: wp(4)
         }}
-        onPress={handleCheckboxPress}
+        onPress={onPress}
+        isChecked={checked}
+        disableBuiltInState
       />
     </View>
   )

@@ -92,7 +92,8 @@ function DetailScreen(props) {
       key == 'title' ||
       key == 'temp' ||
       key == 'id' ||
-      key == 'favorite'
+      key == 'favorite' ||
+      key == 'bw'
     ) {
       continue
     } else {
