@@ -7,7 +7,7 @@ import {
   TextInput,
   StyleSheet
 } from 'react-native'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline'
@@ -22,12 +22,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-
+import { filter } from '../utils/filter'
+import { filmSimulationData, sensorData } from '../constants'
 import Recipes from '../components/Recipes'
 import DropDownItem from '../components/DropDownItem'
 import Checkbox from '../components/Checkbox'
-import { filmSimulationData, sensorData } from '../constants'
-import { useEffect } from 'react'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
@@ -43,14 +42,6 @@ const HomeScreen = () => {
 
   useEffect(() => {
     fetchData()
-    // const q = query(collection(db, 'FujiRecipe'))
-    // const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    //   const cities = []
-    //   querySnapshot.forEach((doc) => {
-    //     cities.push(doc.data().title)
-    //   })
-    //   fetchData()
-    // })
   }, [])
 
   // fetch data from firebase
@@ -121,16 +112,6 @@ const HomeScreen = () => {
 
   // handle filter function
   const handleFilter = (sensor, film, favorite, bw, color) => {
-    const filter = (array, data, field) => {
-      if (data == '') {
-        return array
-      } else {
-        return array.filter(
-          (item) => item[field].toLowerCase() === data.toLowerCase()
-        )
-      }
-    }
-
     if (
       film == '' &&
       sensor == '' &&
@@ -199,7 +180,7 @@ const HomeScreen = () => {
         <Recipes data={data} />
       </ScrollView>
       {/* filter bottom sheet */}
-      {filterBar ? (
+      {filterBar && (
         <BottomSheet
           style={styles.bottomSheet}
           snapPoints={[hp(60)]}
@@ -328,8 +309,6 @@ const HomeScreen = () => {
             </View>
           </BottomSheetView>
         </BottomSheet>
-      ) : (
-        <></>
       )}
     </SafeAreaView>
   )
