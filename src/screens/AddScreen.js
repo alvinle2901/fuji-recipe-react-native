@@ -10,6 +10,7 @@ import { Formik } from 'formik'
 import { db } from '../../firebase.config'
 import { collection, addDoc } from 'firebase/firestore'
 import Toast from 'react-native-root-toast'
+import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -65,6 +66,14 @@ const AddScreen = ({ navigation }) => {
         ccfx: ''
       }}
       onSubmit={async (values) => {
+        const bw = false
+        if (
+          filmSimulationData.findIndex((object) => {
+            return object.label === film
+          }) > 7
+        ) {
+          bw = true
+        }
         try {
           const docRef = await addDoc(collection(db, 'FujiRecipe'), {
             film_simulation: film,
@@ -85,7 +94,8 @@ const AddScreen = ({ navigation }) => {
             images: images,
             title: values.title,
             temp: temp,
-            favorite: false
+            favorite: false,
+            bw: bw
           })
           console.log('Document written with ID: ', docRef.id)
           Toast.show('New item added successfully!', {
@@ -248,12 +258,14 @@ const AddScreen = ({ navigation }) => {
             </View>
           </ScrollView>
           {/* Submit */}
-          <TouchableOpacity
-            className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
-            onPress={handleSubmit}
-          >
-            <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
-          </TouchableOpacity>
+          <HideWithKeyboard>
+            <TouchableOpacity
+              className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
+              onPress={handleSubmit}
+            >
+              <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
+            </TouchableOpacity>
+          </HideWithKeyboard>
         </SafeAreaView>
       )}
     </Formik>

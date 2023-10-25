@@ -10,6 +10,8 @@ import { Formik } from 'formik'
 import { db } from '../../firebase.config'
 import { doc, updateDoc } from 'firebase/firestore'
 import { useNavigation } from '@react-navigation/native'
+import Toast from 'react-native-root-toast'
+import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -28,7 +30,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import Toast from 'react-native-root-toast'
 
 const EditScreen = (props) => {
   const item = props.route.params
@@ -70,6 +71,14 @@ const EditScreen = (props) => {
       }}
       onSubmit={async (values) => {
         console.log(values)
+        const bw = false
+        if (
+          filmSimulationData.findIndex((object) => {
+            return object.label === film
+          }) > 7
+        ) {
+          bw = true
+        }
         try {
           const ref = doc(db, 'FujiRecipe', item.id)
 
@@ -91,7 +100,8 @@ const EditScreen = (props) => {
             blue: blue,
             images: images,
             title: values.title,
-            temp: temp
+            temp: temp,
+            bw: bw
           })
           Toast.show('Update successfully!', {
             duration: Toast.durations.SHORT,
@@ -252,12 +262,14 @@ const EditScreen = (props) => {
             </View>
           </ScrollView>
           {/* Submit */}
-          <TouchableOpacity
-            className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
-            onPress={handleSubmit}
-          >
-            <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
-          </TouchableOpacity>
+          <HideWithKeyboard>
+            <TouchableOpacity
+              className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
+              onPress={handleSubmit}
+            >
+              <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
+            </TouchableOpacity>
+          </HideWithKeyboard>
         </SafeAreaView>
       )}
     </Formik>
