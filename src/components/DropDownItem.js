@@ -49,11 +49,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     alignItems: 'center'
   },
-  placeholderStyle: {
-    fontSize: wp(4),
-    color: 'grey'
-  },
-  selectedTextStyle: {
-    fontSize: wp(4)
-  }
 })
