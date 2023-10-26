@@ -18,6 +18,9 @@ import InputItem from '../components/InputItem'
 import SliderItem from '../components/SliderItem'
 import WhiteBalance from '../components/WhiteBalance'
 import ImageSlider from '../components/ImageSlider'
+import ErrorText from '../components/ErrorText'
+import { validateSchema } from '../utils/validation'
+import { checkBW } from '../utils/string'
 import {
   ccData,
   dynamicRangeData,
@@ -25,7 +28,6 @@ import {
   grainEffectData,
   sensorData
 } from '../constants'
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -36,15 +38,6 @@ const EditScreen = (props) => {
   const navigation = useNavigation()
 
   const [images, setImages] = useState(item.images)
-  const [cc, setCC] = useState(item.color_chrome_fx)
-  const [wb, setWB] = useState(item.white_balance)
-  const [temp, setTemp] = useState(item.temp)
-  const [film, setFilm] = useState(item.film_simulation)
-  const [grain, setGrain] = useState(item.grain_effect)
-  const [sensor, setSensor] = useState(item.sensor)
-  const [dRange, setDRange] = useState(item.dynamic_range)
-  const [red, setRed] = useState(item.red)
-  const [blue, setBlue] = useState(item.blue)
   const [color, setColor] = useState(item.color)
   const [shadow, setShadow] = useState(item.shadow)
   const [exposure, setExposure] = useState(item.exposure_compensation)
@@ -56,52 +49,45 @@ const EditScreen = (props) => {
     <Formik
       initialValues={{
         title: item.title,
-        film: '',
-        sharpness: '',
+        film: item.film_simulation,
+        sensor: item.sensor,
         iso: item.iso,
-        dynamicRange: '',
-        color: '',
-        highlight: '',
-        noiseReduction: '',
-        shadow: '',
-        sharpness: '',
-        exposure: '',
-        grainEffect: '',
-        ccfx: ''
+        dynamicRange: item.dynamic_range,
+        grainEffect: item.grain_effect,
+        ccfx: item.color_chrome_fx,
+        wb: item.white_balance,
+        temp: item.temp,
+        red: item.red,
+        blue: item.blue
       }}
+      validationSchema={validateSchema}
+      validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={async (values) => {
         console.log(values)
-        const bw = false
-        if (
-          filmSimulationData.findIndex((object) => {
-            return object.label === film
-          }) > 7
-        ) {
-          bw = true
-        }
         try {
           const ref = doc(db, 'FujiRecipe', item.id)
-
           await updateDoc(ref, {
-            film_simulation: film,
-            sensor: sensor,
-            white_balance: wb,
-            dynamic_range: dRange,
+            film_simulation: values.film,
+            sensor: values.sensor,
+            white_balance: values.wb,
+            dynamic_range: values.dynamicRange,
             color: color,
             highlight: highlight,
             shadow: shadow,
             sharpness: sharpness,
             noise_reduction: noiseReduction,
-            grain_effect: grain,
-            color_chrome_fx: cc,
+            grain_effect: values.grainEffect,
+            color_chrome_fx: values.ccfx,
             iso: values.iso,
             exposure: exposure,
-            red: red,
-            blue: blue,
+            red: values.red,
+            blue: values.blue,
             images: images,
             title: values.title,
-            temp: temp,
-            bw: bw
+            temp: values.temp,
+            favorite: false,
+            bw: checkBW(values.film)
           })
           Toast.show('Update successfully!', {
             duration: Toast.durations.SHORT,
@@ -110,6 +96,7 @@ const EditScreen = (props) => {
           })
           navigation.navigate('Home')
         } catch (e) {
+          console.log(e)
           Toast.show('There was an error while updating', {
             duration: Toast.durations.SHORT,
             backgroundColor: 'white',
@@ -118,10 +105,10 @@ const EditScreen = (props) => {
         }
       }}
     >
-      {({ handleChange, handleBlur, handleSubmit, values }) => (
+      {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
-          <View className="items-center mb-3 mt-12">
+          <View className="items-center mb-2 mt-11">
             <Text
               style={{ fontSize: wp(5.5) }}
               className="font-semibold text-neutral-700"
@@ -139,48 +126,53 @@ const EditScreen = (props) => {
               <InputItem
                 title={'Title'}
                 icon={require('../../assets/recipe_icon/film1.png')}
-                handleBlur={handleBlur('title')}
                 handleChange={handleChange('title')}
                 value={values.title}
               />
+              {errors.title && <ErrorText text={errors.title} />}
               {/* Film Simulation */}
               <DropDownItem
                 data={filmSimulationData}
                 icon={require('../../assets/recipe_icon/film.png')}
                 field={'Film Simulation'}
-                value={film}
-                setValue={setFilm}
+                value={values.film}
+                setValue={handleChange('film')}
               />
+              {errors.film && <ErrorText text={errors.film} />}
               {/* Sensor */}
               <DropDownItem
                 data={sensorData}
                 icon={require('../../assets/recipe_icon/sensor.png')}
                 field={'Sensor'}
-                value={sensor}
-                setValue={setSensor}
+                value={values.sensor}
+                setValue={handleChange('sensor')}
               />
+              {errors.sensor && <ErrorText text={errors.sensor} />}
               {/* Image Slider */}
               <ImageSlider images={images} setImages={setImages} />
               {/* White Balance */}
               <WhiteBalance
                 icon={require('../../assets/recipe_icon/white-balance.png')}
-                wb={wb}
-                setWB={setWB}
-                temp={temp}
-                setTemp={setTemp}
-                red={red}
-                setRed={setRed}
-                blue={blue}
-                setBlue={setBlue}
+                wb={values.wb}
+                setWB={handleChange('wb')}
+                temp={values.temp}
+                setTemp={handleChange('temp')}
+                red={values.red}
+                setRed={handleChange('red')}
+                blue={values.blue}
+                setBlue={handleChange('blue')}
+                errorWB={errors.wb}
+                errorTemp={errors.temp}
               />
               {/* Dynamic Range */}
               <DropDownItem
                 data={dynamicRangeData}
                 icon={require('../../assets/recipe_icon/hdr.png')}
                 field={'Dynamic Range'}
-                value={dRange}
-                setValue={setDRange}
+                value={values.dynamicRange}
+                setValue={handleChange('dynamicRange')}
               />
+              {errors.dynamicRange && <ErrorText text={errors.dynamicRange} />}
               {/* Color */}
               <SliderItem
                 title={'Color'}
@@ -231,22 +223,23 @@ const EditScreen = (props) => {
                 data={grainEffectData}
                 icon={require('../../assets/recipe_icon/grain.png')}
                 field={'Grain Effect'}
-                value={grain}
-                setValue={setGrain}
+                value={values.grainEffect}
+                setValue={handleChange('grainEffect')}
               />
+              {errors.grainEffect && <ErrorText text={errors.grainEffect} />}
               {/* Color Chrome Effect */}
               <DropDownItem
                 data={ccData}
                 icon={require('../../assets/recipe_icon/cc.png')}
                 field={'Color Chrome Effect'}
-                value={cc}
-                setValue={setCC}
+                value={values.ccfx}
+                setValue={handleChange('ccfx')}
               />
+              {errors.ccfx && <ErrorText text={errors.ccfx} />}
               {/* ISO */}
               <InputItem
                 title={'ISO'}
                 icon={require('../../assets/recipe_icon/iso.png')}
-                handleBlur={handleBlur('iso')}
                 handleChange={handleChange('iso')}
                 value={values.iso}
               />
