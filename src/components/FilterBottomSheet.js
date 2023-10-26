@@ -11,7 +11,7 @@ import {
 
 import Checkbox from '../components/Checkbox'
 import FilterDropdown from '../components/FilterDropdown'
-import { filter } from '../utils/filter'
+import { filterCheckbox, filterDropdown } from '../utils/filter'
 import { filmSimulationData, sensorData } from '../constants'
 
 const FilterBottomSheet = ({
@@ -45,24 +45,13 @@ const FilterBottomSheet = ({
 
   // handle filter function
   const handleFilter = (sensor, film, favorite, bw, color) => {
-    if (
-      film == '' &&
-      sensor == '' &&
-      favorite === false &&
-      bw === false &&
-      color === false
-    ) {
-      setData(fetchedData)
-    } else {
-      let result = fetchedData
-      result = filter(result, film, 'film_simulation')
-      result = filter(result, sensor, 'sensor')
-      setData([
-        ...result
-          .filter((item) => item.favorite === favorite)
-          .filter((item) => item.bw === bw)
-      ])
-    }
+    let result = fetchedData
+    result = filterDropdown(result, film, 'film_simulation')
+    result = filterDropdown(result, sensor, 'sensor')
+    result = filterCheckbox(result, favorite, 'favorite')
+    result = filterCheckbox(result, bw, 'bw')
+    result = filterCheckbox(result, !color, 'bw')
+    setData(result)
   }
 
   return (
@@ -151,9 +140,9 @@ const FilterBottomSheet = ({
             <TouchableOpacity
               className="flex-1 items-center my-2 rounded-xl bg-[#9e9ca3] py-2 mx-3"
               onPress={() => {
-                setCheckedBW(false)
-                setCheckedColor(false)
-                setCheckedFav(false)
+                setCheckedBW(null)
+                setCheckedColor(null)
+                setCheckedFav(null)
                 setFilterFilm('')
                 setFilterSensor('')
               }}

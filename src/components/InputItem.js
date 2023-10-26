@@ -22,6 +22,7 @@ const InputItem = ({ title, icon, handleChange, value }) => {
         onChangeText={handleChange}
         value={value}
         placeholder={title}
+        placeholderTextColor={"black"}
       />
     </View>
   )

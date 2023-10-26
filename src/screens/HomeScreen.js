@@ -31,9 +31,9 @@ const HomeScreen = () => {
   const [filterSensor, setFilterSensor] = useState('')
   const [filterBar, setFilterBar] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
-  const [checkedFav, setCheckedFav] = useState(false)
-  const [checkedBW, setCheckedBW] = useState(false)
-  const [checkedColor, setCheckedColor] = useState(false)
+  const [checkedFav, setCheckedFav] = useState(null)
+  const [checkedBW, setCheckedBW] = useState(null)
+  const [checkedColor, setCheckedColor] = useState(null)
 
   useEffect(() => {
     fetchData()

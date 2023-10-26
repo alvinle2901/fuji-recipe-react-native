@@ -73,7 +73,7 @@ const ImageSlider = ({ images, setImages }) => {
         borderColor: '#f0eff2'
       }}
     >
-      <Text className="mt-3 text-gray-500">Images</Text>
+      <Text className="mt-3">Images</Text>
       <ScrollView
         className="py-3"
         horizontal
