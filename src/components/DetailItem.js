@@ -5,7 +5,7 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-import { newTitle } from '../utils/string'
+import { newTitle, positive } from '../utils/string'
 
 const DetailItem = ({ title, detail }) => {
   return (
@@ -20,7 +20,7 @@ const DetailItem = ({ title, detail }) => {
         {newTitle(title)}
       </Text>
       <Text className="flex-1 font-bold" style={{ fontSize: wp(4) }}>
-        {detail}
+        {positive(title, detail)}
       </Text>
     </View>
   )

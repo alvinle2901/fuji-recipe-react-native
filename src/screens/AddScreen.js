@@ -19,6 +19,7 @@ import WhiteBalance from '../components/WhiteBalance'
 import ImageSlider from '../components/ImageSlider'
 import ErrorText from '../components/ErrorText'
 import { validateSchema } from '../utils/validation'
+import { checkBW } from '../utils/string'
 import {
   ccData,
   dynamicRangeData,
@@ -26,7 +27,6 @@ import {
   grainEffectData,
   sensorData
 } from '../constants'
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -61,14 +61,6 @@ const AddScreen = ({ navigation }) => {
       validateOnBlur={false}
       onSubmit={async (values) => {
         console.log(values)
-        let bw = false
-        if (
-          filmSimulationData.findIndex((object) => {
-            return object.label === values.film
-          }) > 7
-        ) {
-          bw = true
-        }
         try {
           const docRef = await addDoc(collection(db, 'FujiRecipe'), {
             film_simulation: values.film,
@@ -90,7 +82,7 @@ const AddScreen = ({ navigation }) => {
             title: values.title,
             temp: values.temp,
             favorite: false,
-            bw: bw
+            bw: checkBW(values.film)
           })
           console.log('Document written with ID: ', docRef.id)
           Toast.show('New item added successfully!', {
