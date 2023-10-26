@@ -42,7 +42,6 @@ const FilterBottomSheet = ({
     ),
     []
   )
-
   // handle filter function
   const handleFilter = (sensor, film, favorite, bw, color) => {
     let result = fetchedData
@@ -50,7 +49,7 @@ const FilterBottomSheet = ({
     result = filterDropdown(result, sensor, 'sensor')
     result = filterCheckbox(result, favorite, 'favorite')
     result = filterCheckbox(result, bw, 'bw')
-    result = filterCheckbox(result, !color, 'bw')
+    if (color != null) result = filterCheckbox(result, !color, 'bw')
     setData(result)
   }
 
@@ -86,6 +85,7 @@ const FilterBottomSheet = ({
               Filter
             </Text>
           </View>
+          {/* Sensor Filter */}
           <FilterDropdown
             data={sensorData}
             icon={require('../../assets/recipe_icon/sensor.png')}
@@ -93,6 +93,7 @@ const FilterBottomSheet = ({
             value={filterSensor}
             setValue={setFilterSensor}
           />
+          {/* Film Sensor */}
           <FilterDropdown
             data={filmSimulationData}
             icon={require('../../assets/recipe_icon/film.png')}
