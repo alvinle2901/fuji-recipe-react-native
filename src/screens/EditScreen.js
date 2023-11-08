@@ -12,6 +12,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { useNavigation } from '@react-navigation/native'
 import Toast from 'react-native-root-toast'
 import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
+import { ChevronLeftIcon } from 'react-native-heroicons/outline'
 
 import DropDownItem from '../components/DropDownItem'
 import InputItem from '../components/InputItem'
@@ -108,13 +109,21 @@ const EditScreen = (props) => {
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
-          <View className="items-center mb-2 mt-11">
+          <View className="items-center mb-2 mt-11 justify-between flex-row">
+            <TouchableOpacity
+              className="p-2 h-9 ml-3"
+              style={{ backgroundColor: 'white' }}
+              onPress={() => navigation.goBack()}
+            >
+              <ChevronLeftIcon size={wp(6)} color="black" />
+            </TouchableOpacity>
             <Text
               style={{ fontSize: wp(5.5) }}
               className="font-semibold text-neutral-700"
             >
               Edit
             </Text>
+            <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
