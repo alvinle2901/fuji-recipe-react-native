@@ -28,7 +28,7 @@ import {
 } from 'react-native-responsive-screen'
 
 import DetailItem from '../components/DetailItem'
-import DeleteDialog from '../components/DeleteDialog'
+import DialogModal from '../components/DialogModal'
 import { updateWB } from '../utils/string'
 
 function DetailScreen(props) {
@@ -74,8 +74,15 @@ function DetailScreen(props) {
   // render item details
   for (const [key, value] of Object.entries(item)) {
     if (key == 'white_balance') {
-      const whiteBalance = updateWB(item.white_balance, item.blue, item.red, item.temp)
-      renderedDetailItems.push(<DetailItem title={key} detail={whiteBalance} key={key} />)
+      const whiteBalance = updateWB(
+        item.white_balance,
+        item.blue,
+        item.red,
+        item.temp
+      )
+      renderedDetailItems.push(
+        <DetailItem title={key} detail={whiteBalance} key={key} />
+      )
     } else if (
       key == 'red' ||
       key == 'blue' ||
@@ -89,7 +96,7 @@ function DetailScreen(props) {
       continue
     } else {
       renderedDetailItems.push(
-        <DetailItem title={key} detail={value} key={key}/>,
+        <DetailItem title={key} detail={value} key={key} />
       )
     }
   }
@@ -189,10 +196,15 @@ function DetailScreen(props) {
                 onPress={() => setDialog(true)}
               >
                 <TrashIcon size={wp(6)} color="black" />
-                <DeleteDialog
+                <DialogModal
+                  title={'Recipe Delete'}
+                  description={
+                    'Do you want to delete this recipe? You cannot undo this action.'
+                  }
                   visible={dialog}
                   setVisible={setDialog}
-                  handleDelete={() => handleDelete(item.id)}
+                  handler={() => handleDelete(item.id)}
+                  handlerLabel={'Delete'}
                 />
               </TouchableOpacity>
             </>

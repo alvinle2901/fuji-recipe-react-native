@@ -19,6 +19,7 @@ import SliderItem from '../components/SliderItem'
 import WhiteBalance from '../components/WhiteBalance'
 import ImageSlider from '../components/ImageSlider'
 import ErrorText from '../components/ErrorText'
+import DialogModal from '../components/DialogModal'
 import { validateSchema } from '../utils/validation'
 import { checkBW } from '../utils/string'
 import {
@@ -34,6 +35,7 @@ import {
 } from 'react-native-responsive-screen'
 
 const AddScreen = ({ navigation }) => {
+  const [dialog, setDialog] = useState(false)
   const [images, setImages] = useState([])
   const [color, setColor] = useState(0)
   const [shadow, setShadow] = useState(0)
@@ -109,9 +111,19 @@ const AddScreen = ({ navigation }) => {
             <TouchableOpacity
               className="p-2 h-9 ml-3"
               style={{ backgroundColor: 'white' }}
-              onPress={() => navigation.goBack()}
+              onPress={() => setDialog(true)}
             >
               <ChevronLeftIcon size={wp(6)} color="black" />
+              <DialogModal
+                title={'Exit Adding'}
+                description={
+                  'Do you want to go back to home screen? You cannot undo this action.'
+                }
+                visible={dialog}
+                setVisible={setDialog}
+                handler={() => navigation.goBack()}
+                handlerLabel={'Yes'}
+              />
             </TouchableOpacity>
             <Text
               style={{ fontSize: wp(5.5) }}
