@@ -15,7 +15,7 @@ Additional features:
 
 ## Screenshots
 
-<div style="display: flex; flex-direction: 'row'; justifyContent: 'space-between';">
+<div style="display: flex; flex-direction: 'row'; justifyContent: 'space-between'; padding: '10px';">
 <img src="./assets/screenshots/1.jpg" width=30%>
 <img src="./assets/screenshots/2.jpg" width=30%>
 <img src="./assets/screenshots/3.jpg" width=30%>
