@@ -1,6 +1,6 @@
 # Fujifilm Recipe App
 
-This is a React Native app to store Fujifilm film presets for photoholic.
+This is a React Native app to store Fujifilm film presets for Fujifilm camera's photoholic.
 
 Additional features:
 
@@ -14,7 +14,12 @@ Additional features:
 ## Screenshots
 
 <div style="display: flex; flex-direction: 'row';">
-
+<img src="./assets/screenshots/1.jpg" width=40%>
+<img src="./assets/screenshots/2.jpg" width=40%>
+<img src="./assets/screenshots/3.jpg" width=40%>
+<img src="./assets/screenshots/4.jpg" width=40%>
+<img src="./assets/screenshots/5.jpg" width=40%>
+<img src="./assets/screenshots/6.jpg" width=40%>
 </div>
 
 ## Demo
@@ -23,4 +28,4 @@ Additional features:
 
 ## APKs
 
-You can find the apk to install here (https://drive.google.com/file/d/1eXdn0PtaVj31duOeJw96z6yB2Oss7iRU/view?usp=sharing)
+You can find the apk to install [here](https://drive.google.com/file/d/1eXdn0PtaVj31duOeJw96z6yB2Oss7iRU/view?usp=sharing)
