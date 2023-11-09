@@ -26,7 +26,7 @@ Additional features:
 
 ## Demo
 
-![Demo](./screenshots/demo.gif)
+![Demo](./assets/screenshots/demo.gif)
 
 ## APKs
 
