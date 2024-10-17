@@ -1,11 +1,11 @@
-import { Text, View, Image, TextInput } from 'react-native'
-import React from 'react'
-import { Slider } from 'react-native-awesome-slider'
-import { useSharedValue } from 'react-native-reanimated'
+import { Text, View, Image, TextInput } from 'react-native';
+import React from 'react';
+import { Slider } from 'react-native-awesome-slider';
+import { useSharedValue } from 'react-native-reanimated';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
+} from 'react-native-responsive-screen';
 
 const SliderItem = ({
   title,
@@ -15,7 +15,7 @@ const SliderItem = ({
   minimumSliderValue,
   maximumSliderValue
 }) => {
-  const progress = useSharedValue(2)
+  const progress = useSharedValue(value);
 
   return (
     <View
@@ -24,8 +24,7 @@ const SliderItem = ({
         borderRadius: 1,
         borderBottomWidth: 1,
         borderColor: '#f0eff2'
-      }}
-    >
+      }}>
       <View className="flex-row justify-between items-center pt-3">
         <View className="flex-row">
           <Image source={icon} style={{ height: wp(7), width: wp(7) }}></Image>
@@ -34,7 +33,7 @@ const SliderItem = ({
             style={{ fontSize: wp(4) }}
             placeholder={title.toString()}
             editable={false}
-            placeholderTextColor={"black"}
+            placeholderTextColor={'black'}
           />
         </View>
         <Text style={{ fontSize: wp(5) }}>{value}</Text>
@@ -48,7 +47,11 @@ const SliderItem = ({
           step={maximumSliderValue - minimumSliderValue}
           onValueChange={(val) => setValue(val)}
           thumbWidth={12}
-          cache={useSharedValue(value)}
+          cache={
+            value != 0
+              ? useSharedValue(value - minimumSliderValue)
+              : useSharedValue(0 - minimumSliderValue)
+          }
           theme={{
             disableMinTrackTintColor: 'fff',
             maximumTrackTintColor: '#f0eff2',
@@ -67,7 +70,7 @@ const SliderItem = ({
         </Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default SliderItem
+export default SliderItem;

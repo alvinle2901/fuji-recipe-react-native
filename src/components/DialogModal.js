@@ -1,7 +1,14 @@
-import React from 'react'
-import Dialog from 'react-native-dialog'
+import React from 'react';
+import Dialog from 'react-native-dialog';
 
-const DialogModal = ({ title, description, handlerLabel, visible, setVisible, handler }) => {
+const DialogModal = ({
+  title,
+  description,
+  handlerLabel,
+  visible,
+  setVisible,
+  handler
+}) => {
   return (
     <Dialog.Container visible={visible}>
       <Dialog.Title>{title}</Dialog.Title>
@@ -9,7 +16,7 @@ const DialogModal = ({ title, description, handlerLabel, visible, setVisible, ha
       <Dialog.Button label="Cancel" onPress={() => setVisible(false)} />
       <Dialog.Button label={handlerLabel} onPress={handler} />
     </Dialog.Container>
-  )
-}
+  );
+};
 
-export default DialogModal
+export default DialogModal;

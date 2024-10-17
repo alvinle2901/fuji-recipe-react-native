@@ -5,71 +5,71 @@ import {
   TouchableOpacity,
   View,
   StyleSheet
-} from 'react-native'
-import React, { useState, useRef } from 'react'
-import { useNavigation } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
-import Toast from 'react-native-root-toast'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
+} from 'react-native';
+import React, { useState, useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
+import Toast from 'react-native-root-toast';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 // Firebase
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { db } from '../../firebase.config'
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase.config';
 import {
   ChevronLeftIcon,
   HeartIcon,
   PencilSquareIcon,
   EllipsisVerticalIcon,
   TrashIcon
-} from 'react-native-heroicons/outline'
+} from 'react-native-heroicons/outline';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
+} from 'react-native-responsive-screen';
 
-import DetailItem from '../components/DetailItem'
-import DialogModal from '../components/DialogModal'
-import { updateWB } from '../utils/string'
+import DetailItem from '../components/DetailItem';
+import DialogModal from '../components/DialogModal';
+import { updateWB } from '../utils/string';
 
 function DetailScreen(props) {
-  const item = props.route.params
-  const navigation = useNavigation()
-  const scrollY = useRef(new Animated.Value(0)).current
+  const item = props.route.params;
+  const navigation = useNavigation();
+  const scrollY = useRef(new Animated.Value(0)).current;
 
-  const [isFavourite, toggleFavourite] = useState(item.favorite)
-  const [func, setFunc] = useState(false)
-  const [dialog, setDialog] = useState(false)
+  const [isFavourite, toggleFavourite] = useState(item.favorite);
+  const [func, setFunc] = useState(false);
+  const [dialog, setDialog] = useState(false);
 
-  const renderedDetailItems = []
-  const ITEM_HEIGHT = wp(130)
+  const renderedDetailItems = [];
+  const ITEM_HEIGHT = wp(130);
 
   // delete item
   const handleDelete = async (item) => {
     try {
-      await deleteDoc(doc(db, 'FujiRecipe', item))
+      await deleteDoc(doc(db, 'FujiRecipe', item));
       Toast.show('Delete successfully!', {
         duration: Toast.durations.SHORT,
         backgroundColor: 'white',
         textColor: 'black'
-      })
-      navigation.navigate('Home')
+      });
+      navigation.navigate('Home');
     } catch (e) {
       Toast.show('There was an error while delete the recipe', {
         duration: Toast.durations.SHORT,
         backgroundColor: 'white',
         textColor: 'black'
-      })
+      });
     }
-    setDialog(false)
-  }
+    setDialog(false);
+  };
 
   // update favorite to firebase
   const updateFavorite = async (state) => {
-    const itemRef = doc(db, 'FujiRecipe', item.id)
+    const itemRef = doc(db, 'FujiRecipe', item.id);
     await updateDoc(itemRef, {
       favorite: state
-    })
-  }
+    });
+  };
 
   // render item details
   for (const [key, value] of Object.entries(item)) {
@@ -79,10 +79,10 @@ function DetailScreen(props) {
         item.blue,
         item.red,
         item.temp
-      )
+      );
       renderedDetailItems.push(
         <DetailItem title={key} detail={whiteBalance} key={key} />
-      )
+      );
     } else if (
       key == 'red' ||
       key == 'blue' ||
@@ -93,11 +93,11 @@ function DetailScreen(props) {
       key == 'favorite' ||
       key == 'bw'
     ) {
-      continue
+      continue;
     } else {
       renderedDetailItems.push(
         <DetailItem title={key} detail={value} key={key} />
-      )
+      );
     }
   }
 
@@ -125,12 +125,12 @@ function DetailScreen(props) {
                   style={{ width: wp(100), height: hp(65) }}
                 />
               </View>
-            )
+            );
           }}
         />
         <View className="absolute" style={{ top: ITEM_HEIGHT / 2, left: 15 }}>
           {item.images.map((_, index) => {
-            return <View key={index} style={styles.dot} />
+            return <View key={index} style={styles.dot} />;
           })}
           <Animated.View
             style={[
@@ -155,8 +155,7 @@ function DetailScreen(props) {
         <TouchableOpacity
           className="p-2 h-9 rounded-full ml-4"
           style={{ backgroundColor: 'white' }}
-          onPress={() => navigation.goBack()}
-        >
+          onPress={() => navigation.goBack()}>
           <ChevronLeftIcon size={wp(6)} color="black" />
         </TouchableOpacity>
         {/* Favorite */}
@@ -164,10 +163,9 @@ function DetailScreen(props) {
           className="p-2 h-9 rounded-full"
           style={{ backgroundColor: 'white' }}
           onPress={() => {
-            toggleFavourite(!isFavourite)
-            updateFavorite(!isFavourite)
-          }}
-        >
+            toggleFavourite(!isFavourite);
+            updateFavorite(!isFavourite);
+          }}>
           <HeartIcon size={wp(6)} color={isFavourite ? 'red' : 'black'} />
         </TouchableOpacity>
         {/* Options */}
@@ -175,8 +173,7 @@ function DetailScreen(props) {
           <TouchableOpacity
             className="p-2 rounded-full mr-4"
             style={{ backgroundColor: 'white' }}
-            onPress={() => setFunc(!func)}
-          >
+            onPress={() => setFunc(!func)}>
             <EllipsisVerticalIcon size={wp(6)} color="black" />
           </TouchableOpacity>
           {func && (
@@ -185,16 +182,14 @@ function DetailScreen(props) {
               <TouchableOpacity
                 className="p-2 rounded-full mr-4 mt-1"
                 style={{ backgroundColor: 'white' }}
-                onPress={() => navigation.navigate('Edit', { ...item })}
-              >
+                onPress={() => navigation.navigate('Edit', { ...item })}>
                 <PencilSquareIcon size={wp(6)} color="black" />
               </TouchableOpacity>
               {/* Delete */}
               <TouchableOpacity
                 className="p-2 rounded-full mr-4 mt-1"
                 style={{ backgroundColor: 'white' }}
-                onPress={() => setDialog(true)}
-              >
+                onPress={() => setDialog(true)}>
                 <TrashIcon size={wp(6)} color="black" />
                 <DialogModal
                   title={'Recipe Delete'}
@@ -214,23 +209,21 @@ function DetailScreen(props) {
       {/* Bottom Sheet */}
       <BottomSheet
         style={styles.bottomSheet}
-        snapPoints={[hp(100) - wp(123), hp(75)]}
-      >
+        snapPoints={[hp(100) - wp(123), hp(75)]}>
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
           <Text
             style={{ fontSize: wp(7) }}
-            className="font-bold flex-1 text-neutral-700 mb-4 mt-3"
-          >
+            className="font-bold flex-1 text-neutral-700 mb-4 mt-3">
             {item.title}
           </Text>
           {renderedDetailItems}
         </BottomSheetScrollView>
       </BottomSheet>
     </View>
-  )
+  );
 }
 
-export default DetailScreen
+export default DetailScreen;
 
 const styles = StyleSheet.create({
   bottomSheet: {
@@ -258,4 +251,4 @@ const styles = StyleSheet.create({
     top: -4,
     left: -4
   }
-})
+});
