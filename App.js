@@ -1,33 +1,60 @@
-import { useCallback } from 'react'
-import * as SplashScreen from 'expo-splash-screen'
-import AppNavigation from './src/navigation'
-import { useFonts } from 'expo-font'
-import { RootSiblingParent } from 'react-native-root-siblings'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { useCallback } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import AppNavigation from './src/navigation';
+import { useFonts } from 'expo-font';
+import { RootSiblingParent } from 'react-native-root-siblings';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink
+} from '@apollo/client';
+import { useApolloClientDevTools } from '@dev-plugins/apollo-client';
 
-SplashScreen.preventAutoHideAsync()
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const httpLink = createHttpLink({
+  uri: 'http://192.168.137.1:4000/'
+});
+
+// Initialize Apollo Client
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache()
+});
+
+const queryClient = new QueryClient();
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  useApolloClientDevTools(client);
+
   const [fontsLoaded] = useFonts({
     fin_thin: require('./assets/finland_rounded_thin.ttf'),
     epic_fusion: require('./assets/EpicFusion.ttf')
-  })
+  });
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      await SplashScreen.hideAsync()
+      await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded])
+  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null
+    return null;
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <RootSiblingParent>
-        <AppNavigation />
-      </RootSiblingParent>
-    </GestureHandlerRootView>
-  )
+    <ApolloProvider client={client}>
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
+          <RootSiblingParent>
+            <AppNavigation />
+          </RootSiblingParent>
+        </GestureHandlerRootView>
+      </QueryClientProvider>
+    </ApolloProvider>
+  );
 }

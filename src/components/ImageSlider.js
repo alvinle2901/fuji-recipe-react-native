@@ -1,49 +1,51 @@
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import * as ImagePicker from 'expo-image-picker'
-import { ScrollView } from 'react-native-gesture-handler'
-import { PlusCircleIcon, XCircleIcon } from 'react-native-heroicons/outline'
-import { storage } from '../../firebase.config'
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+
+import * as ImagePicker from 'expo-image-picker';
+import { ScrollView } from 'react-native-gesture-handler';
+import { PlusCircleIcon, XCircleIcon } from 'react-native-heroicons/outline';
+
+import { storage } from '../../firebase.config';
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
+} from 'react-native-responsive-screen';
 
 const ImageSlider = ({ images, setImages }) => {
-  const [pickedImages, setPickedImages] = useState(images)
+  const [pickedImages, setPickedImages] = useState(images);
 
   useEffect(() => {
     // set images to upload
-    setImages(pickedImages)
-  })
+    setImages(pickedImages);
+  });
 
   //upload images to storage
   const uploadImage = async (uri) => {
-    const fetchResponse = await fetch(uri)
-    const theBlob = await fetchResponse.blob()
+    const fetchResponse = await fetch(uri);
+    const theBlob = await fetchResponse.blob();
 
-    const storageRef = ref(storage, `files/${Date.now()}`)
-    const uploadTask = uploadBytesResumable(storageRef, theBlob)
+    const storageRef = ref(storage, `files/${Date.now()}`);
+    const uploadTask = uploadBytesResumable(storageRef, theBlob);
 
     uploadTask.on(
       'state_changed',
       (snapshot) => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        )
+        );
       },
       (error) => {
-        alert(error)
+        alert(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           //set images with url from database
-          setPickedImages([...pickedImages, { uri: downloadURL }])
-        })
+          setPickedImages([...pickedImages, { uri: downloadURL }]);
+        });
       }
-    )
-  }
+    );
+  };
 
   // pick image from local
   const pickImage = async () => {
@@ -51,19 +53,19 @@ const ImageSlider = ({ images, setImages }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       quality: 1
-    })
+    });
 
     if (!result.canceled) {
-      await uploadImage(result.assets[0].uri)
+      await uploadImage(result.assets[0].uri);
     }
-  }
+  };
 
   // remove images
   const removeImage = (index) => {
-    const updatedImages = [...pickedImages]
-    updatedImages.splice(index, 1)
-    setPickedImages(updatedImages)
-  }
+    const updatedImages = [...pickedImages];
+    updatedImages.splice(index, 1);
+    setPickedImages(updatedImages);
+  };
 
   return (
     <View
@@ -71,14 +73,12 @@ const ImageSlider = ({ images, setImages }) => {
         borderRadius: 1,
         borderBottomWidth: 1,
         borderColor: '#f0eff2'
-      }}
-    >
+      }}>
       <Text className="mt-3">Images</Text>
       <ScrollView
         className="py-3"
         horizontal
-        showsHorizontalScrollIndicator={false}
-      >
+        showsHorizontalScrollIndicator={false}>
         {pickedImages.map((item, index) => {
           return (
             <View className="flex-row" key={index}>
@@ -91,7 +91,7 @@ const ImageSlider = ({ images, setImages }) => {
                 <XCircleIcon size={wp(6)} color="gray" strokeWidth={1} />
               </TouchableOpacity>
             </View>
-          )
+          );
         })}
         <View
           className="items-center justify-center mt-2"
@@ -101,18 +101,17 @@ const ImageSlider = ({ images, setImages }) => {
               borderColor: 'gray',
               borderWidth: 0.5
             }
-          ]}
-        >
+          ]}>
           <TouchableOpacity onPress={pickImage}>
             <PlusCircleIcon color={'gray'} size={wp(10)} />
           </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
-export default ImageSlider
+export default ImageSlider;
 
 const styles = StyleSheet.create({
   imageContainer: {
@@ -121,4 +120,4 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 10
   }
-})
+});

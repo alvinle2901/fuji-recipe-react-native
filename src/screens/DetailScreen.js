@@ -30,11 +30,14 @@ import {
 import DetailItem from '../components/DetailItem';
 import DialogModal from '../components/DialogModal';
 import { updateWB } from '../utils/string';
+import { useDeleteRecipe, useUpdateRecipeField } from '../hooks/useRecipe';
 
 function DetailScreen(props) {
   const item = props.route.params;
   const navigation = useNavigation();
   const scrollY = useRef(new Animated.Value(0)).current;
+  const deleteRecipe = useDeleteRecipe();
+  const updateRecipeFieldMutation = useUpdateRecipeField();
 
   const [isFavourite, toggleFavourite] = useState(item.favorite);
   const [func, setFunc] = useState(false);
@@ -43,31 +46,28 @@ function DetailScreen(props) {
   const renderedDetailItems = [];
   const ITEM_HEIGHT = wp(130);
 
+  const handleUpdateRecipeField = (id) => {
+    updateRecipeFieldMutation.mutate({ id, field: 'color', value: 5 });
+  };
+
   // delete item
-  const handleDelete = async (item) => {
-    try {
-      await deleteDoc(doc(db, 'FujiRecipe', item));
-      Toast.show('Delete successfully!', {
-        duration: Toast.durations.SHORT,
-        backgroundColor: 'white',
-        textColor: 'black'
-      });
-      navigation.navigate('Home');
-    } catch (e) {
-      Toast.show('There was an error while delete the recipe', {
-        duration: Toast.durations.SHORT,
-        backgroundColor: 'white',
-        textColor: 'black'
-      });
-    }
+  const handleDeleteRecipe = (item) => {
+    deleteRecipe.mutate(item.id);
+    Toast.show('Delete successfully!', {
+      duration: Toast.durations.SHORT,
+      backgroundColor: 'white',
+      textColor: 'black'
+    });
     setDialog(false);
+    navigation.navigate('Home');
   };
 
   // update favorite to firebase
   const updateFavorite = async (state) => {
-    const itemRef = doc(db, 'FujiRecipe', item.id);
-    await updateDoc(itemRef, {
-      favorite: state
+    updateRecipeFieldMutation.mutate({
+      id: item.id,
+      field: 'favorite',
+      value: state
     });
   };
 
@@ -121,7 +121,7 @@ function DetailScreen(props) {
             return (
               <View>
                 <Image
-                  source={item}
+                  source={{ uri: item }}
                   style={{ width: wp(100), height: hp(65) }}
                 />
               </View>
@@ -198,7 +198,7 @@ function DetailScreen(props) {
                   }
                   visible={dialog}
                   setVisible={setDialog}
-                  handler={() => handleDelete(item.id)}
+                  handler={() => handleDeleteRecipe(item)}
                   handlerLabel={'Delete'}
                 />
               </TouchableOpacity>

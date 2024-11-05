@@ -35,6 +35,7 @@ import {
 } from 'react-native-responsive-screen'
 
 const AddScreen = ({ navigation }) => {
+
   const [dialog, setDialog] = useState(false)
   const [images, setImages] = useState([])
   const [color, setColor] = useState(0)

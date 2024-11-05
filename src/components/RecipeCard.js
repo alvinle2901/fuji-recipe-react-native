@@ -1,10 +1,10 @@
 import { Image, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
+
 import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { HeartIcon } from 'react-native-heroicons/outline'
-import { db } from '../../firebase.config'
-import { doc, updateDoc } from 'firebase/firestore'
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -15,11 +15,12 @@ const RecipeCard = ({ item }) => {
   const [isFavourite, toggleFavourite] = useState(item.favorite)
   // update favorite to firebase
   const updateFavorite = async (state) => {
-    const itemRef = doc(db, 'FujiRecipe', item.id)
-    await updateDoc(itemRef, {
-      favorite: state
-    })
-  }
+    updateRecipeFieldMutation.mutate({
+      id: item.id,
+      field: 'favorite',
+      value: state
+    });
+  };
 
   return (
     <TouchableOpacity
@@ -28,7 +29,7 @@ const RecipeCard = ({ item }) => {
       className="flex justify-end relative p-4 py-6 space-y-2 mb-4"
     >
       <Image
-        source={item.images[0]}
+        source={{uri: item.images[0]}}
         style={{ width: wp(44), height: wp(55), borderRadius: 20 }}
         className="absolute"
       />

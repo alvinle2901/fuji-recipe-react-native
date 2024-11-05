@@ -34,10 +34,16 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+import { useUpdateRecipe } from '../hooks/useRecipe'
 
 const EditScreen = (props) => {
   const item = props.route.params
   const navigation = useNavigation()
+  const updateRecipeMutation = useUpdateRecipe();
+
+  const handleUpdateRecipe = (id) => {
+    updateRecipeMutation.mutate(id, { title: 'Updated Recipe Title' });
+  };
 
   const [dialog, setDialog] = useState(false)
   const [images, setImages] = useState(item.images)
