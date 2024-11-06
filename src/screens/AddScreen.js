@@ -4,46 +4,55 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity
-} from 'react-native'
-import React, { useState } from 'react'
-import { Formik } from 'formik'
-import { db } from '../../firebase.config'
-import { collection, addDoc } from 'firebase/firestore'
-import Toast from 'react-native-root-toast'
-import { HideWithKeyboard } from 'react-native-hide-with-keyboard'
-import { ChevronLeftIcon } from 'react-native-heroicons/outline'
+} from 'react-native';
+import React, { useState } from 'react';
+import { Formik } from 'formik';
 
-import DropDownItem from '../components/DropDownItem'
-import InputItem from '../components/InputItem'
-import SliderItem from '../components/SliderItem'
-import WhiteBalance from '../components/WhiteBalance'
-import ImageSlider from '../components/ImageSlider'
-import ErrorText from '../components/ErrorText'
-import DialogModal from '../components/DialogModal'
-import { validateSchema } from '../utils/validation'
-import { checkBW } from '../utils/string'
+import Toast from 'react-native-root-toast';
+import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
+import { ChevronLeftIcon } from 'react-native-heroicons/outline';
+
+import DropDownItem from '../components/DropDownItem';
+import InputItem from '../components/InputItem';
+import SliderItem from '../components/SliderItem';
+import WhiteBalance from '../components/WhiteBalance';
+import ImageSlider from '../components/ImageSlider';
+import ErrorText from '../components/ErrorText';
+import DialogModal from '../components/DialogModal';
+import { validateSchema } from '../utils/validation';
+import { checkBW } from '../utils/string';
 import {
   ccData,
   dynamicRangeData,
   filmSimulationData,
   grainEffectData,
   sensorData
-} from '../constants'
+} from '../constants';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
+} from 'react-native-responsive-screen';
+import { useSaveRecipe } from '../hooks/useRecipe';
 
 const AddScreen = ({ navigation }) => {
+  const [dialog, setDialog] = useState(false);
+  const [images, setImages] = useState([]);
+  const [color, setColor] = useState(0);
+  const [shadow, setShadow] = useState(0);
+  const [exposure, setExposure] = useState(0);
+  const [sharpness, setSharpness] = useState(0);
+  const [highlight, setHighlight] = useState(0);
+  const [noiseReduction, setNoiseReduction] = useState(0);
 
-  const [dialog, setDialog] = useState(false)
-  const [images, setImages] = useState([])
-  const [color, setColor] = useState(0)
-  const [shadow, setShadow] = useState(0)
-  const [exposure, setExposure] = useState(0)
-  const [sharpness, setSharpness] = useState(0)
-  const [highlight, setHighlight] = useState(0)
-  const [noiseReduction, setNoiseReduction] = useState(0)
+  const saveRecipe = useSaveRecipe();
+
+  const handleSaveRecipe = (item) => {
+    const newRecipe = {
+      id: `id_${Date.now()}`,
+      ...item
+    };
+    saveRecipe.mutate(newRecipe);
+  };
 
   return (
     <Formik
@@ -64,47 +73,74 @@ const AddScreen = ({ navigation }) => {
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={async (values) => {
-        console.log(values)
-        try {
-          const docRef = await addDoc(collection(db, 'FujiRecipe'), {
-            film_simulation: values.film,
-            sensor: values.sensor,
-            white_balance: values.wb,
-            dynamic_range: values.dynamicRange,
-            color: color,
-            highlight: highlight,
-            shadow: shadow,
-            sharpness: sharpness,
-            noise_reduction: noiseReduction,
-            grain_effect: values.grainEffect,
-            color_chrome_fx: values.ccfx,
-            iso: values.iso,
-            exposure: exposure,
-            red: values.red,
-            blue: values.blue,
-            images: images,
-            title: values.title,
-            temp: values.temp,
-            favorite: false,
-            bw: checkBW(values.film)
-          })
-          console.log('Document written with ID: ', docRef.id)
-          Toast.show('New item added successfully!', {
-            duration: Toast.durations.SHORT,
-            backgroundColor: 'white',
-            textColor: 'black'
-          })
-          navigation.navigate('Home')
-        } catch (e) {
-          console.error('Error adding document: ', e)
-          Toast.show('There was an error while uploading', {
-            duration: Toast.durations.SHORT,
-            backgroundColor: 'white',
-            textColor: 'black'
-          })
-        }
-      }}
-    >
+        console.log(values);
+        handleSaveRecipe({
+          film_simulation: values.film,
+          sensor: values.sensor,
+          white_balance: values.wb,
+          dynamic_range: values.dynamicRange,
+          color: color,
+          highlight: highlight,
+          shadow: shadow,
+          sharpness: sharpness,
+          noise_reduction: noiseReduction,
+          grain_effect: values.grainEffect,
+          color_chrome_fx: values.ccfx,
+          iso: values.iso,
+          exposure: exposure,
+          red: values.red,
+          blue: values.blue,
+          images: images,
+          title: values.title,
+          temp: values.temp,
+          favorite: false,
+          bw: checkBW(values.film)
+        });
+        Toast.show('New item added successfully!', {
+          duration: Toast.durations.SHORT,
+          backgroundColor: 'white',
+          textColor: 'black'
+        });
+        navigation.navigate('Home');
+        // try {
+        //   const docRef = await addDoc(collection(db, 'FujiRecipe'), {
+        //     film_simulation: values.film,
+        //     sensor: values.sensor,
+        //     white_balance: values.wb,
+        //     dynamic_range: values.dynamicRange,
+        //     color: color,
+        //     highlight: highlight,
+        //     shadow: shadow,
+        //     sharpness: sharpness,
+        //     noise_reduction: noiseReduction,
+        //     grain_effect: values.grainEffect,
+        //     color_chrome_fx: values.ccfx,
+        //     iso: values.iso,
+        //     exposure: exposure,
+        //     red: values.red,
+        //     blue: values.blue,
+        //     images: images,
+        //     title: values.title,
+        //     temp: values.temp,
+        //     favorite: false,
+        //     bw: checkBW(values.film)
+        //   });
+        //   console.log('Document written with ID: ', docRef.id);
+        //   Toast.show('New item added successfully!', {
+        //     duration: Toast.durations.SHORT,
+        //     backgroundColor: 'white',
+        //     textColor: 'black'
+        //   });
+        //   navigation.navigate('Home');
+        // } catch (e) {
+        //   console.error('Error adding document: ', e);
+        //   Toast.show('There was an error while uploading', {
+        //     duration: Toast.durations.SHORT,
+        //     backgroundColor: 'white',
+        //     textColor: 'black'
+        //   });
+        // }
+      }}>
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
@@ -112,8 +148,7 @@ const AddScreen = ({ navigation }) => {
             <TouchableOpacity
               className="p-2 h-9 ml-3"
               style={{ backgroundColor: 'white' }}
-              onPress={() => setDialog(true)}
-            >
+              onPress={() => setDialog(true)}>
               <ChevronLeftIcon size={wp(6)} color="black" />
               <DialogModal
                 title={'Exit Adding'}
@@ -128,16 +163,14 @@ const AddScreen = ({ navigation }) => {
             </TouchableOpacity>
             <Text
               style={{ fontSize: wp(5.5) }}
-              className="font-semibold text-neutral-700"
-            >
+              className="font-semibold text-neutral-700">
               Add New Recipe
             </Text>
             <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            className="space-y-6"
-          >
+            className="space-y-6">
             {/* items */}
             <View className="mx-5">
               {/* Title */}
@@ -277,15 +310,14 @@ const AddScreen = ({ navigation }) => {
           <HideWithKeyboard>
             <TouchableOpacity
               className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
-              onPress={handleSubmit}
-            >
+              onPress={handleSubmit}>
               <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
             </TouchableOpacity>
           </HideWithKeyboard>
         </SafeAreaView>
       )}
     </Formik>
-  )
-}
+  );
+};
 
-export default AddScreen
+export default AddScreen;

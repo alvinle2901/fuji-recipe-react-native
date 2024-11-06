@@ -38,6 +38,8 @@ import { useUpdateRecipe } from '../hooks/useRecipe'
 
 const EditScreen = (props) => {
   const item = props.route.params
+
+  console.log(item)
   const navigation = useNavigation()
   const updateRecipeMutation = useUpdateRecipe();
 
@@ -158,22 +160,22 @@ const EditScreen = (props) => {
               />
               {errors.title && <ErrorText text={errors.title} />}
               {/* Film Simulation */}
-              <DropDownItem
+              {/* <DropDownItem
                 data={filmSimulationData}
                 icon={require('../../assets/recipe_icon/film.png')}
                 field={'Film Simulation'}
                 value={values.film}
                 setValue={handleChange('film')}
-              />
+              /> */}
               {errors.film && <ErrorText text={errors.film} />}
               {/* Sensor */}
-              <DropDownItem
+              {/* <DropDownItem
                 data={sensorData}
                 icon={require('../../assets/recipe_icon/sensor.png')}
                 field={'Sensor'}
                 value={values.sensor}
                 setValue={handleChange('sensor')}
-              />
+              /> */}
               {errors.sensor && <ErrorText text={errors.sensor} />}
               {/* Image Slider */}
               <ImageSlider images={images} setImages={setImages} />
@@ -184,9 +186,9 @@ const EditScreen = (props) => {
                 setWB={handleChange('wb')}
                 temp={values.temp}
                 setTemp={handleChange('temp')}
-                red={values.red}
+                red={values.red.toString()}
                 setRed={handleChange('red')}
-                blue={values.blue}
+                blue={values.blue.toString()}
                 setBlue={handleChange('blue')}
                 errorWB={errors.wb}
                 errorTemp={errors.temp}
@@ -246,13 +248,13 @@ const EditScreen = (props) => {
                 maximumSliderValue={4}
               />
               {/* Grain Effect */}
-              <DropDownItem
+              {/* <DropDownItem
                 data={grainEffectData}
                 icon={require('../../assets/recipe_icon/grain.png')}
                 field={'Grain Effect'}
                 value={values.grainEffect}
                 setValue={handleChange('grainEffect')}
-              />
+              /> */}
               {errors.grainEffect && <ErrorText text={errors.grainEffect} />}
               {/* Color Chrome Effect */}
               <DropDownItem
@@ -264,21 +266,21 @@ const EditScreen = (props) => {
               />
               {errors.ccfx && <ErrorText text={errors.ccfx} />}
               {/* ISO */}
-              <InputItem
+              {/* <InputItem
                 title={'ISO'}
                 icon={require('../../assets/recipe_icon/iso.png')}
                 handleChange={handleChange('iso')}
                 value={values.iso}
-              />
+              /> */}
               {/* Exposure Compensation */}
-              <SliderItem
+              {/* <SliderItem
                 title={'Exposure Compensation'}
                 icon={require('../../assets/recipe_icon/exposure.png')}
                 value={exposure}
                 setValue={setExposure}
                 minimumSliderValue={-3}
                 maximumSliderValue={3}
-              />
+              /> */}
             </View>
           </ScrollView>
           {/* Submit */}

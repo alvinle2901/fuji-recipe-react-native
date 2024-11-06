@@ -23,8 +23,7 @@ const RecipeImport = ({ item, isImported }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Detail', { ...item })}
-      style={{}}
+      onPress={() => navigation.navigate('Detail', { item: item, isDataToImport: true, isImported: isImported })}
       className="flex-row p-2 bg-white w-full border-gray-100 border-b items-center justify-between">
       <View className="flex-row">
         <Image

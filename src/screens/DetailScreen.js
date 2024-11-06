@@ -12,15 +12,14 @@ import { StatusBar } from 'expo-status-bar';
 import Toast from 'react-native-root-toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-// Firebase
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+
 import {
   ChevronLeftIcon,
   HeartIcon,
   PencilSquareIcon,
   EllipsisVerticalIcon,
-  TrashIcon
+  TrashIcon,
+  InboxArrowDownIcon
 } from 'react-native-heroicons/outline';
 import {
   widthPercentageToDP as wp,
@@ -30,12 +29,18 @@ import {
 import DetailItem from '../components/DetailItem';
 import DialogModal from '../components/DialogModal';
 import { updateWB } from '../utils/string';
-import { useDeleteRecipe, useUpdateRecipeField } from '../hooks/useRecipe';
+import {
+  useSaveRecipe,
+  useDeleteRecipe,
+  useUpdateRecipeField
+} from '../hooks/useRecipe';
 
 function DetailScreen(props) {
-  const item = props.route.params;
+  const { item, isDataToImport, isImported } = props.route.params;
   const navigation = useNavigation();
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const saveRecipe = useSaveRecipe();
   const deleteRecipe = useDeleteRecipe();
   const updateRecipeFieldMutation = useUpdateRecipeField();
 
@@ -45,10 +50,6 @@ function DetailScreen(props) {
 
   const renderedDetailItems = [];
   const ITEM_HEIGHT = wp(130);
-
-  const handleUpdateRecipeField = (id) => {
-    updateRecipeFieldMutation.mutate({ id, field: 'color', value: 5 });
-  };
 
   // delete item
   const handleDeleteRecipe = (item) => {
@@ -71,6 +72,14 @@ function DetailScreen(props) {
     });
   };
 
+  const handleSaveRecipe = () => {
+    const newRecipe = {
+      id: `id_${Date.now()}`,
+      ...item
+    };
+    saveRecipe.mutate(newRecipe);
+  };
+
   // render item details
   for (const [key, value] of Object.entries(item)) {
     if (key == 'white_balance') {
@@ -91,7 +100,10 @@ function DetailScreen(props) {
       key == 'temp' ||
       key == 'id' ||
       key == 'favorite' ||
-      key == 'bw'
+      key == 'bw' ||
+      key == 'db_id' ||
+      value === undefined ||
+      value === null
     ) {
       continue;
     } else {
@@ -158,53 +170,74 @@ function DetailScreen(props) {
           onPress={() => navigation.goBack()}>
           <ChevronLeftIcon size={wp(6)} color="black" />
         </TouchableOpacity>
+
         {/* Favorite */}
-        <TouchableOpacity
-          className="p-2 h-9 rounded-full"
-          style={{ backgroundColor: 'white' }}
-          onPress={() => {
-            toggleFavourite(!isFavourite);
-            updateFavorite(!isFavourite);
-          }}>
-          <HeartIcon size={wp(6)} color={isFavourite ? 'red' : 'black'} />
-        </TouchableOpacity>
+        {!isDataToImport && (
+          <View>
+            <TouchableOpacity
+              className="p-2 h-9 rounded-full"
+              style={{ backgroundColor: 'white' }}
+              onPress={() => {
+                toggleFavourite(!isFavourite);
+                updateFavorite(!isFavourite);
+              }}>
+              <HeartIcon size={wp(6)} color={isFavourite ? 'red' : 'black'} />
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Options */}
-        <View>
-          <TouchableOpacity
-            className="p-2 rounded-full mr-4"
-            style={{ backgroundColor: 'white' }}
-            onPress={() => setFunc(!func)}>
-            <EllipsisVerticalIcon size={wp(6)} color="black" />
-          </TouchableOpacity>
-          {func && (
-            <>
-              {/* Edit */}
+        {!isDataToImport ? (
+          <View>
+            <TouchableOpacity
+              className="p-2 rounded-full mr-4"
+              style={{ backgroundColor: 'white' }}
+              onPress={() => setFunc(!func)}>
+              <EllipsisVerticalIcon size={wp(6)} color="black" />
+            </TouchableOpacity>
+            {func && (
+              <>
+                {/* Edit */}
+                <TouchableOpacity
+                  className="p-2 rounded-full mr-4 mt-1"
+                  style={{ backgroundColor: 'white' }}
+                  onPress={() => navigation.navigate('Edit', { ...item })}>
+                  <PencilSquareIcon size={wp(6)} color="black" />
+                </TouchableOpacity>
+                {/* Delete */}
+                <TouchableOpacity
+                  className="p-2 rounded-full mr-4 mt-1"
+                  style={{ backgroundColor: 'white' }}
+                  onPress={() => setDialog(true)}>
+                  <TrashIcon size={wp(6)} color="black" />
+                  <DialogModal
+                    title={'Recipe Delete'}
+                    description={
+                      'Do you want to delete this recipe? You cannot undo this action.'
+                    }
+                    visible={dialog}
+                    setVisible={setDialog}
+                    handler={() => handleDeleteRecipe(item)}
+                    handlerLabel={'Delete'}
+                  />
+                </TouchableOpacity>
+              </>
+            )}
+          </View>
+        ) : (
+          <>
+            {!isImported && (
               <TouchableOpacity
-                className="p-2 rounded-full mr-4 mt-1"
+                className="p-2 h-9 rounded-full mr-4"
                 style={{ backgroundColor: 'white' }}
-                onPress={() => navigation.navigate('Edit', { ...item })}>
-                <PencilSquareIcon size={wp(6)} color="black" />
+                onPress={() => {
+                  handleSaveRecipe();
+                }}>
+                <InboxArrowDownIcon size={wp(6)} color={'black'} />
               </TouchableOpacity>
-              {/* Delete */}
-              <TouchableOpacity
-                className="p-2 rounded-full mr-4 mt-1"
-                style={{ backgroundColor: 'white' }}
-                onPress={() => setDialog(true)}>
-                <TrashIcon size={wp(6)} color="black" />
-                <DialogModal
-                  title={'Recipe Delete'}
-                  description={
-                    'Do you want to delete this recipe? You cannot undo this action.'
-                  }
-                  visible={dialog}
-                  setVisible={setDialog}
-                  handler={() => handleDeleteRecipe(item)}
-                  handlerLabel={'Delete'}
-                />
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
+            )}
+          </>
+        )}
       </SafeAreaView>
       {/* Bottom Sheet */}
       <BottomSheet

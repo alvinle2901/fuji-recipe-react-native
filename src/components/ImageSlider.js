@@ -41,7 +41,7 @@ const ImageSlider = ({ images, setImages }) => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           //set images with url from database
-          setPickedImages([...pickedImages, { uri: downloadURL }]);
+          setPickedImages([...pickedImages, downloadURL]);
         });
       }
     );
@@ -84,7 +84,7 @@ const ImageSlider = ({ images, setImages }) => {
             <View className="flex-row" key={index}>
               <Image
                 className="items-center justify-center -mr-3 mt-2"
-                source={item}
+                source={{ uri: item }}
                 style={styles.imageContainer}
               />
               <TouchableOpacity onPress={() => removeImage(index)}>

@@ -22,6 +22,7 @@ import FilterBottomSheet from '../components/FilterBottomSheet';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_PRESETS } from '../graphql/queries/preset.query';
 import Imports from '../components/Imports';
+import { checkBW } from '../utils/string';
 
 const ImportScreen = () => {
   const { loading, error, data } = useQuery(GET_ALL_PRESETS);
@@ -63,6 +64,15 @@ const ImportScreen = () => {
     const recipeList = data.getAllPresets;
 
     recipeList.forEach((recipe) => {
+      const grain =
+        recipe.settings.grainEffect.strength +
+        ', ' +
+        recipe.settings.grainEffect.size;
+
+      const iso =
+        recipe.settings.iso.mode + ', up to ' + recipe.settings.iso.maxIso;
+      const bw = checkBW(recipe.settings.filmSimulation);
+
       recipes.push({
         film_simulation: recipe.settings.filmSimulation,
         sensor: recipe.sensor,
@@ -73,9 +83,11 @@ const ImportScreen = () => {
         shadow: recipe.settings.shadow,
         sharpness: recipe.settings.sharpening,
         noise_reduction: recipe.settings.noiseReduction,
-        grain_effect: recipe.settings.grainEffect.strength,
+        clarity: recipe.settings.clarity,
+        grain_effect: grain,
         color_chrome_fx: recipe.settings.color_chrome_fx,
-        iso: recipe.settings.iso.mode,
+        color_chrome_fx_blue: recipe.settings.color_chrome_fx_blue,
+        iso: iso,
         exposure_compensation: recipe.settings.exposure_compensation?.max,
         red: recipe.settings.whiteBalance.redShift,
         blue: recipe.settings.whiteBalance.blueShift,
@@ -83,8 +95,8 @@ const ImportScreen = () => {
         title: recipe.name,
         temp: recipe.temp,
         favorite: false,
-        bw: recipe.bw,
-        db_id: recipe.id,
+        bw: bw,
+        db_id: recipe.id
       });
     });
     setRecipes(recipes);

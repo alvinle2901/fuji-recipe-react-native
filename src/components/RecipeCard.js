@@ -9,10 +9,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+import { useUpdateRecipeField } from '../hooks/useRecipe'
 
 const RecipeCard = ({ item }) => {
   const navigation = useNavigation()
   const [isFavourite, toggleFavourite] = useState(item.favorite)
+
+  const updateRecipeFieldMutation = useUpdateRecipeField()
   // update favorite to firebase
   const updateFavorite = async (state) => {
     updateRecipeFieldMutation.mutate({
@@ -24,7 +27,7 @@ const RecipeCard = ({ item }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Detail', { ...item })}
+      onPress={() => navigation.navigate('Detail', { item: item, isDataToImport: false })}
       style={{ width: wp(44), height: wp(55) }}
       className="flex justify-end relative p-4 py-6 space-y-2 mb-4"
     >

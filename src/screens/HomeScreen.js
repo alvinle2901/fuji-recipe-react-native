@@ -23,6 +23,7 @@ import {
 import Recipes from '../components/Recipes';
 import FilterBottomSheet from '../components/FilterBottomSheet';
 import { useRecipes } from '../hooks/useRecipe';
+import { clearAllData } from '../storage/storage';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -86,12 +87,15 @@ const HomeScreen = () => {
           <TouchableOpacity
             className="p-3 rounded-full mr-1"
             style={{ backgroundColor: '#f0eff2' }}
-            onPress={() => navigation.navigate('Import')}>
+            onPress={() => {
+              navigation.navigate('Import');
+              // clearAllData()
+            }}>
             <Image
               source={require('../../assets/import.png')}
               style={{ height: wp(5), width: wp(5) }}></Image>
           </TouchableOpacity>
-          
+
           {/* Add */}
           <TouchableOpacity
             className="p-3 rounded-full"
