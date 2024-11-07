@@ -15,7 +15,7 @@ import { useApolloClientDevTools } from '@dev-plugins/apollo-client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const httpLink = createHttpLink({
-  uri: 'http://192.168.137.1:4000/'
+  uri: 'https://fuji-recipe-be.onrender.com/'
 });
 
 // Initialize Apollo Client
