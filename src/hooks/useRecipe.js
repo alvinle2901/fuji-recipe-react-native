@@ -53,8 +53,8 @@ export const useUpdateRecipe = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id, updatedRecipe) => {
-      await updateRecipeById(id, updatedRecipe);
+    mutationFn: async (data) => {
+      await updateRecipeById(data.id, data.updatedRecipe);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(RECIPES_QUERY_KEY);

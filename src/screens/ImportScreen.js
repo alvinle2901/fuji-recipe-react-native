@@ -22,7 +22,7 @@ import FilterBottomSheet from '../components/FilterBottomSheet';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_PRESETS } from '../graphql/queries/preset.query';
 import Imports from '../components/Imports';
-import { checkBW } from '../utils/string';
+import { checkBW, getTemp, updateGrain } from '../utils/string';
 
 const ImportScreen = () => {
   const { loading, error, data } = useQuery(GET_ALL_PRESETS);
@@ -64,20 +64,27 @@ const ImportScreen = () => {
     const recipeList = data.getAllPresets;
 
     recipeList.forEach((recipe) => {
-      const grain =
-        recipe.settings.grainEffect.strength +
-        ', ' +
-        recipe.settings.grainEffect.size;
-
+      const grain = updateGrain(
+        recipe.settings.grainEffect.strength,
+        recipe.settings.grainEffect.size
+      );
+      const bw = checkBW(recipe.settings.filmSimulation);
       const iso =
         recipe.settings.iso.mode + ', up to ' + recipe.settings.iso.maxIso;
-      const bw = checkBW(recipe.settings.filmSimulation);
+
+      const temp = recipe.settings.whiteBalance.mode.endsWith('K')
+        ? getTemp(recipe.settings.whiteBalance.mode)
+        : 0;
+
+      const wb = recipe.settings.whiteBalance.mode.endsWith('K')
+        ? 'Color Temperature'
+        : recipe.settings.whiteBalance.mode;
 
       recipes.push({
         film_simulation: recipe.settings.filmSimulation,
         sensor: recipe.sensor,
         dynamic_range: recipe.settings.dynamicRange,
-        white_balance: recipe.settings.whiteBalance.mode,
+        white_balance: wb,
         color: recipe.settings.color,
         highlight: recipe.settings.highlight,
         shadow: recipe.settings.shadow,
@@ -93,7 +100,7 @@ const ImportScreen = () => {
         blue: recipe.settings.whiteBalance.blueShift,
         images: recipe.images,
         title: recipe.name,
-        temp: recipe.temp,
+        temp: temp,
         favorite: false,
         bw: bw,
         db_id: recipe.id
