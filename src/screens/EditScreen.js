@@ -72,7 +72,6 @@ const EditScreen = (props) => {
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={async (values) => {
-        console.log(values);
         try {
           handleUpdateRecipe(item.id, {
             film_simulation: values.film,
@@ -132,9 +131,9 @@ const EditScreen = (props) => {
               />
             </TouchableOpacity>
             <Text
-              style={{ fontSize: wp(5.5) }}
+              style={{ fontSize: wp(8.5), fontFamily: 'fin_thin' }}
               className="font-semibold text-neutral-700">
-              Edit
+              Edit Recipe
             </Text>
             <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
           </View>

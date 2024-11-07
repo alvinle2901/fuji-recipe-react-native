@@ -1,18 +1,18 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useCallback } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useCallback } from 'react';
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView
-} from '@gorhom/bottom-sheet'
+} from '@gorhom/bottom-sheet';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
+} from 'react-native-responsive-screen';
 
-import Checkbox from '../components/Checkbox'
-import FilterDropdown from '../components/FilterDropdown'
-import { filterCheckbox, filterDropdown } from '../utils/filter'
-import { filmSimulationData, sensorData } from '../constants'
+import Checkbox from '../components/Checkbox';
+import FilterDropdown from '../components/FilterDropdown';
+import { filterCheckbox, filterDropdown } from '../utils/filter';
+import { filmSimulationData, sensorData } from '../constants';
 
 const FilterBottomSheet = ({
   fetchedData,
@@ -41,17 +41,17 @@ const FilterBottomSheet = ({
       />
     ),
     []
-  )
+  );
   // handle filter function
   const handleFilter = (sensor, film, favorite, bw, color) => {
-    let result = fetchedData
-    result = filterDropdown(result, film, 'film_simulation')
-    result = filterDropdown(result, sensor, 'sensor')
-    result = filterCheckbox(result, favorite, 'favorite')
-    result = filterCheckbox(result, bw, 'bw')
-    if (color != null) result = filterCheckbox(result, !color, 'bw')
-    setData(result)
-  }
+    let result = fetchedData;
+    result = filterDropdown(result, film, 'film_simulation');
+    result = filterDropdown(result, sensor, 'sensor');
+    result = filterCheckbox(result, favorite, 'favorite');
+    result = filterCheckbox(result, bw, 'bw');
+    if (color != null) result = filterCheckbox(result, !color, 'bw');
+    setData(result);
+  };
 
   return (
     <BottomSheet
@@ -62,10 +62,9 @@ const FilterBottomSheet = ({
       backdropComponent={renderBackdrop}
       onChange={(index) => {
         if (index == -1) {
-          setFilterBar(false)
+          setFilterBar(false);
         }
-      }}
-    >
+      }}>
       <BottomSheetView>
         <View>
           <View
@@ -74,14 +73,12 @@ const FilterBottomSheet = ({
               borderRadius: 1,
               borderBottomWidth: 0.7,
               borderColor: 'grey'
-            }}
-          >
+            }}>
             <Text
               style={{
                 fontSize: wp(10),
                 fontFamily: 'fin_thin'
-              }}
-            >
+              }}>
               Filter
             </Text>
           </View>
@@ -107,7 +104,7 @@ const FilterBottomSheet = ({
               text={'Favorite'}
               checked={checkedFav}
               onPress={() => {
-                setCheckedFav(!checkedFav)
+                setCheckedFav(!checkedFav);
               }}
             />
           </View>
@@ -117,22 +114,21 @@ const FilterBottomSheet = ({
               borderRadius: 1,
               borderBottomWidth: 1,
               borderColor: '#f0eff2'
-            }}
-          >
+            }}>
             <Checkbox
               text={'Color'}
               checked={checkedColor}
               onPress={() => {
-                setCheckedColor(!checkedColor)
-                setCheckedBW(checkedColor)
+                setCheckedColor(!checkedColor);
+                setCheckedBW(checkedColor);
               }}
             />
             <Checkbox
               text={'B&W'}
               checked={checkedBW}
               onPress={() => {
-                setCheckedBW(!checkedBW)
-                setCheckedColor(checkedBW)
+                setCheckedBW(!checkedBW);
+                setCheckedColor(checkedBW);
               }}
             />
           </View>
@@ -141,20 +137,18 @@ const FilterBottomSheet = ({
             <TouchableOpacity
               className="flex-1 items-center my-2 rounded-xl bg-[#9e9ca3] py-2 mx-3"
               onPress={() => {
-                setCheckedBW(null)
-                setCheckedColor(null)
-                setCheckedFav(null)
-                setFilterFilm('')
-                setFilterSensor('')
-              }}
-            >
+                setCheckedBW(null);
+                setCheckedColor(null);
+                setCheckedFav(null);
+                setFilterFilm('');
+                setFilterSensor('');
+              }}>
               <Text
                 style={{
                   fontSize: wp(8),
                   color: 'white',
                   fontFamily: 'fin_thin'
-                }}
-              >
+                }}>
                 Reset
               </Text>
             </TouchableOpacity>
@@ -167,17 +161,15 @@ const FilterBottomSheet = ({
                   checkedFav,
                   checkedBW,
                   checkedColor
-                )
-                setFilterBar(false)
-              }}
-            >
+                );
+                setFilterBar(false);
+              }}>
               <Text
                 style={{
                   fontSize: wp(8),
                   color: 'white',
                   fontFamily: 'fin_thin'
-                }}
-              >
+                }}>
                 Done
               </Text>
             </TouchableOpacity>
@@ -185,10 +177,10 @@ const FilterBottomSheet = ({
         </View>
       </BottomSheetView>
     </BottomSheet>
-  )
-}
+  );
+};
 
-export default FilterBottomSheet
+export default FilterBottomSheet;
 
 const styles = StyleSheet.create({
   bottomSheet: {
@@ -199,4 +191,4 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20
   }
-})
+});

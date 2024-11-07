@@ -74,72 +74,43 @@ const AddScreen = ({ navigation }) => {
       validateOnBlur={false}
       onSubmit={async (values) => {
         console.log(values);
-        handleSaveRecipe({
-          film_simulation: values.film,
-          sensor: values.sensor,
-          white_balance: values.wb,
-          dynamic_range: values.dynamicRange,
-          color: color,
-          highlight: highlight,
-          shadow: shadow,
-          sharpness: sharpness,
-          noise_reduction: noiseReduction,
-          grain_effect: values.grainEffect,
-          color_chrome_fx: values.ccfx,
-          iso: values.iso,
-          exposure: exposure,
-          red: values.red,
-          blue: values.blue,
-          images: images,
-          title: values.title,
-          temp: values.temp,
-          favorite: false,
-          bw: checkBW(values.film)
-        });
-        Toast.show('New item added successfully!', {
-          duration: Toast.durations.SHORT,
-          backgroundColor: 'white',
-          textColor: 'black'
-        });
-        navigation.navigate('Home');
-        // try {
-        //   const docRef = await addDoc(collection(db, 'FujiRecipe'), {
-        //     film_simulation: values.film,
-        //     sensor: values.sensor,
-        //     white_balance: values.wb,
-        //     dynamic_range: values.dynamicRange,
-        //     color: color,
-        //     highlight: highlight,
-        //     shadow: shadow,
-        //     sharpness: sharpness,
-        //     noise_reduction: noiseReduction,
-        //     grain_effect: values.grainEffect,
-        //     color_chrome_fx: values.ccfx,
-        //     iso: values.iso,
-        //     exposure: exposure,
-        //     red: values.red,
-        //     blue: values.blue,
-        //     images: images,
-        //     title: values.title,
-        //     temp: values.temp,
-        //     favorite: false,
-        //     bw: checkBW(values.film)
-        //   });
-        //   console.log('Document written with ID: ', docRef.id);
-        //   Toast.show('New item added successfully!', {
-        //     duration: Toast.durations.SHORT,
-        //     backgroundColor: 'white',
-        //     textColor: 'black'
-        //   });
-        //   navigation.navigate('Home');
-        // } catch (e) {
-        //   console.error('Error adding document: ', e);
-        //   Toast.show('There was an error while uploading', {
-        //     duration: Toast.durations.SHORT,
-        //     backgroundColor: 'white',
-        //     textColor: 'black'
-        //   });
-        // }
+        try {
+          handleSaveRecipe({
+            film_simulation: values.film,
+            sensor: values.sensor,
+            white_balance: values.wb,
+            dynamic_range: values.dynamicRange,
+            color: color,
+            highlight: highlight,
+            shadow: shadow,
+            sharpness: sharpness,
+            noise_reduction: noiseReduction,
+            grain_effect: values.grainEffect,
+            color_chrome_fx: values.ccfx,
+            iso: values.iso,
+            exposure: exposure,
+            red: values.red,
+            blue: values.blue,
+            images: images,
+            title: values.title,
+            temp: values.temp,
+            favorite: false,
+            bw: checkBW(values.film)
+          });
+          Toast.show('New item added successfully!', {
+            duration: Toast.durations.SHORT,
+            backgroundColor: 'white',
+            textColor: 'black'
+          });
+          navigation.navigate('Home');
+        } catch (e) {
+          console.error('Error adding document: ', e);
+          Toast.show('There was an error while uploading', {
+            duration: Toast.durations.SHORT,
+            backgroundColor: 'white',
+            textColor: 'black'
+          });
+        }
       }}>
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
@@ -162,7 +133,7 @@ const AddScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
             <Text
-              style={{ fontSize: wp(5.5) }}
+              style={{ fontSize: wp(8.5), fontFamily: 'fin_thin' }}
               className="font-semibold text-neutral-700">
               Add New Recipe
             </Text>

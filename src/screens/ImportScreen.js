@@ -110,9 +110,6 @@ const ImportScreen = () => {
     setFetchedData(recipes);
   };
 
-  // if (loading) return <Text>Loading...</Text>;
-  // if (error) return <Text>Error: {error.message}</Text>;
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="items-center mb-3 mt-4 justify-between flex-row">
@@ -154,7 +151,7 @@ const ImportScreen = () => {
       {filterBar && (
         <FilterBottomSheet
           fetchedData={fetchedData}
-          setRecipes={setRecipes}
+          setData={setRecipes}
           setFilterBar={setFilterBar}
           filterSensor={filterSensor}
           setFilterSensor={setFilterSensor}
