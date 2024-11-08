@@ -18,7 +18,7 @@ const httpLink = createHttpLink({
 
 const client = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache(), 
 });
 
 // Initialize use-query client
@@ -29,6 +29,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   useApolloClientDevTools(client);
 
+  // Loading fonts
   const [fontsLoaded] = useFonts({
     fin_thin: require('./assets/finland_rounded_thin.ttf'),
     epic_fusion: require('./assets/EpicFusion.ttf'),

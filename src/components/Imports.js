@@ -10,6 +10,7 @@ const Imports = ({ data }) => {
 
   useEffect(() => {
     if (recipes) {
+      // get db_id of imported data
       const filteredData = recipes.map((item) => ({ db_id: item.db_id }));
       setIdList(filteredData);
     }
@@ -18,6 +19,7 @@ const Imports = ({ data }) => {
   return (
     <View className="px-2">
       {data.map((item, index) => {
+        // Check if the recipe is already imported
         const hasMatchingId = idList.some((recipe) => recipe.db_id === item.db_id);
         return <RecipeImport item={item} key={index} isImported={hasMatchingId} />;
       })}

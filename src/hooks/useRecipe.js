@@ -6,7 +6,7 @@ import {
   saveRecipes,
   updateRecipeById,
   updateRecipeFieldById,
-} from '../storage/storage';
+} from '../storage';
 
 // Key for caching
 const RECIPES_QUERY_KEY = ['recipes'];
@@ -16,7 +16,7 @@ export const useRecipes = () => {
     queryKey: RECIPES_QUERY_KEY,
     queryFn: getRecipes,
     ...{
-      staleTime: Infinity, 
+      staleTime: Infinity,
       cacheTime: Infinity,
     },
   });

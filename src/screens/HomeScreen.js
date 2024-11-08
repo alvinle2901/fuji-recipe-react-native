@@ -22,22 +22,26 @@ import { useNavigation } from '@react-navigation/native';
 import FilterBottomSheet from '../components/FilterBottomSheet';
 import Recipes from '../components/Recipes';
 import { useRecipes } from '../hooks/useRecipe';
-import { clearAllData } from '../storage/storage';
+import { clearAllData } from '../storage';
+import { filterAndSearch } from '../utils/filter';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { data: recipes, isLoading, isError } = useRecipes();
 
   const [data, setData] = useState([]);
+  // original data
   const [fetchedData, setFetchedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterFilm, setFilterFilm] = useState('');
-  const [filterSensor, setFilterSensor] = useState('');
-  const [filterBar, setFilterBar] = useState(false);
+  const [isFilterUp, setIsFilterUp] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [checkedFav, setCheckedFav] = useState(null);
-  const [checkedBW, setCheckedBW] = useState(null);
-  const [checkedColor, setCheckedColor] = useState(null);
+  const [filters, setFilters] = useState({
+    film: '',
+    sensor: '',
+    checkedFav: null,
+    checkedBW: null,
+    checkedColor: null,
+  });
 
   useEffect(() => {
     if (recipes) {
@@ -57,14 +61,7 @@ const HomeScreen = () => {
   // handle search function
   const handleSearchTerm = (text) => {
     setSearchTerm(text);
-
-    if (text != '') {
-      setData([
-        ...fetchedData.filter((item) => item.title.toLowerCase().includes(text.toLowerCase())),
-      ]);
-    } else {
-      setData(fetchedData);
-    }
+    setData(filterAndSearch(fetchedData, filters, text));
   };
 
   return (
@@ -122,7 +119,7 @@ const HomeScreen = () => {
         </View>
         <TouchableOpacity
           className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#f0eff2]"
-          onPress={() => setFilterBar(true)}
+          onPress={() => setIsFilterUp(true)}
         >
           <FunnelIcon name="filter" size={20} color="#7f7f7f" />
         </TouchableOpacity>
@@ -136,21 +133,14 @@ const HomeScreen = () => {
         <Recipes data={data} />
       </ScrollView>
       {/* filter bottom sheet */}
-      {filterBar && (
+      {isFilterUp && (
         <FilterBottomSheet
           fetchedData={fetchedData}
           setData={setData}
-          setFilterBar={setFilterBar}
-          filterSensor={filterSensor}
-          setFilterSensor={setFilterSensor}
-          filterFilm={filterFilm}
-          setFilterFilm={setFilterFilm}
-          checkedFav={checkedFav}
-          setCheckedFav={setCheckedFav}
-          checkedColor={checkedColor}
-          setCheckedColor={setCheckedColor}
-          checkedBW={checkedBW}
-          setCheckedBW={setCheckedBW}
+          setIsFilterUp={setIsFilterUp}
+          filters={filters}
+          setFilters={setFilters}
+          searchTerm={searchTerm}
         />
       )}
     </SafeAreaView>

@@ -6,7 +6,10 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
+import { getField } from '../utils/string';
+
 const FilterDropdown = ({ data, field, icon, value, setValue }) => {
+  const filterField = getField(field);
   return (
     <View
       className="flex-row py-3 items-center w-full justify-between"
@@ -29,7 +32,11 @@ const FilterDropdown = ({ data, field, icon, value, setValue }) => {
         placeholder={field}
         value={value}
         onChange={(item) => {
-          setValue(item.value);
+          setValue((prevFilters) => ({
+            ...prevFilters,
+            [filterField]: item.value,
+          }));
+          // setValue(item.value);
         }}
       />
     </View>

@@ -58,3 +58,8 @@ export const checkBW = (film) => {
     return true;
   } else return false;
 };
+
+export const getField = (field) => {
+  if (field === 'Film Simulation') return 'film';
+  if (field === 'Sensor') return 'sensor';
+};

@@ -10,24 +10,18 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/botto
 import Checkbox from '../components/Checkbox';
 import FilterDropdown from '../components/FilterDropdown';
 import { filmSimulationData, sensorData } from '../constants';
-import { filterCheckbox, filterDropdown } from '../utils/filter';
+import { filterAndSearch } from '../utils/filter';
 
 const FilterBottomSheet = ({
   fetchedData,
   setData,
-  setFilterBar,
-  filterSensor,
-  setFilterSensor,
-  filterFilm,
-  setFilterFilm,
-  checkedFav,
-  setCheckedFav,
-  checkedColor,
-  setCheckedColor,
-  checkedBW,
-  setCheckedBW,
+  setIsFilterUp,
+  filters,
+  setFilters,
+  searchTerm,
 }) => {
-  // handle backdrop for bottom sheet
+  const { film, sensor, checkedFav, checkedBW, checkedColor } = filters;
+  // render backdrop for bottom sheet
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -41,14 +35,8 @@ const FilterBottomSheet = ({
     []
   );
   // handle filter function
-  const handleFilter = (sensor, film, favorite, bw, color) => {
-    let result = fetchedData;
-    result = filterDropdown(result, film, 'film_simulation');
-    result = filterDropdown(result, sensor, 'sensor');
-    result = filterCheckbox(result, favorite, 'favorite');
-    result = filterCheckbox(result, bw, 'bw');
-    if (color != null) result = filterCheckbox(result, !color, 'bw');
-    setData(result);
+  const handleFilter = () => {
+    setData(filterAndSearch(fetchedData, filters, searchTerm));
   };
 
   return (
@@ -60,7 +48,7 @@ const FilterBottomSheet = ({
       backdropComponent={renderBackdrop}
       onChange={(index) => {
         if (index == -1) {
-          setFilterBar(false);
+          setIsFilterUp(false);
         }
       }}
     >
@@ -88,16 +76,16 @@ const FilterBottomSheet = ({
             data={sensorData}
             icon={require('../../assets/recipe_icon/sensor.png')}
             field={'Sensor'}
-            value={filterSensor}
-            setValue={setFilterSensor}
+            value={sensor}
+            setValue={setFilters}
           />
           {/* Film Sensor */}
           <FilterDropdown
             data={filmSimulationData}
             icon={require('../../assets/recipe_icon/film.png')}
             field={'Film Simulation'}
-            value={filterFilm}
-            setValue={setFilterFilm}
+            value={film}
+            setValue={setFilters}
           />
           {/* Checkbox-es */}
           <View className="flex-row py-4 w-full">
@@ -105,7 +93,10 @@ const FilterBottomSheet = ({
               text={'Favorite'}
               checked={checkedFav}
               onPress={() => {
-                setCheckedFav(!checkedFav);
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  checkedFav: !checkedFav,
+                }));
               }}
             />
           </View>
@@ -121,16 +112,22 @@ const FilterBottomSheet = ({
               text={'Color'}
               checked={checkedColor}
               onPress={() => {
-                setCheckedColor(!checkedColor);
-                setCheckedBW(checkedColor);
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  checkedColor: !checkedColor,
+                  checkedBW: checkedColor,
+                }));
               }}
             />
             <Checkbox
               text={'B&W'}
               checked={checkedBW}
               onPress={() => {
-                setCheckedBW(!checkedBW);
-                setCheckedColor(checkedBW);
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  checkedColor: checkedBW,
+                  checkedBW: !checkedBW,
+                }));
               }}
             />
           </View>
@@ -139,11 +136,13 @@ const FilterBottomSheet = ({
             <TouchableOpacity
               className="flex-1 items-center my-2 rounded-xl bg-[#9e9ca3] py-2 mx-3"
               onPress={() => {
-                setCheckedBW(null);
-                setCheckedColor(null);
-                setCheckedFav(null);
-                setFilterFilm('');
-                setFilterSensor('');
+                setFilters({
+                  film: '',
+                  sensor: '',
+                  checkedFav: null,
+                  checkedBW: null,
+                  checkedColor: null,
+                });
               }}
             >
               <Text
@@ -159,8 +158,8 @@ const FilterBottomSheet = ({
             <TouchableOpacity
               className="flex-1 items-center my-2 rounded-xl bg-black py-2 mx-3"
               onPress={() => {
-                handleFilter(filterSensor, filterFilm, checkedFav, checkedBW, checkedColor);
-                setFilterBar(false);
+                handleFilter();
+                setIsFilterUp(false);
               }}
             >
               <Text
