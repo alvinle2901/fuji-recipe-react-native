@@ -1,11 +1,10 @@
-import { StyleSheet, View, Image } from 'react-native'
-import React from 'react'
-import { Dropdown } from 'react-native-element-dropdown'
-
+import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
 import {
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
+} from 'react-native-responsive-screen';
 
 const FilterDropdown = ({ data, field, icon, value, setValue }) => {
   return (
@@ -14,7 +13,7 @@ const FilterDropdown = ({ data, field, icon, value, setValue }) => {
       style={{
         borderRadius: 1,
         borderBottomWidth: 1,
-        borderColor: '#f0eff2'
+        borderColor: '#f0eff2',
       }}
     >
       <Image source={icon} style={{ height: wp(7), width: wp(7) }}></Image>
@@ -30,14 +29,14 @@ const FilterDropdown = ({ data, field, icon, value, setValue }) => {
         placeholder={field}
         value={value}
         onChange={(item) => {
-          setValue(item.value)
+          setValue(item.value);
         }}
       />
     </View>
-  )
-}
+  );
+};
 
-export default FilterDropdown
+export default FilterDropdown;
 
 const styles = StyleSheet.create({
   dropdown: {
@@ -45,13 +44,13 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
   },
   placeholderStyle: {
     fontSize: wp(4),
-    color: 'grey'
+    color: 'grey',
   },
   selectedTextStyle: {
-    fontSize: wp(4)
-  }
-})
+    fontSize: wp(4),
+  },
+});

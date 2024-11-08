@@ -1,14 +1,7 @@
 import React from 'react';
 import Dialog from 'react-native-dialog';
 
-const DialogModal = ({
-  title,
-  description,
-  handlerLabel,
-  visible,
-  setVisible,
-  handler
-}) => {
+const DialogModal = ({ title, description, handlerLabel, visible, setVisible, handler }) => {
   return (
     <Dialog.Container visible={visible}>
       <Dialog.Title>{title}</Dialog.Title>

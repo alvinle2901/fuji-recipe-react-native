@@ -1,16 +1,16 @@
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-
-import * as ImagePicker from 'expo-image-picker';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { PlusCircleIcon, XCircleIcon } from 'react-native-heroicons/outline';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+
+import * as ImagePicker from 'expo-image-picker';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 import { storage } from '../../firebase.config';
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from 'react-native-responsive-screen';
 
 const ImageSlider = ({ images, setImages }) => {
   const [pickedImages, setPickedImages] = useState(images);
@@ -31,9 +31,7 @@ const ImageSlider = ({ images, setImages }) => {
     uploadTask.on(
       'state_changed',
       (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
+        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       },
       (error) => {
         alert(error);
@@ -52,7 +50,7 @@ const ImageSlider = ({ images, setImages }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      quality: 1
+      quality: 1,
     });
 
     if (!result.canceled) {
@@ -72,13 +70,11 @@ const ImageSlider = ({ images, setImages }) => {
       style={{
         borderRadius: 1,
         borderBottomWidth: 1,
-        borderColor: '#f0eff2'
-      }}>
+        borderColor: '#f0eff2',
+      }}
+    >
       <Text className="mt-3">Images</Text>
-      <ScrollView
-        className="py-3"
-        horizontal
-        showsHorizontalScrollIndicator={false}>
+      <ScrollView className="py-3" horizontal showsHorizontalScrollIndicator={false}>
         {pickedImages.map((item, index) => {
           return (
             <View className="flex-row" key={index}>
@@ -93,15 +89,7 @@ const ImageSlider = ({ images, setImages }) => {
             </View>
           );
         })}
-        <View
-          className="items-center justify-center mt-2"
-          style={[
-            styles.imageContainer,
-            {
-              borderColor: 'gray',
-              borderWidth: 0.5
-            }
-          ]}>
+        <View className="items-center justify-center mt-2" style={[styles.imageContainer]}>
           <TouchableOpacity onPress={pickImage}>
             <PlusCircleIcon color={'gray'} size={wp(10)} />
           </TouchableOpacity>
@@ -118,6 +106,8 @@ const styles = StyleSheet.create({
     width: wp(44),
     height: wp(55),
     borderRadius: 20,
-    marginLeft: 10
-  }
+    marginLeft: 10,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+  },
 });

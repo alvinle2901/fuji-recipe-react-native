@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { useRecipes } from '../hooks/useRecipe';
 
+import { useRecipes } from '../hooks/useRecipe';
 import RecipeImport from './RecipeImport';
 
 const Imports = ({ data }) => {
@@ -18,9 +18,7 @@ const Imports = ({ data }) => {
   return (
     <View className="px-2">
       {data.map((item, index) => {
-        const hasMatchingId = idList.some(
-          (recipe) => recipe.db_id === item.db_id
-        );
+        const hasMatchingId = idList.some((recipe) => recipe.db_id === item.db_id);
         return <RecipeImport item={item} key={index} isImported={hasMatchingId} />;
       })}
     </View>

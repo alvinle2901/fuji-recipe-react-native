@@ -1,27 +1,18 @@
+import React, { useEffect, useState } from 'react';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ChevronLeftIcon, FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput
-} from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import {
-  ChevronLeftIcon,
-  FunnelIcon,
-  MagnifyingGlassIcon
-} from 'react-native-heroicons/outline';
-import {
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useQuery } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
 
 import FilterBottomSheet from '../components/FilterBottomSheet';
-import { useQuery } from '@apollo/client';
-import { GET_ALL_PRESETS } from '../graphql/queries/preset.query';
 import Imports from '../components/Imports';
+import { GET_ALL_PRESETS } from '../graphql/queries/preset.query';
 import { checkBW, getTemp, updateGrain } from '../utils/string';
 
 const ImportScreen = () => {
@@ -38,21 +29,7 @@ const ImportScreen = () => {
   const [checkedBW, setCheckedBW] = useState(null);
   const [checkedColor, setCheckedColor] = useState(null);
 
-  // handle search function
-  const handleSearchTerm = (text) => {
-    setSearchTerm(text);
-
-    if (text != '') {
-      setRecipes([
-        ...fetchedData.filter((item) =>
-          item.title.toLowerCase().includes(text.toLowerCase())
-        )
-      ]);
-    } else {
-      setRecipes(fetchedData);
-    }
-  };
-
+  // Fetching the data
   useEffect(() => {
     if (data && data.getAllPresets) {
       fetchData();
@@ -69,13 +46,10 @@ const ImportScreen = () => {
         recipe.settings.grainEffect.size
       );
       const bw = checkBW(recipe.settings.filmSimulation);
-      const iso =
-        recipe.settings.iso.mode + ', up to ' + recipe.settings.iso.maxIso;
-
+      const iso = recipe.settings.iso.mode + ', up to ' + recipe.settings.iso.maxIso;
       const temp = recipe.settings.whiteBalance.mode.endsWith('K')
         ? getTemp(recipe.settings.whiteBalance.mode)
         : 0;
-
       const wb = recipe.settings.whiteBalance.mode.endsWith('K')
         ? 'Color Temperature'
         : recipe.settings.whiteBalance.mode;
@@ -103,11 +77,24 @@ const ImportScreen = () => {
         temp: temp,
         favorite: false,
         bw: bw,
-        db_id: recipe.id
+        db_id: recipe.id,
       });
     });
     setRecipes(recipes);
     setFetchedData(recipes);
+  };
+
+  // handle search function
+  const handleSearchTerm = (text) => {
+    setSearchTerm(text);
+
+    if (text != '') {
+      setRecipes([
+        ...fetchedData.filter((item) => item.title.toLowerCase().includes(text.toLowerCase())),
+      ]);
+    } else {
+      setRecipes(fetchedData);
+    }
   };
 
   return (
@@ -116,12 +103,14 @@ const ImportScreen = () => {
         <TouchableOpacity
           className="p-2 h-9 ml-3"
           style={{ backgroundColor: 'white' }}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.goBack()}
+        >
           <ChevronLeftIcon size={wp(6)} color="black" />
         </TouchableOpacity>
         <Text
           style={{ fontSize: wp(8.5), fontFamily: 'fin_thin' }}
-          className="font-semibold text-neutral-700">
+          className="font-semibold text-neutral-700"
+        >
           Import Recipe
         </Text>
         <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
@@ -139,7 +128,8 @@ const ImportScreen = () => {
         </View>
         <TouchableOpacity
           className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#f0eff2]"
-          onPress={() => setFilterBar(true)}>
+          onPress={() => setFilterBar(true)}
+        >
           <FunnelIcon name="filter" size={20} color="#7f7f7f" />
         </TouchableOpacity>
       </View>

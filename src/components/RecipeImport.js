@@ -1,12 +1,13 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { CheckIcon, InboxArrowDownIcon } from 'react-native-heroicons/outline';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 import { useNavigation } from '@react-navigation/native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from 'react-native-responsive-screen';
-import { CheckIcon, InboxArrowDownIcon } from 'react-native-heroicons/outline';
+
 import { useSaveRecipe } from '../hooks/useRecipe';
 
 const RecipeImport = ({ item, isImported }) => {
@@ -16,15 +17,18 @@ const RecipeImport = ({ item, isImported }) => {
   const handleSaveRecipe = () => {
     const newRecipe = {
       id: `id_${Date.now()}`,
-      ...item
+      ...item,
     };
     saveRecipe.mutate(newRecipe);
   };
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Detail', { item: item, isDataToImport: true, isImported: isImported })}
-      className="flex-row p-2 bg-white w-full border-gray-100 border-b items-center justify-between">
+      onPress={() =>
+        navigation.navigate('Detail', { item: item, isDataToImport: true, isImported: isImported })
+      }
+      className="flex-row p-2 bg-white w-full border-gray-100 border-b items-center justify-between"
+    >
       <View className="flex-row">
         <Image
           source={{ uri: item.images[0] }}
@@ -32,9 +36,7 @@ const RecipeImport = ({ item, isImported }) => {
           className="rounded-lg mr-2"
         />
         <View>
-          <Text
-            style={{ fontSize: wp(4) }}
-            className="text-black font-semibold">
+          <Text style={{ fontSize: wp(4) }} className="text-black font-semibold">
             {item.title}
           </Text>
           <Text style={{ fontSize: wp(3) }} className="text-gray-500">
@@ -53,7 +55,8 @@ const RecipeImport = ({ item, isImported }) => {
           style={{ backgroundColor: 'white' }}
           onPress={() => {
             handleSaveRecipe();
-          }}>
+          }}
+        >
           <InboxArrowDownIcon size={wp(6)} color="grey" />
         </TouchableOpacity>
       )}

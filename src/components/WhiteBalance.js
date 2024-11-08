@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
 import React from 'react';
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import {
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 
 import { colorData, wbData } from '../constants';
@@ -20,20 +20,19 @@ const WhiteBalance = ({
   blue,
   setBlue,
   errorWB,
-  errorTemp
+  errorTemp,
 }) => {
   return (
     <View
       style={{
         borderRadius: 1,
         borderBottomWidth: 1,
-        borderColor: '#f0eff2'
-      }}>
+        borderColor: '#f0eff2',
+      }}
+    >
       {/* WB */}
       <View className="flex-row py-3 w-full">
-        <Image
-          source={icon}
-          style={{ height: wp(7), width: wp(7), marginTop: 12 }}></Image>
+        <Image source={icon} style={{ height: wp(7), width: wp(7), marginTop: 12 }}></Image>
         <View className="ml-3 flex-1">
           <SelectList
             setSelected={(val) => setWB(val)}
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   colorDropdown: {
     height: 45,
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   tempContainer: {
     height: 40,
@@ -130,6 +129,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    marginLeft: wp(11)
-  }
+    marginLeft: wp(11),
+  },
 });

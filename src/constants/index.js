@@ -2,14 +2,14 @@ export const dynamicRangeData = [
   { label: 'Auto', value: 'Auto' },
   { label: 'DR100', value: 'DR100' },
   { label: 'DR200', value: 'DR200' },
-  { label: 'DR400', value: 'DR400' }
-]
+  { label: 'DR400', value: 'DR400' },
+];
 
 export const ccData = [
   { label: 'Off', value: 'Off' },
   { label: 'Weak', value: 'Weak' },
-  { label: 'Strong', value: 'Strong' }
-]
+  { label: 'Strong', value: 'Strong' },
+];
 
 export const grainEffectData = [
   { label: 'Off', value: 'Off' },
@@ -18,8 +18,8 @@ export const grainEffectData = [
   { label: 'Weak, Large', value: 'Weak, Large' },
   { label: 'Strong', value: 'Strong' },
   { label: 'Strong, Small', value: 'Strong, Small' },
-  { label: 'Strong, Large', value: 'Strong, Large' }
-]
+  { label: 'Strong, Large', value: 'Strong, Large' },
+];
 
 export const colorData = [
   { label: '0', value: '0' },
@@ -40,8 +40,8 @@ export const colorData = [
   { label: '6', value: '6' },
   { label: '7', value: '7' },
   { label: '8', value: '8' },
-  { label: '9', value: '9' }
-]
+  { label: '9', value: '9' },
+];
 
 export const sensorData = [
   { label: 'Bayer', value: 'Bayer' },
@@ -51,7 +51,7 @@ export const sensorData = [
   { label: 'X-Trans IV', value: 'X-Trans IV' },
   { label: 'X-Trans IV(2)', value: 'X-Trans IV(2)' },
   { label: 'X-Trans V', value: 'X-Trans V' },
-]
+];
 
 export const wbData = [
   { label: 'Auto', value: 'Auto' },
@@ -62,8 +62,8 @@ export const wbData = [
   { label: 'Fluorescent Light-2', value: 'Fluorescent Light-2' },
   { label: 'Fluorescent Light-3', value: 'Fluorescent Light-3' },
   { label: 'Incadescent', value: 'Incadescent' },
-  { label: 'Underwater', value: 'Underwater' }
-]
+  { label: 'Underwater', value: 'Underwater' },
+];
 
 export const filmSimulationData = [
   { label: 'PROVIA/Standard', value: 'PROVIA/Standard' },
@@ -83,7 +83,7 @@ export const filmSimulationData = [
   { label: 'MONOCHROME + Y', value: 'MONOCHROME +Y' },
   { label: 'MONOCHROME + G', value: 'MONOCHROME + G' },
   { label: 'MONOCHROME + R', value: 'MONOCHROME + R' },
-]
+];
 
 export const filmElements = [
   'title',
@@ -102,8 +102,8 @@ export const filmElements = [
   'noise reduction',
   'clarity',
   'iso',
-  'exposure compensation'
-]
+  'exposure compensation',
+];
 
 export const destinationData = [
   {
@@ -123,13 +123,13 @@ export const destinationData = [
       nr: '-4',
       clarity: '-3',
       iso: 'Auto',
-      'exposure compensation': '+1'
+      'exposure compensation': '+1',
     },
     images: [
       require('../../assets/films/portra160/1.webp'),
       require('../../assets/films/portra160/2.webp'),
-      require('../../assets/films/portra160/3.webp')
-    ]
+      require('../../assets/films/portra160/3.webp'),
+    ],
   },
   {
     title: 'Kodak Ektar 100',
@@ -148,13 +148,13 @@ export const destinationData = [
       nr: '-4',
       clarity: '-3',
       iso: 'Auto',
-      'exposure compensation': '+1'
+      'exposure compensation': '+1',
     },
     images: [
       require('../../assets/films/ektar100/1.webp'),
       require('../../assets/films/ektar100/2.webp'),
       require('../../assets/films/ektar100/3.webp'),
-      require('../../assets/films/ektar100/4.webp')
-    ]
-  }
-]
+      require('../../assets/films/ektar100/4.webp'),
+    ],
+  },
+];

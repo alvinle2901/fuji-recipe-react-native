@@ -1,18 +1,16 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useCallback } from 'react';
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetView
-} from '@gorhom/bottom-sheet';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+
+import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
 
 import Checkbox from '../components/Checkbox';
 import FilterDropdown from '../components/FilterDropdown';
-import { filterCheckbox, filterDropdown } from '../utils/filter';
 import { filmSimulationData, sensorData } from '../constants';
+import { filterCheckbox, filterDropdown } from '../utils/filter';
 
 const FilterBottomSheet = ({
   fetchedData,
@@ -27,7 +25,7 @@ const FilterBottomSheet = ({
   checkedColor,
   setCheckedColor,
   checkedBW,
-  setCheckedBW
+  setCheckedBW,
 }) => {
   // handle backdrop for bottom sheet
   const renderBackdrop = useCallback(
@@ -64,7 +62,8 @@ const FilterBottomSheet = ({
         if (index == -1) {
           setFilterBar(false);
         }
-      }}>
+      }}
+    >
       <BottomSheetView>
         <View>
           <View
@@ -72,13 +71,15 @@ const FilterBottomSheet = ({
             style={{
               borderRadius: 1,
               borderBottomWidth: 0.7,
-              borderColor: 'grey'
-            }}>
+              borderColor: 'grey',
+            }}
+          >
             <Text
               style={{
                 fontSize: wp(10),
-                fontFamily: 'fin_thin'
-              }}>
+                fontFamily: 'fin_thin',
+              }}
+            >
               Filter
             </Text>
           </View>
@@ -113,8 +114,9 @@ const FilterBottomSheet = ({
             style={{
               borderRadius: 1,
               borderBottomWidth: 1,
-              borderColor: '#f0eff2'
-            }}>
+              borderColor: '#f0eff2',
+            }}
+          >
             <Checkbox
               text={'Color'}
               checked={checkedColor}
@@ -142,34 +144,32 @@ const FilterBottomSheet = ({
                 setCheckedFav(null);
                 setFilterFilm('');
                 setFilterSensor('');
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: wp(8),
                   color: 'white',
-                  fontFamily: 'fin_thin'
-                }}>
+                  fontFamily: 'fin_thin',
+                }}
+              >
                 Reset
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-1 items-center my-2 rounded-xl bg-black py-2 mx-3"
               onPress={() => {
-                handleFilter(
-                  filterSensor,
-                  filterFilm,
-                  checkedFav,
-                  checkedBW,
-                  checkedColor
-                );
+                handleFilter(filterSensor, filterFilm, checkedFav, checkedBW, checkedColor);
                 setFilterBar(false);
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: wp(8),
                   color: 'white',
-                  fontFamily: 'fin_thin'
-                }}>
+                  fontFamily: 'fin_thin',
+                }}
+              >
                 Done
               </Text>
             </TouchableOpacity>
@@ -189,6 +189,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     paddingLeft: 20,
-    paddingRight: 20
-  }
+    paddingRight: 20,
+  },
 });

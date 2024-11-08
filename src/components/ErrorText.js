@@ -1,10 +1,8 @@
-import { Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { Text } from 'react-native';
 
 const ErrorText = ({ text }) => {
-  return (
-    <Text style={{ fontSize: 12, color: 'red', marginTop: 3 }}>{text}</Text>
-  )
-}
+  return <Text style={{ fontSize: 12, color: 'red', marginTop: 3 }}>{text}</Text>;
+};
 
-export default ErrorText
+export default ErrorText;

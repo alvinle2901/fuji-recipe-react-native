@@ -1,10 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import {
+  deleteRecipeById,
   getRecipes,
   saveRecipes,
-  deleteRecipeById,
   updateRecipeById,
-  updateRecipeFieldById
+  updateRecipeFieldById,
 } from '../storage/storage';
 
 // Key for caching
@@ -15,9 +16,9 @@ export const useRecipes = () => {
     queryKey: RECIPES_QUERY_KEY,
     queryFn: getRecipes,
     ...{
-      staleTime: Infinity, // Recipes are static; no need to refetch frequently
-      cacheTime: Infinity
-    }
+      staleTime: Infinity, 
+      cacheTime: Infinity,
+    },
   });
 };
 
@@ -32,7 +33,7 @@ export const useSaveRecipe = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(RECIPES_QUERY_KEY);
-    }
+    },
   });
 };
 
@@ -45,7 +46,7 @@ export const useDeleteRecipe = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(RECIPES_QUERY_KEY);
-    }
+    },
   });
 };
 
@@ -58,7 +59,7 @@ export const useUpdateRecipe = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(RECIPES_QUERY_KEY);
-    }
+    },
   });
 };
 
@@ -71,6 +72,6 @@ export const useUpdateRecipeField = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(RECIPES_QUERY_KEY);
-    }
+    },
   });
 };

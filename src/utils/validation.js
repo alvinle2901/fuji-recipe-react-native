@@ -1,4 +1,4 @@
-import * as yup from 'yup'
+import * as yup from 'yup';
 
 export const validateSchema = yup.object().shape({
   title: yup.string().required('This field is required'),
@@ -13,5 +13,5 @@ export const validateSchema = yup.object().shape({
     is: (wb) => wb == 'Color Temperature',
     then: (schema) => schema.required('This field is required'),
     otherwise: (schema) => schema,
-  })
-})
+  }),
+});

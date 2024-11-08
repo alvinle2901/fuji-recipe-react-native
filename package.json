@@ -6,7 +6,11 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint .",
+    "lintFixAll": "eslint 'src/**/*.{js,jsx}' --fix",
+    "prettierFixAll": "prettier --write 'src/**/*.{js,jsx}'",
+    "fix:lintPrettier": "yarn prettierFixAll && yarn lintFixAll"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
@@ -19,6 +23,8 @@
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/native-stack": "^6.9.14",
     "@tanstack/react-query": "^5.59.19",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-native": "^4.1.0",
     "expo": "^51.0.38",
     "expo-build-properties": "~0.12.5",
     "expo-font": "~12.0.10",
@@ -30,6 +36,7 @@
     "formik": "^2.4.5",
     "graphql": "^15.8.0",
     "nativewind": "^2.0.11",
+    "prettier": "^3.3.3",
     "react": "18.2.0",
     "react-native": "0.74.5",
     "react-native-awesome-slider": "^2.4.4",
@@ -50,6 +57,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "tailwindcss": "^3.3.2"
   },
   "private": true

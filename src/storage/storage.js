@@ -52,6 +52,6 @@ export const updateRecipeFieldById = async (id, field, value) => {
 
 export const clearAllData = () => {
   AsyncStorage.getAllKeys()
-      .then(keys => AsyncStorage.multiRemove(keys))
-      .then(() => alert('success'));
-}
+    .then((keys) => AsyncStorage.multiRemove(keys))
+    .then(() => alert('success'));
+};

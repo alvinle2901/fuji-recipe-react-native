@@ -1,48 +1,39 @@
-import {
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
 import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ChevronLeftIcon } from 'react-native-heroicons/outline';
+import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import Toast from 'react-native-root-toast';
+
 import { Formik } from 'formik';
 
 import { useNavigation } from '@react-navigation/native';
-import Toast from 'react-native-root-toast';
-import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
-import { ChevronLeftIcon } from 'react-native-heroicons/outline';
 
+import DialogModal from '../components/DialogModal';
 import DropDownItem from '../components/DropDownItem';
+import ErrorText from '../components/ErrorText';
+import ImageSlider from '../components/ImageSlider';
 import InputItem from '../components/InputItem';
 import SliderItem from '../components/SliderItem';
 import WhiteBalance from '../components/WhiteBalance';
-import ImageSlider from '../components/ImageSlider';
-import ErrorText from '../components/ErrorText';
-import DialogModal from '../components/DialogModal';
-import { validateSchema } from '../utils/validation';
-import { checkBW } from '../utils/string';
 import {
   ccData,
   dynamicRangeData,
   filmSimulationData,
   grainEffectData,
-  sensorData
+  sensorData,
 } from '../constants';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from 'react-native-responsive-screen';
 import { useUpdateRecipe } from '../hooks/useRecipe';
+import { checkBW } from '../utils/string';
+import { validateSchema } from '../utils/validation';
 
 const EditScreen = (props) => {
   const item = props.route.params;
   const navigation = useNavigation();
   const updateRecipeMutation = useUpdateRecipe();
-
-  const handleUpdateRecipe = (id, item) => {
-    updateRecipeMutation.mutate({ id: id, updatedRecipe: item });
-  };
 
   const [dialog, setDialog] = useState(false);
   const [images, setImages] = useState(item.images);
@@ -52,6 +43,11 @@ const EditScreen = (props) => {
   const [sharpness, setSharpness] = useState(item.sharpness);
   const [highlight, setHighlight] = useState(item.highlight);
   const [noiseReduction, setNoiseReduction] = useState(item.noise_reduction);
+
+  // Handle update function
+  const handleUpdateRecipe = (id, item) => {
+    updateRecipeMutation.mutate({ id: id, updatedRecipe: item });
+  };
 
   return (
     <Formik
@@ -66,7 +62,7 @@ const EditScreen = (props) => {
         wb: item.white_balance,
         temp: item.temp,
         red: item.red,
-        blue: item.blue
+        blue: item.blue,
       }}
       validationSchema={validateSchema}
       validateOnChange={false}
@@ -93,12 +89,12 @@ const EditScreen = (props) => {
             title: values.title,
             temp: values.temp,
             favorite: false,
-            bw: checkBW(values.film)
+            bw: checkBW(values.film),
           });
           Toast.show('Update successfully!', {
             duration: Toast.durations.SHORT,
             backgroundColor: 'white',
-            textColor: 'black'
+            textColor: 'black',
           });
           navigation.navigate('Home');
         } catch (e) {
@@ -106,10 +102,11 @@ const EditScreen = (props) => {
           Toast.show('There was an error while updating', {
             duration: Toast.durations.SHORT,
             backgroundColor: 'white',
-            textColor: 'black'
+            textColor: 'black',
           });
         }
-      }}>
+      }}
+    >
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
@@ -117,13 +114,12 @@ const EditScreen = (props) => {
             <TouchableOpacity
               className="p-2 h-9 ml-3"
               style={{ backgroundColor: 'white' }}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.goBack()}
+            >
               <ChevronLeftIcon size={wp(6)} color="black" />
               <DialogModal
                 title={'Exit Editing'}
-                description={
-                  'Do you want to go back to home screen? You cannot undo this action.'
-                }
+                description={'Do you want to go back to home screen? You cannot undo this action.'}
                 visible={dialog}
                 setVisible={setDialog}
                 handler={() => navigation.goBack()}
@@ -132,14 +128,13 @@ const EditScreen = (props) => {
             </TouchableOpacity>
             <Text
               style={{ fontSize: wp(8.5), fontFamily: 'fin_thin' }}
-              className="font-semibold text-neutral-700">
+              className="font-semibold text-neutral-700"
+            >
               Edit Recipe
             </Text>
             <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
           </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            className="space-y-6">
+          <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
             {/* items */}
             <View className="mx-5">
               {/* Title */}
@@ -278,7 +273,8 @@ const EditScreen = (props) => {
           <HideWithKeyboard>
             <TouchableOpacity
               className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
-              onPress={handleSubmit}>
+              onPress={handleSubmit}
+            >
               <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
             </TouchableOpacity>
           </HideWithKeyboard>

@@ -25,7 +25,7 @@ export const updateGrain = (strength, size) => {
   return grain;
 };
 
-export const getTemp = (inputString) => {  
+export const getTemp = (inputString) => {
   // Extract the number part using a regular expression
   const numberMatch = inputString.match(/^\d+/);
 
@@ -34,7 +34,7 @@ export const getTemp = (inputString) => {
   } else {
     return null; // Or throw an error if you prefer
   }
-}
+};
 
 //new title
 export const newTitle = (title) => {

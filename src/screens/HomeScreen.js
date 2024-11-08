@@ -1,32 +1,33 @@
+import React, { useCallback, useEffect, useState } from 'react';
 import {
+  Image,
+  RefreshControl,
   ScrollView,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  Image,
-  TextInput,
-  RefreshControl
 } from 'react-native';
-import React, { useState, useCallback, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import {
-  FunnelIcon,
-  MagnifyingGlassIcon
-} from 'react-native-heroicons/outline';
-import { StatusBar } from 'expo-status-bar';
-import {
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Recipes from '../components/Recipes';
+import { StatusBar } from 'expo-status-bar';
+
+import { useNavigation } from '@react-navigation/native';
+
 import FilterBottomSheet from '../components/FilterBottomSheet';
+import Recipes from '../components/Recipes';
 import { useRecipes } from '../hooks/useRecipe';
 import { clearAllData } from '../storage/storage';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const { data: recipes, isLoading, isError } = useRecipes();
+
   const [data, setData] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,8 +38,6 @@ const HomeScreen = () => {
   const [checkedFav, setCheckedFav] = useState(null);
   const [checkedBW, setCheckedBW] = useState(null);
   const [checkedColor, setCheckedColor] = useState(null);
-
-  const { data: recipes, isLoading, isError } = useRecipes();
 
   useEffect(() => {
     if (recipes) {
@@ -61,9 +60,7 @@ const HomeScreen = () => {
 
     if (text != '') {
       setData([
-        ...fetchedData.filter((item) =>
-          item.title.toLowerCase().includes(text.toLowerCase())
-        )
+        ...fetchedData.filter((item) => item.title.toLowerCase().includes(text.toLowerCase())),
       ]);
     } else {
       setData(fetchedData);
@@ -78,8 +75,9 @@ const HomeScreen = () => {
         <Text
           style={{
             fontSize: wp(12.5),
-            fontFamily: 'fin_thin'
-          }}>
+            fontFamily: 'fin_thin',
+          }}
+        >
           fujifilm recipes
         </Text>
         <View className="flex-row">
@@ -90,20 +88,24 @@ const HomeScreen = () => {
             onPress={() => {
               navigation.navigate('Import');
               // clearAllData()
-            }}>
+            }}
+          >
             <Image
               source={require('../../assets/import.png')}
-              style={{ height: wp(5), width: wp(5) }}></Image>
+              style={{ height: wp(5), width: wp(5) }}
+            ></Image>
           </TouchableOpacity>
 
           {/* Add */}
           <TouchableOpacity
             className="p-3 rounded-full"
             style={{ backgroundColor: '#f0eff2' }}
-            onPress={() => navigation.navigate('Add')}>
+            onPress={() => navigation.navigate('Add')}
+          >
             <Image
               source={require('../../assets/focus.png')}
-              style={{ height: wp(5), width: wp(5) }}></Image>
+              style={{ height: wp(5), width: wp(5) }}
+            ></Image>
           </TouchableOpacity>
         </View>
       </View>
@@ -120,16 +122,16 @@ const HomeScreen = () => {
         </View>
         <TouchableOpacity
           className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#f0eff2]"
-          onPress={() => setFilterBar(true)}>
+          onPress={() => setFilterBar(true)}
+        >
           <FunnelIcon name="filter" size={20} color="#7f7f7f" />
         </TouchableOpacity>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="space-y-6"
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         {/* Recipes */}
         <Recipes data={data} />
       </ScrollView>

@@ -1,29 +1,27 @@
 import { useCallback } from 'react';
-import * as SplashScreen from 'expo-splash-screen';
-import AppNavigation from './src/navigation';
-import { useFonts } from 'expo-font';
-import { RootSiblingParent } from 'react-native-root-siblings';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  createHttpLink
-} from '@apollo/client';
-import { useApolloClientDevTools } from '@dev-plugins/apollo-client';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+import { useApolloClientDevTools } from '@dev-plugins/apollo-client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const httpLink = createHttpLink({
-  uri: 'https://fuji-recipe-be.onrender.com/'
-});
+import AppNavigation from './src/navigation';
 
 // Initialize Apollo Client
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache()
+const httpLink = createHttpLink({
+  uri: 'https://fuji-recipe-be.onrender.com/',
 });
 
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+});
+
+// Initialize use-query client
 const queryClient = new QueryClient();
 
 SplashScreen.preventAutoHideAsync();
@@ -33,7 +31,7 @@ export default function App() {
 
   const [fontsLoaded] = useFonts({
     fin_thin: require('./assets/finland_rounded_thin.ttf'),
-    epic_fusion: require('./assets/EpicFusion.ttf')
+    epic_fusion: require('./assets/EpicFusion.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {

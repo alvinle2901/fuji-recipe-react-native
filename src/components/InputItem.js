@@ -1,9 +1,9 @@
-import { Image, View, TextInput } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { Image, TextInput, View } from 'react-native';
 import {
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
+} from 'react-native-responsive-screen';
 
 const InputItem = ({ title, icon, handleChange, value }) => {
   return (
@@ -12,7 +12,7 @@ const InputItem = ({ title, icon, handleChange, value }) => {
       style={{
         borderRadius: 1,
         borderBottomWidth: 1,
-        borderColor: '#f0eff2'
+        borderColor: '#f0eff2',
       }}
     >
       <Image source={icon} style={{ height: wp(7), width: wp(7) }}></Image>
@@ -22,10 +22,10 @@ const InputItem = ({ title, icon, handleChange, value }) => {
         onChangeText={handleChange}
         value={value}
         placeholder={title}
-        placeholderTextColor={"black"}
+        placeholderTextColor={'black'}
       />
     </View>
-  )
-}
+  );
+};
 
-export default InputItem
+export default InputItem;

@@ -1,38 +1,32 @@
-import {
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
 import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ChevronLeftIcon } from 'react-native-heroicons/outline';
+import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import Toast from 'react-native-root-toast';
+
 import { Formik } from 'formik';
 
-import Toast from 'react-native-root-toast';
-import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
-import { ChevronLeftIcon } from 'react-native-heroicons/outline';
-
+import DialogModal from '../components/DialogModal';
 import DropDownItem from '../components/DropDownItem';
+import ErrorText from '../components/ErrorText';
+import ImageSlider from '../components/ImageSlider';
 import InputItem from '../components/InputItem';
 import SliderItem from '../components/SliderItem';
 import WhiteBalance from '../components/WhiteBalance';
-import ImageSlider from '../components/ImageSlider';
-import ErrorText from '../components/ErrorText';
-import DialogModal from '../components/DialogModal';
-import { validateSchema } from '../utils/validation';
-import { checkBW } from '../utils/string';
 import {
   ccData,
   dynamicRangeData,
   filmSimulationData,
   grainEffectData,
-  sensorData
+  sensorData,
 } from '../constants';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from 'react-native-responsive-screen';
 import { useSaveRecipe } from '../hooks/useRecipe';
+import { checkBW } from '../utils/string';
+import { validateSchema } from '../utils/validation';
 
 const AddScreen = ({ navigation }) => {
   const [dialog, setDialog] = useState(false);
@@ -49,7 +43,7 @@ const AddScreen = ({ navigation }) => {
   const handleSaveRecipe = (item) => {
     const newRecipe = {
       id: `id_${Date.now()}`,
-      ...item
+      ...item,
     };
     saveRecipe.mutate(newRecipe);
   };
@@ -67,7 +61,7 @@ const AddScreen = ({ navigation }) => {
         wb: '',
         temp: '',
         red: '0',
-        blue: '0'
+        blue: '0',
       }}
       validationSchema={validateSchema}
       validateOnChange={false}
@@ -95,12 +89,12 @@ const AddScreen = ({ navigation }) => {
             title: values.title,
             temp: values.temp,
             favorite: false,
-            bw: checkBW(values.film)
+            bw: checkBW(values.film),
           });
           Toast.show('New item added successfully!', {
             duration: Toast.durations.SHORT,
             backgroundColor: 'white',
-            textColor: 'black'
+            textColor: 'black',
           });
           navigation.navigate('Home');
         } catch (e) {
@@ -108,10 +102,11 @@ const AddScreen = ({ navigation }) => {
           Toast.show('There was an error while uploading', {
             duration: Toast.durations.SHORT,
             backgroundColor: 'white',
-            textColor: 'black'
+            textColor: 'black',
           });
         }
-      }}>
+      }}
+    >
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
@@ -119,13 +114,12 @@ const AddScreen = ({ navigation }) => {
             <TouchableOpacity
               className="p-2 h-9 ml-3"
               style={{ backgroundColor: 'white' }}
-              onPress={() => setDialog(true)}>
+              onPress={() => setDialog(true)}
+            >
               <ChevronLeftIcon size={wp(6)} color="black" />
               <DialogModal
                 title={'Exit Adding'}
-                description={
-                  'Do you want to go back to home screen? You cannot undo this action.'
-                }
+                description={'Do you want to go back to home screen? You cannot undo this action.'}
                 visible={dialog}
                 setVisible={setDialog}
                 handler={() => navigation.goBack()}
@@ -134,14 +128,13 @@ const AddScreen = ({ navigation }) => {
             </TouchableOpacity>
             <Text
               style={{ fontSize: wp(8.5), fontFamily: 'fin_thin' }}
-              className="font-semibold text-neutral-700">
+              className="font-semibold text-neutral-700"
+            >
               Add New Recipe
             </Text>
             <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
           </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            className="space-y-6">
+          <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
             {/* items */}
             <View className="mx-5">
               {/* Title */}
@@ -281,7 +274,8 @@ const AddScreen = ({ navigation }) => {
           <HideWithKeyboard>
             <TouchableOpacity
               className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
-              onPress={handleSubmit}>
+              onPress={handleSubmit}
+            >
               <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
             </TouchableOpacity>
           </HideWithKeyboard>

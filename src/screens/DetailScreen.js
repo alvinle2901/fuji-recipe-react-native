@@ -1,39 +1,29 @@
-import {
-  Animated,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet
-} from 'react-native';
-import React, { useState, useRef } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import Toast from 'react-native-root-toast';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-
+import React, { useRef, useState } from 'react';
+import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   ChevronLeftIcon,
-  HeartIcon,
-  PencilSquareIcon,
   EllipsisVerticalIcon,
+  HeartIcon,
+  InboxArrowDownIcon,
+  PencilSquareIcon,
   TrashIcon,
-  InboxArrowDownIcon
 } from 'react-native-heroicons/outline';
 import {
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import Toast from 'react-native-root-toast';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { StatusBar } from 'expo-status-bar';
+
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 
 import DetailItem from '../components/DetailItem';
 import DialogModal from '../components/DialogModal';
+import { useDeleteRecipe, useSaveRecipe, useUpdateRecipeField } from '../hooks/useRecipe';
 import { updateWB } from '../utils/string';
-import {
-  useSaveRecipe,
-  useDeleteRecipe,
-  useUpdateRecipeField
-} from '../hooks/useRecipe';
 
 function DetailScreen(props) {
   const { item, isDataToImport, isImported } = props.route.params;
@@ -57,25 +47,26 @@ function DetailScreen(props) {
     Toast.show('Delete successfully!', {
       duration: Toast.durations.SHORT,
       backgroundColor: 'white',
-      textColor: 'black'
+      textColor: 'black',
     });
     setDialog(false);
     navigation.navigate('Home');
   };
 
-  // update favorite to firebase
+  // update favorite item
   const updateFavorite = async (state) => {
     updateRecipeFieldMutation.mutate({
       id: item.id,
       field: 'favorite',
-      value: state
+      value: state,
     });
   };
 
+  // handle save recipe
   const handleSaveRecipe = () => {
     const newRecipe = {
       id: `id_${Date.now()}`,
-      ...item
+      ...item,
     };
     saveRecipe.mutate(newRecipe);
   };
@@ -83,15 +74,8 @@ function DetailScreen(props) {
   // render item details
   for (const [key, value] of Object.entries(item)) {
     if (key == 'white_balance') {
-      const whiteBalance = updateWB(
-        item.white_balance,
-        item.blue,
-        item.red,
-        item.temp
-      );
-      renderedDetailItems.push(
-        <DetailItem title={key} detail={whiteBalance} key={key} />
-      );
+      const whiteBalance = updateWB(item.white_balance, item.blue, item.red, item.temp);
+      renderedDetailItems.push(<DetailItem title={key} detail={whiteBalance} key={key} />);
     } else if (
       key == 'red' ||
       key == 'blue' ||
@@ -107,9 +91,7 @@ function DetailScreen(props) {
     ) {
       continue;
     } else {
-      renderedDetailItems.push(
-        <DetailItem title={key} detail={value} key={key} />
-      );
+      renderedDetailItems.push(<DetailItem title={key} detail={value} key={key} />);
     }
   }
 
@@ -125,17 +107,13 @@ function DetailScreen(props) {
           decelerationRate={'fast'}
           showsVerticalScrollIndicator={false}
           bounces={false}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
-          )}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+            useNativeDriver: true,
+          })}
           renderItem={({ item }) => {
             return (
               <View>
-                <Image
-                  source={{ uri: item }}
-                  style={{ width: wp(100), height: hp(65) }}
-                />
+                <Image source={{ uri: item }} style={{ width: wp(100), height: hp(65) }} />
               </View>
             );
           }}
@@ -152,11 +130,11 @@ function DetailScreen(props) {
                   {
                     translateY: Animated.divide(scrollY, wp(130)).interpolate({
                       inputRange: [0, 1],
-                      outputRange: [0, 16]
-                    })
-                  }
-                ]
-              }
+                      outputRange: [0, 16],
+                    }),
+                  },
+                ],
+              },
             ]}
           />
         </View>
@@ -167,7 +145,8 @@ function DetailScreen(props) {
         <TouchableOpacity
           className="p-2 h-9 rounded-full ml-4"
           style={{ backgroundColor: 'white' }}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.goBack()}
+        >
           <ChevronLeftIcon size={wp(6)} color="black" />
         </TouchableOpacity>
 
@@ -180,7 +159,8 @@ function DetailScreen(props) {
               onPress={() => {
                 toggleFavourite(!isFavourite);
                 updateFavorite(!isFavourite);
-              }}>
+              }}
+            >
               <HeartIcon size={wp(6)} color={isFavourite ? 'red' : 'black'} />
             </TouchableOpacity>
           </View>
@@ -192,7 +172,8 @@ function DetailScreen(props) {
             <TouchableOpacity
               className="p-2 rounded-full mr-4"
               style={{ backgroundColor: 'white' }}
-              onPress={() => setFunc(!func)}>
+              onPress={() => setFunc(!func)}
+            >
               <EllipsisVerticalIcon size={wp(6)} color="black" />
             </TouchableOpacity>
             {func && (
@@ -201,20 +182,20 @@ function DetailScreen(props) {
                 <TouchableOpacity
                   className="p-2 rounded-full mr-4 mt-1"
                   style={{ backgroundColor: 'white' }}
-                  onPress={() => navigation.navigate('Edit', { ...item })}>
+                  onPress={() => navigation.navigate('Edit', { ...item })}
+                >
                   <PencilSquareIcon size={wp(6)} color="black" />
                 </TouchableOpacity>
                 {/* Delete */}
                 <TouchableOpacity
                   className="p-2 rounded-full mr-4 mt-1"
                   style={{ backgroundColor: 'white' }}
-                  onPress={() => setDialog(true)}>
+                  onPress={() => setDialog(true)}
+                >
                   <TrashIcon size={wp(6)} color="black" />
                   <DialogModal
                     title={'Recipe Delete'}
-                    description={
-                      'Do you want to delete this recipe? You cannot undo this action.'
-                    }
+                    description={'Do you want to delete this recipe? You cannot undo this action.'}
                     visible={dialog}
                     setVisible={setDialog}
                     handler={() => handleDeleteRecipe(item)}
@@ -232,7 +213,8 @@ function DetailScreen(props) {
                 style={{ backgroundColor: 'white' }}
                 onPress={() => {
                   handleSaveRecipe();
-                }}>
+                }}
+              >
                 <InboxArrowDownIcon size={wp(6)} color={'black'} />
               </TouchableOpacity>
             )}
@@ -240,13 +222,9 @@ function DetailScreen(props) {
         )}
       </SafeAreaView>
       {/* Bottom Sheet */}
-      <BottomSheet
-        style={styles.bottomSheet}
-        snapPoints={[hp(100) - wp(123), hp(75)]}>
+      <BottomSheet style={styles.bottomSheet} snapPoints={[hp(100) - wp(123), hp(75)]}>
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
-          <Text
-            style={{ fontSize: wp(7) }}
-            className="font-bold flex-1 text-neutral-700 mb-4 mt-3">
+          <Text style={{ fontSize: wp(7) }} className="font-bold flex-1 text-neutral-700 mb-4 mt-3">
             {item.title}
           </Text>
           {renderedDetailItems}
@@ -265,14 +243,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 8,
     backgroundColor: 'white',
-    marginBottom: 8
+    marginBottom: 8,
   },
   dotIndicator: {
     width: 16,
@@ -282,6 +260,6 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     position: 'absolute',
     top: -4,
-    left: -4
-  }
+    left: -4,
+  },
 });
