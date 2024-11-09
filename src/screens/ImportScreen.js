@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { ChevronLeftIcon, FunnelIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import {
   heightPercentageToDP as hp,
@@ -95,6 +102,7 @@ const ImportScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      {/* Title */}
       <View className="items-center mb-3 mt-4 justify-between flex-row">
         <TouchableOpacity
           className="p-2 h-9 ml-3"
@@ -129,10 +137,15 @@ const ImportScreen = () => {
           <FunnelIcon name="filter" size={20} color="#7f7f7f" />
         </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
-        {/* Recipes */}
-        <Imports data={recipes} />
-      </ScrollView>
+
+      {/* Recipe list */}
+      {loading ? (
+        <ActivityIndicator size="small" color="#0000ff" />
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
+          <Imports data={recipes} />
+        </ScrollView>
+      )}
       {/* filter bottom sheet */}
       {isFilterUp && (
         <FilterBottomSheet

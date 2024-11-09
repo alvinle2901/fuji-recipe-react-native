@@ -13,9 +13,6 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-root-toast';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { StatusBar } from 'expo-status-bar';
 
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
@@ -35,6 +32,7 @@ function DetailScreen(props) {
   const updateRecipeFieldMutation = useUpdateRecipeField();
 
   const [isFavourite, toggleFavourite] = useState(item.favorite);
+  const [imported, setImported] = useState(isImported);
   const [func, setFunc] = useState(false);
   const [dialog, setDialog] = useState(false);
 
@@ -69,6 +67,12 @@ function DetailScreen(props) {
       ...item,
     };
     saveRecipe.mutate(newRecipe);
+    setImported(true);
+    Toast.show('Recipe Imported!', {
+      duration: Toast.durations.SHORT,
+      backgroundColor: 'white',
+      textColor: 'black',
+    });
   };
 
   // render item details
@@ -97,7 +101,7 @@ function DetailScreen(props) {
 
   return (
     <View className="bg-white flex-1">
-      <StatusBar style={'light'} />
+      {/* <StatusBar style={'light'} /> */}
       {/* Images Carousel */}
       <View style={{ height: ITEM_HEIGHT, overflow: 'hidden' }}>
         <Animated.FlatList
@@ -140,7 +144,7 @@ function DetailScreen(props) {
         </View>
       </View>
       {/* Header Buttons */}
-      <SafeAreaView className="flex-row justify-between w-full absolute mt-4">
+      <View className="flex-row justify-between w-full absolute mt-10">
         {/* Back button */}
         <TouchableOpacity
           className="p-2 h-9 rounded-full ml-4"
@@ -207,7 +211,7 @@ function DetailScreen(props) {
           </View>
         ) : (
           <>
-            {!isImported && (
+            {!imported && (
               <TouchableOpacity
                 className="p-2 h-9 rounded-full mr-4"
                 style={{ backgroundColor: 'white' }}
@@ -220,7 +224,7 @@ function DetailScreen(props) {
             )}
           </>
         )}
-      </SafeAreaView>
+      </View>
       {/* Bottom Sheet */}
       <BottomSheet style={styles.bottomSheet} snapPoints={[hp(100) - wp(123), hp(75)]}>
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
