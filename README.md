@@ -12,7 +12,7 @@ Key Features:
 - Favorite Recipes: Bookmark your preferred recipes for quick access and easy organization.
 - Easy Search & Filter: Quickly find the recipes you need.
 
-Techical Features:
+Technical Features:
 
 - Custom API made with NodeJS & Apollo GraphQL to hold the already-made recipes. [Link](https://github.com/alvinle2901/Fuji-Recipe-BE) to the API repo.
 - [React Native Async Storage](https://reactnative.dev/docs/asyncstorage) to save the data to local
