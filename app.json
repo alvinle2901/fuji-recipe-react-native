@@ -6,12 +6,15 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "myapp",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -29,6 +32,11 @@
       "eas": {
         "projectId": "a270ceca-a6c7-48b1-adb3-cceb5db21386"
       }
-    }
+    },
+    "plugins": [
+      "expo-build-properties",
+      "expo-font"
+    ],
+    "newArchEnabled": true
   }
 }
