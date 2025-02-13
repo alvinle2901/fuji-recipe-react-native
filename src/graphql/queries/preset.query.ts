@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client';
+import { gql } from "@/__generated__";
 
 // Define GraphQL Queries
-const GET_ALL_PRESETS = gql`
+const GET_ALL_PRESETS = gql(`
   query GetAllPresets {
     getAllPresets {
       id
@@ -39,9 +39,9 @@ const GET_ALL_PRESETS = gql`
       }
     }
   }
-`;
+`);
 
-const GET_PRESET = gql`
+const GET_PRESET = gql(`
   query GetPreset($id: ID!) {
     getPreset(id: $id) {
       id
@@ -60,6 +60,6 @@ const GET_PRESET = gql`
       }
     }
   }
-`;
+`);
 
 export { GET_ALL_PRESETS, GET_PRESET };
