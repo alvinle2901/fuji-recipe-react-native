@@ -11,7 +11,7 @@
   "useTabs": false,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "importOrder": ["^react", "^react-native", "^[a-zA-Z]", "^@?\\w", "^[./]"],
+  "importOrder": ["^react", "^[a-zA-Z]", "^@/?\\w", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

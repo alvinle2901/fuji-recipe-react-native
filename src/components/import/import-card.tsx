@@ -1,20 +1,16 @@
-import { wp } from '@/lib/dimensions';
-import { useSaveRecipe } from '@/lib/hooks';
-
-import React from 'react';
-
-import { useNavigation } from '@react-navigation/native';
-
 import { Image, Text, TouchableOpacity, View } from '../ui';
 import { Icons } from '../ui/icons';
 
+import { wp } from '@/lib/dimensions';
+import { useSaveRecipe } from '@/lib/hooks';
+import { Recipe } from '@/types';
+
 type ImportCardProps = {
-  item: any;
+  item: Recipe;
   isImported: boolean;
 };
 
 export const ImportCard: React.FC<ImportCardProps> = ({ item, isImported }) => {
-  const navigation = useNavigation();
   const saveRecipe = useSaveRecipe();
 
   const handleSaveRecipe = () => {
@@ -27,8 +23,9 @@ export const ImportCard: React.FC<ImportCardProps> = ({ item, isImported }) => {
 
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('Detail', { item: item, isDataToImport: true, isImported: isImported })
+      onPress={
+        () => {}
+        // navigation.navigate('Detail', { item: item, isDataToImport: true, isImported: isImported })
       }
       className="flex-row p-2 bg-white w-full border-gray-100 border-b items-center justify-between"
     >
@@ -47,22 +44,18 @@ export const ImportCard: React.FC<ImportCardProps> = ({ item, isImported }) => {
           </Text>
         </View>
       </View>
-
-      {isImported ? (
-        <TouchableOpacity className="p-2 h-9 ml-3">
+      
+      {/* Import button */}
+      <TouchableOpacity
+        className={`p-2 h-9 ml-3 ${isImported ? '' : 'bg-white'}`}
+        onPress={!isImported ? handleSaveRecipe : undefined}
+      >
+        {isImported ? (
           <Icons.check size={wp(6)} color="green" />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          className="p-2 h-9 ml-3"
-          style={{ backgroundColor: 'white' }}
-          onPress={() => {
-            handleSaveRecipe();
-          }}
-        >
+        ) : (
           <Icons.import size={wp(6)} color="grey" />
-        </TouchableOpacity>
-      )}
+        )}
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 };

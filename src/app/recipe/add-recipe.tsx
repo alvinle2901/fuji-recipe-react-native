@@ -1,13 +1,5 @@
-import React, { useState } from 'react';
-import { Error, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from '@/components/ui';
-import { ChevronLeftIcon } from 'react-native-heroicons/outline';
-import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
-import Toast from 'react-native-root-toast';
-
-import { Formik } from 'formik';
-
-
 import ImageSlider from '@/components/image-slider';
+import { DropDownItem, Error, InputItem, Modal, SafeAreaView, ScrollView, SliderItem, Text, TouchableOpacity, View } from '@/components/ui';
 import WhiteBalance from '@/components/white-balance';
 import {
   ccData,
@@ -16,14 +8,19 @@ import {
   grainEffectData,
   sensorData,
 } from '@/constants';
-import { useSaveRecipe } from '@/lib/hooks';
-import { validateSchema } from '@/lib/validation';
-import { checkBW } from '@/lib/string';
 import { wp } from '@/lib/dimensions';
-import { Modal } from '@/components/ui/modal';
-import InputItem from '@/components/ui/input-item';
-import { DropDownItem } from '@/components/ui/drop-down-item';
-import SliderItem from '@/components/ui/slider-item';
+import { useSaveRecipe } from '@/lib/hooks';
+import { checkBW } from '@/lib/string';
+import { validateSchema } from '@/lib/validation';
+
+import React, { useState } from 'react';
+import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
+import Toast from 'react-native-root-toast';
+
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { Formik } from 'formik';
+import { Icons } from '@/components/ui/icons';
 
 const AddScreen = ({ navigation }) => {
   const [dialog, setDialog] = useState(false);
@@ -107,13 +104,15 @@ const AddScreen = ({ navigation }) => {
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
           {/* Header */}
-          <View className="items-center justify-between mb-2 mt-11 flex-row">
+          <Stack.Screen options={{ headerShown: false }} />
+          <StatusBar />
+          <View className="items-center justify-between mb-2 mt-5 flex-row">
             <TouchableOpacity
               className="p-2 h-9 ml-3"
               style={{ backgroundColor: 'white' }}
               onPress={() => setDialog(true)}
             >
-              <ChevronLeftIcon size={wp(6)} color="black" />
+              <Icons.back size={wp(6)} color="black" />
               <Modal
                 title={'Exit Adding'}
                 description={'Do you want to go back to home screen? You cannot undo this action.'}

@@ -7,6 +7,7 @@ import {
   updateRecipeById,
   updateRecipeFieldById,
 } from '../../storage';
+import { Recipe } from '@/types';
 
 // Key for caching
 const RECIPES_QUERY_KEY = ['recipes'];
@@ -22,12 +23,13 @@ export const useRecipes = () => {
   });
 };
 
+// Save recipe to local
 export const useSaveRecipe = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (newRecipe) => {
-      const recipes = await getRecipes();
+    mutationFn: async (newRecipe: Recipe) => {
+      const recipes: Recipe[] = await getRecipes();
       const updatedRecipes = [...recipes, newRecipe];
       await saveRecipes(updatedRecipes);
     },

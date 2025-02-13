@@ -1,21 +1,30 @@
+import FilterBottomSheet from '@/components/filter-bottom-sheet';
+import { ImportList } from '@/components/import';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from '@/components/ui';
+import { Icons } from '@/components/ui/icons';
+import { GET_ALL_PRESETS } from '@/graphql/queries/preset.query';
+import { wp } from '@/lib/dimensions';
+import { filterAndSearch } from '@/lib/filter';
+import { checkBW, getTemp, updateGrain } from '@/lib/string';
+import { Recipe } from '@/types';
+
 import React, { useEffect, useState } from 'react';
 
-import { useQuery } from '@apollo/client';
-import { useNavigation } from '@react-navigation/native';
+import { Stack, router } from 'expo-router';
 
-import FilterBottomSheet from '@/components/filter-bottom-sheet';
-import { GET_ALL_PRESETS } from '@/graphql/queries/preset.query';
-import { checkBW, getTemp, updateGrain } from '@/lib/string';
-import { filterAndSearch } from '@/lib/filter';
-import { ActivityIndicator, SafeAreaView, ScrollView, TextInput, TouchableOpacity, View, Text } from '@/components/ui';
-import { Icons } from '@/components/ui/icons';
-import { wp } from '@/lib/dimensions';
-import { ImportList } from '@/components/import';
+import { useQuery } from '@apollo/client';
 
 const ImportScreen = () => {
   const { loading, error, data } = useQuery(GET_ALL_PRESETS);
 
-  const navigation = useNavigation();
   const [recipes, setRecipes] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,7 +45,7 @@ const ImportScreen = () => {
   }, [data]);
 
   const fetchData = async () => {
-    const recipes = [];
+    const recipes: Recipe[] = [];
     const recipeList = data.getAllPresets;
 
     recipeList.forEach((recipe) => {
@@ -65,10 +74,10 @@ const ImportScreen = () => {
         noise_reduction: recipe.settings.noiseReduction,
         clarity: recipe.settings.clarity,
         grain_effect: grain,
-        color_chrome_fx: recipe.settings.color_chrome_fx,
-        color_chrome_fx_blue: recipe.settings.color_chrome_fx_blue,
+        color_chrome_fx: recipe.settings.colorChromeEffect,
+        color_chrome_fx_blue: recipe.settings.colorChromeEffectBlue,
         iso: iso,
-        exposure_compensation: recipe.settings.exposure_compensation?.max,
+        exposure_compensation: recipe.settings.exposureCompensation?.max,
         red: recipe.settings.whiteBalance.redShift,
         blue: recipe.settings.whiteBalance.blueShift,
         images: recipe.images,
@@ -91,13 +100,10 @@ const ImportScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <Stack.Screen options={{ headerShown: false }} />
       {/* Title */}
       <View className="items-center mb-3 mt-4 justify-between flex-row">
-        <TouchableOpacity
-          className="p-2 h-9 ml-3"
-          style={{ backgroundColor: 'white' }}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity className="p-2 h-9 ml-3 bg-white" onPress={() => router.back()}>
           <Icons.back size={wp(6)} color="black" />
         </TouchableOpacity>
         <Text
@@ -108,6 +114,7 @@ const ImportScreen = () => {
         </Text>
         <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
       </View>
+
       {/* Search Bar */}
       <View className="flex-row items-center justify-between px-4 pb-2 w-full space-x-6 mb-3">
         <View className="px-4 py-2 bg-[#f0eff2] rounded-xl flex-1 flex-row items-center justify-center space-x-2">
@@ -132,9 +139,10 @@ const ImportScreen = () => {
         <ActivityIndicator size="small" color="#0000ff" />
       ) : (
         <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
-          <ImportList data={recipes} />
+          <ImportList importData={recipes} />
         </ScrollView>
       )}
+
       {/* filter bottom sheet */}
       {isFilterUp && (
         <FilterBottomSheet
