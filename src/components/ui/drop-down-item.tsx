@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, View } from '../ui';
+import { Image, StyleSheet, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { wp } from '@/lib/dimensions';
 

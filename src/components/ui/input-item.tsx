@@ -8,7 +8,7 @@ type InputItemProps = {
   value: any
 }
 
-const InputItem: React.FC<InputItemProps> = ({ title, icon, handleChange, value }) => {
+export const InputItem: React.FC<InputItemProps> = ({ title, icon, handleChange, value }) => {
   return (
     <View
       className="flex-row py-3 items-center"
@@ -30,5 +30,3 @@ const InputItem: React.FC<InputItemProps> = ({ title, icon, handleChange, value 
     </View>
   );
 };
-
-export default InputItem;

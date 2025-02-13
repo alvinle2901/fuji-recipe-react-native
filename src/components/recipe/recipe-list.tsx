@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from '../ui';
 
-import RecipeCard from './recipe-card';
+import { RecipeCard } from './recipe-card';
 
-const Recipes = ({ data }) => {
+export const RecipeList = ({ data }) => {
   return (
     <View className="mx-4 flex-row justify-between flex-wrap">
       {data.map((item, index) => {
@@ -12,5 +12,3 @@ const Recipes = ({ data }) => {
     </View>
   );
 };
-
-export default Recipes;

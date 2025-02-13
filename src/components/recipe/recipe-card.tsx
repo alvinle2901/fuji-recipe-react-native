@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { Image, Text, TouchableOpacity } from '../ui';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 
 import { useUpdateRecipeField } from '@/lib/hooks';
 import { hp, wp } from '@/lib/dimensions';
 import { Icons } from '../ui/icons';
 
-const RecipeCard = ({ item }) => {
-  const navigation = useNavigation();
+export const RecipeCard = ({ item }) => {
   const [isFavourite, toggleFavourite] = useState(item.favorite);
 
   const updateRecipeFieldMutation = useUpdateRecipeField();
@@ -24,13 +22,13 @@ const RecipeCard = ({ item }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Detail', { item: item, isDataToImport: false })}
-      style={{ width: wp(44), height: wp(55) }}
+      // onPress={() => navigation.navigate('Detail', { item: item, isDataToImport: false })}
+      style={{ width: wp(44), height: hp(30) }}
       className="flex justify-end relative p-4 py-6 space-y-2 mb-4"
     >
       <Image
         source={{ uri: item.images[0] }}
-        style={{ width: wp(44), height: wp(55), borderRadius: 20 }}
+        style={{ width: wp(44), height: hp(30), borderRadius: 20 }}
         className="absolute"
       />
       <LinearGradient
@@ -62,5 +60,3 @@ const RecipeCard = ({ item }) => {
     </TouchableOpacity>
   );
 };
-
-export default RecipeCard;

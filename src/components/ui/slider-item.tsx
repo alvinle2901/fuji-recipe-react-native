@@ -3,7 +3,7 @@ import { wp } from '@/lib/dimensions';
 import { Slider } from 'react-native-awesome-slider';
 import { useSharedValue } from 'react-native-reanimated';
 
-import { Image, Text, TextInput, View } from '../ui';
+import { Image, Text, TextInput, View } from 'react-native';
 
 type SliderItemProps = {
   title: any;
@@ -14,7 +14,7 @@ type SliderItemProps = {
   maximumSliderValue: any;
 };
 
-const SliderItem: React.FC<SliderItemProps> = ({
+export const SliderItem: React.FC<SliderItemProps> = ({
   title,
   icon,
   value,
@@ -76,5 +76,3 @@ const SliderItem: React.FC<SliderItemProps> = ({
     </View>
   );
 };
-
-export default SliderItem;

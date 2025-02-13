@@ -5,6 +5,8 @@ import { wp } from '@/lib/dimensions';
 import { RefreshControl, SafeAreaView, ScrollView, TextInput, TouchableOpacity, View, Image, Text } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
 import { useRecipes } from '@/lib/hooks';
+import { router, Stack } from 'expo-router';
+import { RecipeList } from '@/components/recipe';
 
 const HomeScreen = () => {
   const { data: recipes, isLoading, isError } = useRecipes();
@@ -46,6 +48,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <Stack.Screen options={{ headerShown: false}} />
       <StatusBar />
       <View className="mx-4 flex-row justify-between items-center my-4">
         {/* Title */}
@@ -63,12 +66,12 @@ const HomeScreen = () => {
             className="p-3 rounded-full mr-1"
             style={{ backgroundColor: '#f0eff2' }}
             onPress={() => {
-              // navigation.navigate('Import');
               // clearAllData()
+              router.push('./import')
             }}
           >
             <Image
-              source={require('../../../assets/import.png')}
+              source={require('../../assets/import.png')}
               style={{ height: wp(5), width: wp(5) }}
             ></Image>
           </TouchableOpacity>
@@ -78,12 +81,11 @@ const HomeScreen = () => {
             className="p-3 rounded-full"
             style={{ backgroundColor: '#f0eff2' }}
             onPress={() => 
-            {}
-              // navigation.navigate('Add')
+              router.push('/recipe/add-recipe')
             }
           >
             <Image
-              source={require('../../../assets/focus.png')}
+              source={require('../../assets/focus.png')}
               style={{ height: wp(5), width: wp(5) }}
             ></Image>
           </TouchableOpacity>
@@ -113,7 +115,7 @@ const HomeScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         {/* Recipes */}
-        {/* <Recipes data={data} /> */}
+        <RecipeList data={data} />
       </ScrollView>
       
       {/* filter bottom sheet */}

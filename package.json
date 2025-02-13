@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "lintFixAll": "eslint 'src/**/*.{ts,tsx,js,jsx}' --fix",
     "prettierFixAll": "prettier --write 'src/**/*.{ts,tsx,js,jsx}'",
-    "fix:lintPrettier": "yarn prettierFixAll && yarn lintFixAll"
+    "fix:lintPrettier": "yarn prettierFixAll && yarn lintFixAll",
+    "compile": "graphql-codegen"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
@@ -36,7 +37,7 @@
     "firebase": "^10.5.0",
     "formik": "^2.4.5",
     "graphql": "^15.8.0",
-    "nativewind": "^2.0.11",
+    "nativewind": "^4.1.23",
     "prettier": "^3.3.3",
     "react": "18.3.1",
     "react-native": "0.76.7",
@@ -48,7 +49,7 @@
     "react-native-gesture-handler": "~2.20.2",
     "react-native-heroicons": "^3.2.0",
     "react-native-hide-with-keyboard": "^1.2.1",
-    "react-native-reanimated": "~3.16.1",
+    "react-native-reanimated": "3.16.7",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-root-toast": "^3.5.1",
     "react-native-safe-area-context": "4.12.0",
@@ -58,6 +59,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
+    "@graphql-codegen/cli": "^5.0.4",
+    "@graphql-codegen/client-preset": "^4.6.2",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
@@ -65,7 +69,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "tailwindcss": "^3.3.2",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.3.3"
   },
   "private": true

@@ -7,6 +7,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../firebase.config';
 import { ScrollView } from './ui';
 import { wp } from '@/lib/dimensions';
+import { Icons } from './ui/icons';
 
 const ImageSlider = ({ images, setImages }) => {
   const [pickedImages, setPickedImages] = useState(images);
@@ -80,14 +81,14 @@ const ImageSlider = ({ images, setImages }) => {
                 style={styles.imageContainer}
               />
               <TouchableOpacity onPress={() => removeImage(index)}>
-                <XCircleIcon size={wp(6)} color="gray" strokeWidth={1} />
+                <Icons.close size={wp(6)} color="gray" strokeWidth={1} />
               </TouchableOpacity>
             </View>
           );
         })}
         <View className="items-center justify-center mt-2" style={[styles.imageContainer]}>
           <TouchableOpacity onPress={pickImage}>
-            <PlusCircleIcon color={'gray'} size={wp(10)} />
+            <Icons.add color={'gray'} size={wp(10)} />
           </TouchableOpacity>
         </View>
       </ScrollView>

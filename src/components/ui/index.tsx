@@ -1,7 +1,9 @@
 export * from './checkbox'
 export * from './error'
 export * from './input-item'
-
+export * from './modal'
+export * from './slider-item'
+export * from './drop-down-item'
 
 export {
   ActivityIndicator,

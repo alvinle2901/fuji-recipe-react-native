@@ -54,8 +54,7 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <RootSiblingParent>
-            <Stack>
-              <Stack.Screen name="home/index" options={{ headerShown: false }} />
+            <Stack >
               <Stack.Screen name="+not-found" />
             </Stack>
           </RootSiblingParent>
