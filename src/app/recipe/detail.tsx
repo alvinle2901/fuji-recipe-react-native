@@ -1,31 +1,28 @@
-import React, { useRef, useState } from 'react';
-import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import {
-  ChevronLeftIcon,
-  EllipsisVerticalIcon,
-  HeartIcon,
-  InboxArrowDownIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from 'react-native-heroicons/outline';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
+import React, { useState } from 'react';
 import Toast from 'react-native-root-toast';
 
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
+import { Stack, router } from 'expo-router';
+import BottomSheet from '@gorhom/bottom-sheet';
 
-import { useDeleteRecipe, useSaveRecipe, useUpdateRecipeField } from '@/lib/hooks';
-import { updateWB } from '@/lib/string';
+import { ImageCarousel } from '@/components/image-carousel';
 import { DetailItem } from '@/components/recipe';
-import { Modal } from '@/components/ui/modal';
+import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from '@/components/ui';
+import { Icons } from '@/components/ui/icons';
 
-function DetailScreen(props) {
-  const { item, isDataToImport, isImported } = props.route.params;
-  const navigation = useNavigation();
-  const scrollY = useRef(new Animated.Value(0)).current;
+import { hp, wp } from '@/lib/dimensions';
+import {
+  useDeleteRecipe,
+  useNavigationProps,
+  useSaveRecipe,
+  useUpdateRecipeField,
+} from '@/lib/hooks';
+import { updateWB } from '@/lib/string';
+import { DetailScreenProps } from '@/types';
+
+const DetailScreen = () => {
+  const { getScreenProps } = useNavigationProps();
+  const screenProps = getScreenProps<DetailScreenProps>('details');
+  const { item, isImported, isDataToImport } = screenProps.data;
 
   const saveRecipe = useSaveRecipe();
   const deleteRecipe = useDeleteRecipe();
@@ -37,7 +34,6 @@ function DetailScreen(props) {
   const [dialog, setDialog] = useState(false);
 
   const renderedDetailItems = [];
-  const ITEM_HEIGHT = wp(130);
 
   // delete item
   const handleDeleteRecipe = (item) => {
@@ -48,11 +44,12 @@ function DetailScreen(props) {
       textColor: 'black',
     });
     setDialog(false);
-    navigation.navigate('Home');
+
+    router.push('/');
   };
 
   // update favorite item
-  const updateFavorite = async (state) => {
+  const updateFavorite = async (state: boolean) => {
     updateRecipeFieldMutation.mutate({
       id: item.id,
       field: 'favorite',
@@ -101,71 +98,32 @@ function DetailScreen(props) {
 
   return (
     <View className="bg-white flex-1">
-      {/* <StatusBar style={'light'} /> */}
+      <Stack.Screen options={{ headerShown: false }} />
+
       {/* Images Carousel */}
-      <View style={{ height: ITEM_HEIGHT, overflow: 'hidden' }}>
-        <Animated.FlatList
-          data={item.images}
-          keyExtractor={(_, index) => index.toString()}
-          snapToInterval={ITEM_HEIGHT}
-          decelerationRate={'fast'}
-          showsVerticalScrollIndicator={false}
-          bounces={false}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-            useNativeDriver: true,
-          })}
-          renderItem={({ item }) => {
-            return (
-              <View>
-                <Image source={{ uri: item }} style={{ width: wp(100), height: hp(65) }} />
-              </View>
-            );
-          }}
-        />
-        <View className="absolute" style={{ top: ITEM_HEIGHT / 2, left: 15 }}>
-          {item.images.map((_, index) => {
-            return <View key={index} style={styles.dot} />;
-          })}
-          <Animated.View
-            style={[
-              styles.dotIndicator,
-              {
-                transform: [
-                  {
-                    translateY: Animated.divide(scrollY, wp(130)).interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 16],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          />
-        </View>
-      </View>
+      <ImageCarousel item={item} />
+
       {/* Header Buttons */}
       <View className="flex-row justify-between w-full absolute mt-10">
         {/* Back button */}
         <TouchableOpacity
-          className="p-2 h-9 rounded-full ml-4"
-          style={{ backgroundColor: 'white' }}
-          onPress={() => navigation.goBack()}
+          className="p-2 h-10 rounded-full ml-4 bg-white"
+          onPress={() => router.back()}
         >
-          <ChevronLeftIcon size={wp(6)} color="black" />
+          <Icons.back size={wp(6)} color="black" />
         </TouchableOpacity>
 
         {/* Favorite */}
         {!isDataToImport && (
           <View>
             <TouchableOpacity
-              className="p-2 h-9 rounded-full"
-              style={{ backgroundColor: 'white' }}
+              className="p-2 rounded-full bg-white"
               onPress={() => {
                 toggleFavourite(!isFavourite);
                 updateFavorite(!isFavourite);
               }}
             >
-              <HeartIcon size={wp(6)} color={isFavourite ? 'red' : 'black'} />
+              <Icons.heart size={wp(6)} color={isFavourite ? 'red' : 'black'} />
             </TouchableOpacity>
           </View>
         )}
@@ -174,11 +132,10 @@ function DetailScreen(props) {
         {!isDataToImport ? (
           <View>
             <TouchableOpacity
-              className="p-2 rounded-full mr-4"
-              style={{ backgroundColor: 'white' }}
+              className="p-2 rounded-full mr-4 bg-white"
               onPress={() => setFunc(!func)}
             >
-              <EllipsisVerticalIcon size={wp(6)} color="black" />
+              <Icons.more size={wp(6)} color="black" />
             </TouchableOpacity>
             {func && (
               <>
@@ -186,9 +143,9 @@ function DetailScreen(props) {
                 <TouchableOpacity
                   className="p-2 rounded-full mr-4 mt-1"
                   style={{ backgroundColor: 'white' }}
-                  onPress={() => navigation.navigate('Edit', { ...item })}
+                  // onPress={() => navigation.navigate('Edit', { ...item })}
                 >
-                  <PencilSquareIcon size={wp(6)} color="black" />
+                  <Icons.edit size={wp(6)} color="black" />
                 </TouchableOpacity>
                 {/* Delete */}
                 <TouchableOpacity
@@ -196,7 +153,7 @@ function DetailScreen(props) {
                   style={{ backgroundColor: 'white' }}
                   onPress={() => setDialog(true)}
                 >
-                  <TrashIcon size={wp(6)} color="black" />
+                  <Icons.delete size={wp(6)} color="black" />
                   <Modal
                     title={'Recipe Delete'}
                     description={'Do you want to delete this recipe? You cannot undo this action.'}
@@ -213,13 +170,12 @@ function DetailScreen(props) {
           <>
             {!imported && (
               <TouchableOpacity
-                className="p-2 h-9 rounded-full mr-4"
-                style={{ backgroundColor: 'white' }}
+                className="p-2 rounded-full mr-4 bg-white"
                 onPress={() => {
                   handleSaveRecipe();
                 }}
               >
-                <InboxArrowDownIcon size={wp(6)} color={'black'} />
+                <Icons.import size={wp(6)} color={'black'} />
               </TouchableOpacity>
             )}
           </>
@@ -227,16 +183,16 @@ function DetailScreen(props) {
       </View>
       {/* Bottom Sheet */}
       <BottomSheet style={styles.bottomSheet} snapPoints={[hp(100) - wp(123), hp(75)]}>
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={{ fontSize: wp(7) }} className="font-bold flex-1 text-neutral-700 mb-4 mt-3">
             {item.title}
           </Text>
           {renderedDetailItems}
-        </BottomSheetScrollView>
+        </ScrollView>
       </BottomSheet>
     </View>
   );
-}
+};
 
 export default DetailScreen;
 
@@ -248,22 +204,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 20,
     paddingRight: 20,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 8,
-    backgroundColor: 'white',
-    marginBottom: 8,
-  },
-  dotIndicator: {
-    width: 16,
-    height: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'white',
-    position: 'absolute',
-    top: -4,
-    left: -4,
   },
 });

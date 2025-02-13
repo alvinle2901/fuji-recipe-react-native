@@ -1,9 +1,11 @@
-import { Image, Text, TouchableOpacity, View } from '../ui';
-import { Icons } from '../ui/icons';
+import { router } from 'expo-router';
 
 import { wp } from '@/lib/dimensions';
-import { useSaveRecipe } from '@/lib/hooks';
+import { useNavigationProps, useSaveRecipe } from '@/lib/hooks';
 import { Recipe } from '@/types';
+
+import { Image, Text, TouchableOpacity, View } from '../ui';
+import { Icons } from '../ui/icons';
 
 type ImportCardProps = {
   item: Recipe;
@@ -12,6 +14,7 @@ type ImportCardProps = {
 
 export const ImportCard: React.FC<ImportCardProps> = ({ item, isImported }) => {
   const saveRecipe = useSaveRecipe();
+  const { setScreenProps } = useNavigationProps();
 
   const handleSaveRecipe = () => {
     const newRecipe = {
@@ -21,12 +24,16 @@ export const ImportCard: React.FC<ImportCardProps> = ({ item, isImported }) => {
     saveRecipe.mutate(newRecipe);
   };
 
+  const handleNavigation = () => {
+    const dataToNavigate = { item: item, isDataToImport: true, isImported: isImported };
+    setScreenProps('details', { data: dataToNavigate });
+
+    router.push('/recipe/detail');
+  };
+
   return (
     <TouchableOpacity
-      onPress={
-        () => {}
-        // navigation.navigate('Detail', { item: item, isDataToImport: true, isImported: isImported })
-      }
+      onPress={handleNavigation}
       className="flex-row p-2 bg-white w-full border-gray-100 border-b items-center justify-between"
     >
       <View className="flex-row">
@@ -44,7 +51,7 @@ export const ImportCard: React.FC<ImportCardProps> = ({ item, isImported }) => {
           </Text>
         </View>
       </View>
-      
+
       {/* Import button */}
       <TouchableOpacity
         className={`p-2 h-9 ml-3 ${isImported ? '' : 'bg-white'}`}

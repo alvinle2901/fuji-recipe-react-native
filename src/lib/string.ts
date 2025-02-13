@@ -1,4 +1,4 @@
-import { filmSimulationData } from '../constants';
+import { filmSimulationData } from './constants';
 
 // update WB string
 export const updateWB = (wb, blue, red, temp) => {

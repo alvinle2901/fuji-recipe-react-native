@@ -6,7 +6,7 @@ import { wp } from '@/lib/dimensions';
 
 type DetailItemProps = {
   title: string,
-  detail: string
+  detail: any
 } 
 
 export const DetailItem: React.FC<DetailItemProps> = ({ title, detail }) => {

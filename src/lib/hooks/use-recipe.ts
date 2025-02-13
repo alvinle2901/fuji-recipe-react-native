@@ -6,7 +6,7 @@ import {
   saveRecipes,
   updateRecipeById,
   updateRecipeFieldById,
-} from '../../storage';
+} from '@/storage';
 import { Recipe } from '@/types';
 
 // Key for caching
@@ -43,11 +43,11 @@ export const useDeleteRecipe = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async ({ id }: { id: string }) => {
       await deleteRecipeById(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(RECIPES_QUERY_KEY);
+      queryClient.invalidateQueries({ queryKey: RECIPES_QUERY_KEY });
     },
   });
 };
@@ -56,11 +56,11 @@ export const useUpdateRecipe = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data) => {
-      await updateRecipeById(data.id, data.updatedRecipe);
+    mutationFn: async ({ id, updatedRecipe }: { id: string; updatedRecipe: Recipe }) => {
+      await updateRecipeById(id, updatedRecipe);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(RECIPES_QUERY_KEY);
+      queryClient.invalidateQueries({ queryKey: RECIPES_QUERY_KEY });
     },
   });
 };
@@ -69,11 +69,11 @@ export const useUpdateRecipeField = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data) => {
-      await updateRecipeFieldById(data.id, data.field, data.value);
+    mutationFn: async ({ id, field, value }: { id: string; field: keyof Recipe; value: any }) => {
+      await updateRecipeFieldById(id, field, value);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(RECIPES_QUERY_KEY);
+      queryClient.invalidateQueries({ queryKey: RECIPES_QUERY_KEY });
     },
   });
 };

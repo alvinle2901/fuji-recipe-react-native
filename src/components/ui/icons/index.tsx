@@ -1,5 +1,15 @@
 import {
-  FunnelIcon, MagnifyingGlassIcon, ChevronLeftIcon, CheckIcon, InboxArrowDownIcon, HeartIcon, PlusCircleIcon, XCircleIcon
+  CheckIcon,
+  ChevronLeftIcon,
+  FunnelIcon,
+  HeartIcon,
+  InboxArrowDownIcon,
+  MagnifyingGlassIcon,
+  PlusCircleIcon,
+  XCircleIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  EllipsisVerticalIcon,
 } from 'react-native-heroicons/outline';
 
 export const Icons = {
@@ -10,5 +20,8 @@ export const Icons = {
   import: InboxArrowDownIcon,
   heart: HeartIcon,
   add: PlusCircleIcon,
-  close: XCircleIcon
+  close: XCircleIcon,
+  edit: PencilSquareIcon,
+  delete: TrashIcon,
+  more: EllipsisVerticalIcon
 };

@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { Image, Text, TouchableOpacity } from '../ui';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { useUpdateRecipeField } from '@/lib/hooks';
 import { hp, wp } from '@/lib/dimensions';
+import { useNavigationProps, useUpdateRecipeField } from '@/lib/hooks';
+
+import { Image, Text, TouchableOpacity } from '../ui';
 import { Icons } from '../ui/icons';
+import { router } from 'expo-router';
 
 export const RecipeCard = ({ item }) => {
+  const { setScreenProps } = useNavigationProps();
   const [isFavourite, toggleFavourite] = useState(item.favorite);
 
   const updateRecipeFieldMutation = useUpdateRecipeField();
   // update favorite
-  const updateFavorite = async (state) => {
+  const updateFavorite = async (state: boolean) => {
     updateRecipeFieldMutation.mutate({
       id: item.id,
       field: 'favorite',
@@ -20,9 +23,16 @@ export const RecipeCard = ({ item }) => {
     });
   };
 
+  const handleNavigation = () => {
+    const dataToNavigate = { item: item, isDataToImport: false };
+    setScreenProps('details', { data: dataToNavigate });
+
+    router.push('/recipe/detail');
+  };
+
   return (
     <TouchableOpacity
-      // onPress={() => navigation.navigate('Detail', { item: item, isDataToImport: false })}
+      onPress={handleNavigation}
       style={{ width: wp(44), height: hp(30) }}
       className="flex justify-end relative p-4 py-6 space-y-2 mb-4"
     >

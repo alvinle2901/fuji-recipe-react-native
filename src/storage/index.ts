@@ -1,9 +1,10 @@
-// storage.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { Recipe } from '@/types';
 
 const RECIPES_KEY = 'recipes';
 
-export const saveRecipes = async (recipes) => {
+export const saveRecipes = async (recipes: Recipe[]) => {
   try {
     const jsonValue = JSON.stringify(recipes);
     await AsyncStorage.setItem(RECIPES_KEY, jsonValue);
@@ -22,10 +23,10 @@ export const getRecipes = async () => {
   }
 };
 
-export const deleteRecipeById = async (id) => {
+export const deleteRecipeById = async (id: string) => {
   try {
     const recipes = await getRecipes();
-    const updatedRecipes = recipes.filter((recipe) => recipe.id !== id);
+    const updatedRecipes = recipes.filter((recipe: Recipe) => recipe.id !== id);
     await saveRecipes(updatedRecipes);
   } catch (e) {
     console.error('Failed to delete recipe:', e);
@@ -33,18 +34,18 @@ export const deleteRecipeById = async (id) => {
 };
 
 // Update recipe by ID
-export const updateRecipeById = async (id, updatedData) => {
+export const updateRecipeById = async (id: string, updatedData: Recipe) => {
   const recipes = await getRecipes();
-  const updatedRecipes = recipes.map((recipe) =>
+  const updatedRecipes = recipes.map((recipe: Recipe) =>
     recipe.id === id ? { ...recipe, ...updatedData } : recipe
   );
   await saveRecipes(updatedRecipes);
 };
 
 // Update a field of a recipe by ID
-export const updateRecipeFieldById = async (id, field, value) => {
+export const updateRecipeFieldById = async (id: string, field: keyof Recipe, value: any) => {
   const recipes = await getRecipes();
-  const updatedRecipes = recipes.map((recipe) =>
+  const updatedRecipes = recipes.map((recipe: Recipe) =>
     recipe.id === id ? { ...recipe, [field]: value } : recipe
   );
   await saveRecipes(updatedRecipes);

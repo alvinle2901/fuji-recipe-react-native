@@ -1,28 +1,40 @@
+import React, { useState } from 'react';
+import Toast from 'react-native-root-toast';
+
+import { Stack, router } from 'expo-router';
+import { Formik } from 'formik';
+
 import ImageSlider from '@/components/image-slider';
-import { DropDownItem, Error, InputItem, Modal, SafeAreaView, ScrollView, SliderItem, Text, TouchableOpacity, View } from '@/components/ui';
+import {
+  DropDownItem,
+  Error,
+  HideWithKeyboard,
+  InputItem,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  SliderItem,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from '@/components/ui';
+import { Icons } from '@/components/ui/icons';
 import WhiteBalance from '@/components/white-balance';
+
 import {
   ccData,
   dynamicRangeData,
   filmSimulationData,
   grainEffectData,
   sensorData,
-} from '@/constants';
+} from '@/lib/constants';
 import { wp } from '@/lib/dimensions';
 import { useSaveRecipe } from '@/lib/hooks';
 import { checkBW } from '@/lib/string';
 import { validateSchema } from '@/lib/validation';
 
-import React, { useState } from 'react';
-import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
-import Toast from 'react-native-root-toast';
-
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { Formik } from 'formik';
-import { Icons } from '@/components/ui/icons';
-
-const AddScreen = ({ navigation }) => {
+const AddScreen = () => {
   const [dialog, setDialog] = useState(false);
   const [images, setImages] = useState([]);
   const [color, setColor] = useState(0);
@@ -90,7 +102,7 @@ const AddScreen = ({ navigation }) => {
             backgroundColor: 'white',
             textColor: 'black',
           });
-          navigation.navigate('Home');
+          router.push('/');
         } catch (e) {
           console.error('Error adding document: ', e);
           Toast.show('There was an error while uploading', {
@@ -118,7 +130,7 @@ const AddScreen = ({ navigation }) => {
                 description={'Do you want to go back to home screen? You cannot undo this action.'}
                 visible={dialog}
                 setVisible={setDialog}
-                handler={() => navigation.goBack()}
+                handler={() => router.back()}
                 handlerLabel={'Yes'}
               />
             </TouchableOpacity>
