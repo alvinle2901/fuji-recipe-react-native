@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { ChevronLeftIcon } from 'react-native-heroicons/outline';
-import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
 import Toast from 'react-native-root-toast';
 
+import { Stack, router } from 'expo-router';
 import { Formik } from 'formik';
 
-import { useNavigation } from '@react-navigation/native';
-
 import ImageSlider from '@/components/image-slider';
-
+import {
+  DropDownItem,
+  Error,
+  HideWithKeyboard,
+  InputItem,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  SliderItem,
+  Text,
+  TouchableOpacity,
+  View,
+} from '@/components/ui';
+import { Icons } from '@/components/ui/icons';
 import WhiteBalance from '@/components/white-balance';
 import {
   ccData,
@@ -21,20 +26,18 @@ import {
   filmSimulationData,
   grainEffectData,
   sensorData,
-} from '@/constants';
-import { useUpdateRecipe } from '@/lib/hooks/';
+} from '@/lib/constants';
+import { wp } from '@/lib/dimensions';
+import { useNavigationProps, useUpdateRecipe } from '@/lib/hooks';
 import { checkBW } from '@/lib/string';
 import { validateSchema } from '@/lib/validation';
+import { Recipe } from '@/types';
 
-import { Modal } from '@/components/ui/modal';
-import InputItem from '@/components/ui/input-item';
-import { DropDownItem } from '@/components/ui/drop-down-item';
-import SliderItem from '@/components/ui/slider-item';
-import { Error } from '@/components/ui';
+const EditScreen = () => {
+  const { getScreenProps } = useNavigationProps();
+  const screenProps = getScreenProps<{ data: { item: Recipe } }>('edit');
+  const { item } = screenProps.data;
 
-const EditScreen = (props) => {
-  const item = props.route.params;
-  const navigation = useNavigation();
   const updateRecipeMutation = useUpdateRecipe();
 
   const [dialog, setDialog] = useState(false);
@@ -49,6 +52,10 @@ const EditScreen = (props) => {
   // Handle update function
   const handleUpdateRecipe = (id, item) => {
     updateRecipeMutation.mutate({ id: id, updatedRecipe: item });
+  };
+
+  const handleBack = () => {
+    router.back();
   };
 
   return (
@@ -98,7 +105,8 @@ const EditScreen = (props) => {
             backgroundColor: 'white',
             textColor: 'black',
           });
-          navigation.navigate('Home');
+
+          router.push('/');
         } catch (e) {
           console.log(e);
           Toast.show('There was an error while updating', {
@@ -111,20 +119,21 @@ const EditScreen = (props) => {
     >
       {({ handleChange, handleSubmit, values, errors }) => (
         <SafeAreaView className="flex-1 bg-white">
+          <Stack.Screen options={{ headerShown: false }} />
           {/* Header */}
-          <View className="items-center mb-2 mt-11 justify-between flex-row">
+          <View className="items-center mb-2 mt-5 justify-between flex-row">
             <TouchableOpacity
               className="p-2 h-9 ml-3"
               style={{ backgroundColor: 'white' }}
-              onPress={() => navigation.goBack()}
+              onPress={handleBack}
             >
-              <ChevronLeftIcon size={wp(6)} color="black" />
+              <Icons.back size={wp(6)} color="black" />
               <Modal
                 title={'Exit Editing'}
                 description={'Do you want to go back to home screen? You cannot undo this action.'}
                 visible={dialog}
                 setVisible={setDialog}
-                handler={() => navigation.goBack()}
+                handler={handleBack}
                 handlerLabel={'Yes'}
               />
             </TouchableOpacity>
@@ -142,7 +151,7 @@ const EditScreen = (props) => {
               {/* Title */}
               <InputItem
                 title={'Title'}
-                icon={require('../../../../assets/recipe_icon/film1.png')}
+                icon={require('../../../assets/recipe_icon/film1.png')}
                 handleChange={handleChange('title')}
                 value={values.title}
               />
@@ -150,7 +159,7 @@ const EditScreen = (props) => {
               {/* Film Simulation */}
               <DropDownItem
                 data={filmSimulationData}
-                icon={require('../../../../assets/recipe_icon/film.png')}
+                icon={require('../../../assets/recipe_icon/film.png')}
                 field={'Film Simulation'}
                 value={values.film}
                 setValue={handleChange('film')}
@@ -159,7 +168,7 @@ const EditScreen = (props) => {
               {/* Sensor */}
               <DropDownItem
                 data={sensorData}
-                icon={require('../../../../assets/recipe_icon/sensor.png')}
+                icon={require('../../../assets/recipe_icon/sensor.png')}
                 field={'Sensor'}
                 value={values.sensor}
                 setValue={handleChange('sensor')}
@@ -169,7 +178,7 @@ const EditScreen = (props) => {
               <ImageSlider images={images} setImages={setImages} />
               {/* White Balance */}
               <WhiteBalance
-                icon={require('../../../../assets/recipe_icon/white-balance.png')}
+                icon={require('../../../assets/recipe_icon/white-balance.png')}
                 wb={values.wb}
                 setWB={handleChange('wb')}
                 temp={values.temp.toString()}
@@ -184,7 +193,7 @@ const EditScreen = (props) => {
               {/* Dynamic Range */}
               <DropDownItem
                 data={dynamicRangeData}
-                icon={require('../../../../assets/recipe_icon/hdr.png')}
+                icon={require('../../../assets/recipe_icon/hdr.png')}
                 field={'Dynamic Range'}
                 value={values.dynamicRange}
                 setValue={handleChange('dynamicRange')}
@@ -193,7 +202,7 @@ const EditScreen = (props) => {
               {/* Color */}
               <SliderItem
                 title={'Color'}
-                icon={require('../../../../assets/recipe_icon/colour.png')}
+                icon={require('../../../assets/recipe_icon/colour.png')}
                 value={color}
                 setValue={setColor}
                 minimumSliderValue={-4}
@@ -202,7 +211,7 @@ const EditScreen = (props) => {
               {/* Highlight */}
               <SliderItem
                 title={'Highlight'}
-                icon={require('../../../../assets/recipe_icon/highlight.png')}
+                icon={require('../../../assets/recipe_icon/highlight.png')}
                 value={highlight}
                 setValue={setHighlight}
                 minimumSliderValue={-2}
@@ -211,7 +220,7 @@ const EditScreen = (props) => {
               {/* Shadow */}
               <SliderItem
                 title={'Shadow'}
-                icon={require('../../../../assets/recipe_icon/shadow.png')}
+                icon={require('../../../assets/recipe_icon/shadow.png')}
                 value={shadow}
                 setValue={setShadow}
                 minimumSliderValue={-2}
@@ -220,7 +229,7 @@ const EditScreen = (props) => {
               {/* Noise Reduction */}
               <SliderItem
                 title={'Noise Reduction'}
-                icon={require('../../../../assets/recipe_icon/nr.png')}
+                icon={require('../../../assets/recipe_icon/nr.png')}
                 value={noiseReduction}
                 setValue={setNoiseReduction}
                 minimumSliderValue={-4}
@@ -229,7 +238,7 @@ const EditScreen = (props) => {
               {/* Sharpness */}
               <SliderItem
                 title={'Sharpness'}
-                icon={require('../../../../assets/recipe_icon/triangle.png')}
+                icon={require('../../../assets/recipe_icon/triangle.png')}
                 value={sharpness}
                 setValue={setSharpness}
                 minimumSliderValue={-4}
@@ -238,7 +247,7 @@ const EditScreen = (props) => {
               {/* Grain Effect */}
               <DropDownItem
                 data={grainEffectData}
-                icon={require('../../../../assets/recipe_icon/grain.png')}
+                icon={require('../../../assets/recipe_icon/grain.png')}
                 field={'Grain Effect'}
                 value={values.grainEffect}
                 setValue={handleChange('grainEffect')}
@@ -247,7 +256,7 @@ const EditScreen = (props) => {
               {/* Color Chrome Effect */}
               <DropDownItem
                 data={ccData}
-                icon={require('../../../../assets/recipe_icon/cc.png')}
+                icon={require('../../../assets/recipe_icon/cc.png')}
                 field={'Color Chrome Effect'}
                 value={values.ccfx}
                 setValue={handleChange('ccfx')}
@@ -256,14 +265,14 @@ const EditScreen = (props) => {
               {/* ISO */}
               <InputItem
                 title={'ISO'}
-                icon={require('../../../../assets/recipe_icon/iso.png')}
+                icon={require('../../../assets/recipe_icon/iso.png')}
                 handleChange={handleChange('iso')}
                 value={values.iso}
               />
               {/* Exposure Compensation */}
               {/* <SliderItem
                 title={'Exposure Compensation'}
-                icon={require('../../../../assets/recipe_icon/exposure.png')}
+                icon={require('../../../assets/recipe_icon/exposure.png')}
                 value={exposure}
                 setValue={setExposure}
                 minimumSliderValue={-3}
@@ -275,7 +284,7 @@ const EditScreen = (props) => {
           <HideWithKeyboard>
             <TouchableOpacity
               className="items-center mt-2 mb-2 mx-20 rounded-md bg-black py-2"
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
             >
               <Text style={{ fontSize: wp(4.5), color: 'white' }}>Save</Text>
             </TouchableOpacity>

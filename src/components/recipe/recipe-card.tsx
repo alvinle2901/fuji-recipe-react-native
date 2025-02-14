@@ -1,31 +1,35 @@
 import React, { useState } from 'react';
-
-import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 
 import { hp, wp } from '@/lib/dimensions';
 import { useNavigationProps, useUpdateRecipeField } from '@/lib/hooks';
+import { Recipe } from '@/types';
 
-import { Image, Text, TouchableOpacity } from '../ui';
+import { Image, Text, TouchableOpacity, LinearGradient } from '../ui';
 import { Icons } from '../ui/icons';
-import { router } from 'expo-router';
 
-export const RecipeCard = ({ item }) => {
+type RecipeCardProps = {
+  recipe: Recipe;
+};
+
+export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const { setScreenProps } = useNavigationProps();
-  const [isFavourite, toggleFavourite] = useState(item.favorite);
+  const [isFavourite, toggleFavourite] = useState(recipe.favorite);
 
   const updateRecipeFieldMutation = useUpdateRecipeField();
   // update favorite
   const updateFavorite = async (state: boolean) => {
     updateRecipeFieldMutation.mutate({
-      id: item.id,
+      id: recipe.id,
       field: 'favorite',
       value: state,
     });
   };
 
+  // handle navigate to Detail screen
   const handleNavigation = () => {
-    const dataToNavigate = { item: item, isDataToImport: false };
-    setScreenProps('details', { data: dataToNavigate });
+    const dataToNavigate = { item: recipe, isDataToImport: false };
+    setScreenProps('detail', { data: dataToNavigate });
 
     router.push('/recipe/detail');
   };
@@ -37,7 +41,7 @@ export const RecipeCard = ({ item }) => {
       className="flex justify-end relative p-4 py-6 space-y-2 mb-4"
     >
       <Image
-        source={{ uri: item.images[0] }}
+        source={{ uri: recipe.images[0] }}
         style={{ width: wp(44), height: hp(30), borderRadius: 20 }}
         className="absolute"
       />
@@ -54,18 +58,17 @@ export const RecipeCard = ({ item }) => {
         className="absolute bottom-0"
       />
       <TouchableOpacity
-        style={{ backgroundColor: 'white' }}
-        className="absolute top-1 right-3 rounded-full p-2"
+        className="absolute top-3 right-3 rounded-full p-2 bg-white"
         onPress={() => {
           toggleFavourite(!isFavourite);
           updateFavorite(!isFavourite);
         }}
       >
-        <Icons.heart size={wp(5)} color={item.favorite ? 'red' : 'black'} />
+        <Icons.heart size={wp(5)} color={recipe.favorite ? 'red' : 'black'} />
       </TouchableOpacity>
 
       <Text style={{ fontSize: wp(4) }} className="text-white font-semibold">
-        {item.title}
+        {recipe.title}
       </Text>
     </TouchableOpacity>
   );

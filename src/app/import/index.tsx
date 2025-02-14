@@ -1,3 +1,9 @@
+import React, { useEffect, useState } from 'react';
+
+import { Stack, router } from 'expo-router';
+
+import { useQuery } from '@apollo/client';
+
 import FilterBottomSheet from '@/components/filter-bottom-sheet';
 import { ImportList } from '@/components/import';
 import {
@@ -15,12 +21,6 @@ import { wp } from '@/lib/dimensions';
 import { filterAndSearch } from '@/lib/filter';
 import { checkBW, getTemp, updateGrain } from '@/lib/string';
 import { Recipe } from '@/types';
-
-import React, { useEffect, useState } from 'react';
-
-import { Stack, router } from 'expo-router';
-
-import { useQuery } from '@apollo/client';
 
 const ImportScreen = () => {
   const { loading, error, data } = useQuery(GET_ALL_PRESETS);
@@ -63,6 +63,7 @@ const ImportScreen = () => {
         : recipe.settings.whiteBalance.mode;
 
       recipes.push({
+        id: `id_${Date.now()}`,
         film_simulation: recipe.settings.filmSimulation,
         sensor: recipe.sensor,
         dynamic_range: recipe.settings.dynamicRange,

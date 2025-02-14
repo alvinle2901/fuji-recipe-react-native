@@ -1,13 +1,17 @@
-import React from 'react';
-import { View } from '../ui';
+import { Recipe } from '@/types';
 
+import { View } from '../ui';
 import { RecipeCard } from './recipe-card';
 
-export const RecipeList = ({ data }) => {
+type RecipeListProps = {
+  recipes: Recipe[];
+};
+
+export const RecipeList: React.FC<RecipeListProps> = ({ recipes }) => {
   return (
     <View className="mx-4 flex-row justify-between flex-wrap">
-      {data.map((item, index) => {
-        return <RecipeCard item={item} key={index} />;
+      {recipes.map((item, index) => {
+        return <RecipeCard recipe={item} key={index} />;
       })}
     </View>
   );

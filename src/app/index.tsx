@@ -115,7 +115,7 @@ const HomeScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         {/* Recipes */}
-        <RecipeList data={data} />
+        <RecipeList recipes={data} />
       </ScrollView>
       
       {/* filter bottom sheet */}

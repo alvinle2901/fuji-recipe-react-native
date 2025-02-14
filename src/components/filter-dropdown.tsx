@@ -1,15 +1,12 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
 
-import { getField } from '../lib/string';
+import { Dropdown, Image, StyleSheet, View } from '@/components/ui';
+import { wp } from '@/lib/dimensions';
+import { getField } from '@/lib/string';
 
 const FilterDropdown = ({ data, field, icon, value, setValue }) => {
   const filterField = getField(field);
+  
   return (
     <View
       className="flex-row py-3 items-center w-full justify-between"
@@ -21,7 +18,6 @@ const FilterDropdown = ({ data, field, icon, value, setValue }) => {
     >
       <Image source={icon} style={{ height: wp(7), width: wp(7) }}></Image>
       <Dropdown
-        className="ml-3 flex-1"
         style={styles.dropdown}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
@@ -52,6 +48,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
+    flex: 1,
+    marginLeft: 10,
   },
   placeholderStyle: {
     fontSize: wp(4),

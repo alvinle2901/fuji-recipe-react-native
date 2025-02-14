@@ -26,7 +26,7 @@ export const ImportCard: React.FC<ImportCardProps> = ({ item, isImported }) => {
 
   const handleNavigation = () => {
     const dataToNavigate = { item: item, isDataToImport: true, isImported: isImported };
-    setScreenProps('details', { data: dataToNavigate });
+    setScreenProps('detail', { data: dataToNavigate });
 
     router.push('/recipe/detail');
   };

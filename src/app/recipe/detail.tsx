@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import Toast from 'react-native-root-toast';
 
 import { Stack, router } from 'expo-router';
+
 import BottomSheet from '@gorhom/bottom-sheet';
 
 import { ImageCarousel } from '@/components/image-carousel';
 import { DetailItem } from '@/components/recipe';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
-
 import { hp, wp } from '@/lib/dimensions';
 import {
   useDeleteRecipe,
@@ -20,8 +20,8 @@ import { updateWB } from '@/lib/string';
 import { DetailScreenProps } from '@/types';
 
 const DetailScreen = () => {
-  const { getScreenProps } = useNavigationProps();
-  const screenProps = getScreenProps<DetailScreenProps>('details');
+  const { getScreenProps, setScreenProps } = useNavigationProps();
+  const screenProps = getScreenProps<DetailScreenProps>('detail');
   const { item, isImported, isDataToImport } = screenProps.data;
 
   const saveRecipe = useSaveRecipe();
@@ -70,6 +70,13 @@ const DetailScreen = () => {
       backgroundColor: 'white',
       textColor: 'black',
     });
+  };
+
+  // handle navigating to Edit screen
+  const handleEditNavigation = () => {
+    const dataToNavigate = { item: item };
+    setScreenProps('edit', { data: dataToNavigate });
+    router.push('/recipe/edit');
   };
 
   // render item details
@@ -143,7 +150,7 @@ const DetailScreen = () => {
                 <TouchableOpacity
                   className="p-2 rounded-full mr-4 mt-1"
                   style={{ backgroundColor: 'white' }}
-                  // onPress={() => navigation.navigate('Edit', { ...item })}
+                  onPress={handleEditNavigation}
                 >
                   <Icons.edit size={wp(6)} color="black" />
                 </TouchableOpacity>
