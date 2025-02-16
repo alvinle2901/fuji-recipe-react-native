@@ -2,7 +2,7 @@ import React from 'react';
 import { Error, Image, StyleSheet, Text, TextInput, View } from './ui';
 import { SelectList } from 'react-native-dropdown-select-list';
 
-import { colorData, wbData } from '../constants';
+import { colorData, wbData } from '@/lib/constants';
 import { wp } from '@/lib/dimensions';
 
 export const WhiteBalance = ({
@@ -97,8 +97,6 @@ export const WhiteBalance = ({
     </View>
   );
 };
-
-export default WhiteBalance
 
 const styles = StyleSheet.create({
   dropdown: {

@@ -4,7 +4,7 @@ import Toast from 'react-native-root-toast';
 import { Stack, router } from 'expo-router';
 import { Formik } from 'formik';
 
-import ImageSlider from '@/components/image-slider';
+import { ImageSlider, WhiteBalance } from '@/components';
 import {
   DropDownItem,
   Error,
@@ -19,7 +19,7 @@ import {
   View,
 } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
-import WhiteBalance from '@/components/white-balance';
+
 import {
   ccData,
   dynamicRangeData,

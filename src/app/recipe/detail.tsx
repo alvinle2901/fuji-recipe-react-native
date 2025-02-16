@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import Toast from 'react-native-root-toast';
 
 import { Stack, router } from 'expo-router';
-
 import BottomSheet from '@gorhom/bottom-sheet';
 
 import { ImageCarousel } from '@/components/image-carousel';
 import { DetailItem } from '@/components/recipe';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
+
 import { hp, wp } from '@/lib/dimensions';
 import {
   useDeleteRecipe,
@@ -111,7 +111,7 @@ const DetailScreen = () => {
       <ImageCarousel item={item} />
 
       {/* Header Buttons */}
-      <View className="flex-row justify-between w-full absolute mt-10">
+      <View className="flex-row justify-between w-full absolute mt-12">
         {/* Back button */}
         <TouchableOpacity
           className="p-2 h-10 rounded-full ml-4 bg-white"

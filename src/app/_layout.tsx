@@ -6,10 +6,11 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { NavigationProvider } from '@/context';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { useApolloClientDevTools } from '@dev-plugins/apollo-client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { NavigationProvider } from '@/context';
 
 import '../../global.css';
 
@@ -34,8 +35,8 @@ export default function RootLayout() {
 
   // Load fonts
   const [fontsLoaded] = useFonts({
-    fin_thin: require('../../assets/finland_rounded_thin.ttf'),
-    epic_fusion: require('../../assets/EpicFusion.ttf'),
+    fin_thin: require('../../assets/fonts/finland_rounded_thin.ttf'),
+    epic_fusion: require('../../assets/fonts/EpicFusion.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {

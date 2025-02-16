@@ -4,19 +4,19 @@ import { Stack, router } from 'expo-router';
 
 import { useQuery } from '@apollo/client';
 
-import FilterBottomSheet from '@/components/filter-bottom-sheet';
+import { FilterBottomSheet } from '@/components';
 import { ImportList } from '@/components/import';
 import {
   ActivityIndicator,
   SafeAreaView,
-  ScrollView,
+  SearchBar,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
-import { GET_ALL_PRESETS } from '@/graphql/queries/preset.query';
+
+import { GET_ALL_PRESETS } from '@/graphql/queries';
 import { wp } from '@/lib/dimensions';
 import { filterAndSearch } from '@/lib/filter';
 import { checkBW, getTemp, updateGrain } from '@/lib/string';
@@ -83,7 +83,7 @@ const ImportScreen = () => {
         blue: recipe.settings.whiteBalance.blueShift,
         images: recipe.images,
         title: recipe.name,
-        temp: temp,
+        temp: temp.toString(),
         favorite: false,
         bw: bw,
         db_id: recipe.id,
@@ -118,15 +118,7 @@ const ImportScreen = () => {
 
       {/* Search Bar */}
       <View className="flex-row items-center justify-between px-4 pb-2 w-full space-x-6 mb-3">
-        <View className="px-4 py-2 bg-[#f0eff2] rounded-xl flex-1 flex-row items-center justify-center space-x-2">
-          <Icons.search size={20} color="#7f7f7f" />
-          <TextInput
-            className="text-base text=[#555] flex-1"
-            placeholder="Search..."
-            value={searchTerm}
-            onChangeText={handleSearchTerm}
-          />
-        </View>
+        <SearchBar searchTerm={searchTerm} handleSearchTerm={handleSearchTerm} />
         <TouchableOpacity
           className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#f0eff2]"
           onPress={() => setIsFilterUp(true)}
@@ -135,13 +127,11 @@ const ImportScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Recipe list */}
+      {/* Import list */}
       {loading ? (
         <ActivityIndicator size="small" color="#0000ff" />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
-          <ImportList importData={recipes} />
-        </ScrollView>
+        <ImportList importData={recipes} />
       )}
 
       {/* filter bottom sheet */}

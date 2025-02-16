@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import * as ImagePicker from 'expo-image-picker';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
-import { storage } from '../../firebase.config';
-import { ScrollView } from './ui';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from '@/components/ui';
 import { wp } from '@/lib/dimensions';
+
+import { storage } from '../../firebase.config';
 import { Icons } from './ui/icons';
 
-const ImageSlider = ({ images, setImages }) => {
+export const ImageSlider = ({ images, setImages }) => {
   const [pickedImages, setPickedImages] = useState(images);
 
   useEffect(() => {
@@ -95,8 +95,6 @@ const ImageSlider = ({ images, setImages }) => {
     </View>
   );
 };
-
-export default ImageSlider;
 
 const styles = StyleSheet.create({
   imageContainer: {

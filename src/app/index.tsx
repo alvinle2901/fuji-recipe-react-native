@@ -1,12 +1,23 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from 'react';
+
+import { Stack, router } from 'expo-router';
+
+import { FilterBottomSheet } from '@/components';
+import { RecipeList } from '@/components/recipe';
+import {
+  Image,
+  SafeAreaView,
+  SearchBar,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from '@/components/ui';
+import { Icons } from '@/components/ui/icons';
 
 import { wp } from '@/lib/dimensions';
-import { RefreshControl, SafeAreaView, ScrollView, TextInput, TouchableOpacity, View, Image, Text } from '@/components/ui';
-import { Icons } from '@/components/ui/icons';
+import { filterAndSearch } from '@/lib/filter';
 import { useRecipes } from '@/lib/hooks';
-import { router, Stack } from 'expo-router';
-import { RecipeList } from '@/components/recipe';
 
 const HomeScreen = () => {
   const { data: recipes, isLoading, isError } = useRecipes();
@@ -16,7 +27,6 @@ const HomeScreen = () => {
   const [fetchedData, setFetchedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isFilterUp, setIsFilterUp] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [filters, setFilters] = useState({
     film: '',
     sensor: '',
@@ -32,25 +42,17 @@ const HomeScreen = () => {
     }
   }, [recipes]);
 
-  // pull to refresh
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 900);
-  }, []);
-
   // handle search function
   const handleSearchTerm = (text: string) => {
     setSearchTerm(text);
-    // setData(filterAndSearch(fetchedData, filters, text));
+    setData(filterAndSearch(fetchedData, filters, text));
   };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <Stack.Screen options={{ headerShown: false}} />
+      <Stack.Screen options={{ headerShown: false }} />
       <StatusBar />
-      <View className="mx-4 flex-row justify-between items-center my-4">
+      <View className="m-4 flex-row justify-between items-center">
         {/* Title */}
         <Text
           style={{
@@ -63,11 +65,10 @@ const HomeScreen = () => {
         <View className="flex-row">
           {/* Import */}
           <TouchableOpacity
-            className="p-3 rounded-full mr-1"
-            style={{ backgroundColor: '#f0eff2' }}
+            className="p-3 rounded-full mr-1 bg-[#f0eff2]"
             onPress={() => {
               // clearAllData()
-              router.push('./import')
+              router.push('./import');
             }}
           >
             <Image
@@ -78,11 +79,8 @@ const HomeScreen = () => {
 
           {/* Add */}
           <TouchableOpacity
-            className="p-3 rounded-full"
-            style={{ backgroundColor: '#f0eff2' }}
-            onPress={() => 
-              router.push('/recipe/add-recipe')
-            }
+            className="p-3 rounded-full bg-[#f0eff2]"
+            onPress={() => router.push('/recipe/add-recipe')}
           >
             <Image
               source={require('../../assets/focus.png')}
@@ -91,17 +89,10 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+
       {/* Search Bar */}
       <View className="flex-row items-center justify-between px-4 pb-2 w-full space-x-6 mb-5">
-        <View className="px-4 py-2 bg-[#f0eff2] rounded-xl flex-1 flex-row items-center justify-center space-x-2">
-          <Icons.search size={20} color="#7f7f7f" />
-          <TextInput
-            className="text-base text=[#555] flex-1"
-            placeholder="Search..."
-            value={searchTerm}
-            onChangeText={handleSearchTerm}
-          />
-        </View>
+        <SearchBar searchTerm={searchTerm} handleSearchTerm={handleSearchTerm} />
         <TouchableOpacity
           className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#f0eff2]"
           onPress={() => setIsFilterUp(true)}
@@ -109,17 +100,12 @@ const HomeScreen = () => {
           <Icons.filter size={20} color="#7f7f7f" />
         </TouchableOpacity>
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        className="space-y-6"
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
-        {/* Recipes */}
-        <RecipeList recipes={data} />
-      </ScrollView>
-      
+
+      {/* Recipe List */}
+      <RecipeList recipes={data} />
+
       {/* filter bottom sheet */}
-      {/* {isFilterUp && (
+      {isFilterUp && (
         <FilterBottomSheet
           fetchedData={fetchedData}
           setData={setData}
@@ -128,7 +114,7 @@ const HomeScreen = () => {
           setFilters={setFilters}
           searchTerm={searchTerm}
         />
-      )} */}
+      )}
     </SafeAreaView>
   );
 };

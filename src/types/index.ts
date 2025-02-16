@@ -1,5 +1,5 @@
 export type Recipe = {
-  id: string;
+  id?: string;
   film_simulation: string;
   sensor: string;
   dynamic_range: string;
@@ -9,7 +9,7 @@ export type Recipe = {
   shadow: number | null;
   sharpness: number | null;
   noise_reduction: number | null;
-  clarity: number | null;
+  clarity?: number | null;
   grain_effect: string;
   color_chrome_fx: string;
   color_chrome_fx_blue?: string;
@@ -19,10 +19,10 @@ export type Recipe = {
   blue: string | number;
   images: string[];
   title: string;
-  temp: number;
+  temp: string;
   favorite: boolean;
   bw: boolean;
-  db_id: string;
+  db_id?: string;
 };
 
 export type DetailScreenProps = {

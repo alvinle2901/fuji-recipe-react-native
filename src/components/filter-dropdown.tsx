@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { Dropdown, Image, StyleSheet, View } from '@/components/ui';
+
 import { wp } from '@/lib/dimensions';
 import { getField } from '@/lib/string';
 
-const FilterDropdown = ({ data, field, icon, value, setValue }) => {
+export const FilterDropdown = ({ data, field, icon, value, setValue }) => {
   const filterField = getField(field);
-  
+
   return (
     <View
       className="flex-row py-3 items-center w-full justify-between"
@@ -38,8 +39,6 @@ const FilterDropdown = ({ data, field, icon, value, setValue }) => {
     </View>
   );
 };
-
-export default FilterDropdown;
 
 const styles = StyleSheet.create({
   dropdown: {

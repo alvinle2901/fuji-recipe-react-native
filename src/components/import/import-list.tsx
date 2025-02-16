@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View } from '../ui';
-import { ImportCard } from './import-card';
 
 import { useRecipes } from '@/lib/hooks';
 import { Recipe } from '@/types';
+
+import { ScrollView, View } from '../ui';
+import { ImportCard } from './import-card';
 
 type ImportListProps = {
   importData: Recipe[];
@@ -22,12 +23,14 @@ export const ImportList: React.FC<ImportListProps> = ({ importData }) => {
   }, [recipes]);
 
   return (
-    <View className="px-2">
-      {importData.map((item, index) => {
-        // Check if the recipe is already imported
-        const hasMatchingId = idList.some((recipe) => recipe.db_id === item.db_id);
-        return <ImportCard item={item} key={index} isImported={hasMatchingId} />;
-      })}
-    </View>
+    <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
+      <View className="px-2">
+        {importData.map((item, index) => {
+          // Check if the recipe is already imported
+          const hasMatchingId = idList.some((recipe) => recipe.db_id === item.db_id);
+          return <ImportCard item={item} key={index} isImported={hasMatchingId} />;
+        })}
+      </View>
+    </ScrollView>
   );
 };

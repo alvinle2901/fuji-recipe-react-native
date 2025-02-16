@@ -4,12 +4,14 @@ export * from './input-item';
 export * from './modal';
 export * from './slider-item';
 export * from './drop-down-item';
+export * from './search-bar'
 
 export {
   ActivityIndicator,
   Animated,
   Image,
   RefreshControl,
+  ScrollView as ScrollViewRN,
   Text,
   TextInput,
   TouchableOpacity,

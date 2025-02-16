@@ -1,13 +1,15 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Checkbox } from './ui';
+
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
 
-import FilterDropdown from './filter-drop-down';
-import { filmSimulationData, sensorData } from '../constants';
-import { filterAndSearch } from '../lib/filter';
-import { wp } from '@/lib/dimensions';
+import { filmSimulationData, sensorData } from '@/lib/constants';
+import { hp, wp } from '@/lib/dimensions';
+import { filterAndSearch } from '@/lib/filter';
 
-const FilterBottomSheet = ({
+import { Checkbox, StyleSheet, Text, TouchableOpacity, View } from './ui';
+import { FilterDropdown } from './filter-dropdown';
+
+export const FilterBottomSheet = ({
   fetchedData,
   setData,
   setIsFilterUp,
@@ -173,8 +175,6 @@ const FilterBottomSheet = ({
     </BottomSheet>
   );
 };
-
-export default FilterBottomSheet;
 
 const styles = StyleSheet.create({
   bottomSheet: {

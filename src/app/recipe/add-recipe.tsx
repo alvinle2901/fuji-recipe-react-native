@@ -4,7 +4,7 @@ import Toast from 'react-native-root-toast';
 import { Stack, router } from 'expo-router';
 import { Formik } from 'formik';
 
-import ImageSlider from '@/components/image-slider';
+import { ImageSlider, WhiteBalance } from '@/components';
 import {
   DropDownItem,
   Error,
@@ -20,7 +20,6 @@ import {
   View,
 } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
-import WhiteBalance from '@/components/white-balance';
 
 import {
   ccData,
@@ -33,6 +32,7 @@ import { wp } from '@/lib/dimensions';
 import { useSaveRecipe } from '@/lib/hooks';
 import { checkBW } from '@/lib/string';
 import { validateSchema } from '@/lib/validation';
+import { Recipe } from '@/types';
 
 const AddScreen = () => {
   const [dialog, setDialog] = useState(false);
@@ -46,7 +46,7 @@ const AddScreen = () => {
 
   const saveRecipe = useSaveRecipe();
 
-  const handleSaveRecipe = (item) => {
+  const handleSaveRecipe = (item: Recipe) => {
     const newRecipe = {
       id: `id_${Date.now()}`,
       ...item,
@@ -88,7 +88,7 @@ const AddScreen = () => {
             grain_effect: values.grainEffect,
             color_chrome_fx: values.ccfx,
             iso: values.iso,
-            exposure: exposure,
+            exposure_compensation: exposure,
             red: values.red,
             blue: values.blue,
             images: images,
@@ -142,6 +142,7 @@ const AddScreen = () => {
             </Text>
             <TouchableOpacity className="p-2 h-9 mr-6"></TouchableOpacity>
           </View>
+
           <ScrollView showsVerticalScrollIndicator={false} className="space-y-6">
             {/* items */}
             <View className="mx-5">
